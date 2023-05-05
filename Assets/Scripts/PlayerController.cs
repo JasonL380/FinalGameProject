@@ -61,7 +61,7 @@ namespace DefaultNamespace
                     gameObject.layer = 8;
                     //targetCol2D.isTrigger = false;
                     velocity3d.z = jumpSpeed;
-
+                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.1f);
                     pos3d.z = 0;
                 }
 
