@@ -254,8 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4260a593061b9b0aba7f622beae96286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1642055619}
-  smoothVal: 0.5
 --- !u!1 &1218053561
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,8 +266,8 @@ GameObject:
   - component: {fileID: 1218053564}
   - component: {fileID: 1218053563}
   - component: {fileID: 1218053567}
-  - component: {fileID: 1218053566}
   - component: {fileID: 1218053565}
+  - component: {fileID: 1218053566}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -885,7 +883,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.51}
