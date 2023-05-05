@@ -48,7 +48,7 @@ namespace DefaultNamespace
                     onGround = true;
                     gameObject.layer = 7;
                     mySpriteRenderer.rendererPriority = 1;
-                    //targetCol2D.isTrigger = true;
+                    targetCol2D.isTrigger = true;
                     velocity3d.z = 0;
                     transform.position = new Vector3(transform.position.x, pos3d.y);
                 }
@@ -65,15 +65,24 @@ namespace DefaultNamespace
                     
                     mySpriteRenderer.rendererPriority = 2;
                     gameObject.layer = 8;
-                    //targetCol2D.isTrigger = false;
+                    targetCol2D.isTrigger = false;
                     velocity3d.z = jumpSpeed;
-                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.1f);
+                    pos3d.y = transform.position.y;
+                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.25f);
                     pos3d.z = 0;
+                }
+                else
+                {
+                    pos3d.y = transform.position.y;
                 }
 
                 velocity3d.x = Input.GetAxis("Horizontal") * moveSpeed;
 
                 velocity3d.y = Input.GetAxis("Vertical") * moveSpeed;
+
+                
+
+                //LandingTarget.transform.position = transform.position;
 
             }
             
