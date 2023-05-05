@@ -178,11 +178,11 @@ public class Pathfinder : MonoBehaviour
 
             //print("Visiting " + current);
             int currentPoint = graph[current.x, current.y];
-            for (int i = 1; i <= 4; ++i)
+            for (int i = 1; i <= 8; ++i)
             {
-                if ((currentPoint & (1 << i)) != 0)
+                Vector2Int next = getNeighbor(current, i);
+                if (next != current)
                 {
-                    Vector2Int next = getNeighbor(current, i);
                     float new_cost = cost_so_far[current] + 1;
                     if (!cost_so_far.ContainsKey(next) || new_cost < cost_so_far[next])
                     {
@@ -253,6 +253,18 @@ public class Pathfinder : MonoBehaviour
             //right
             case 4:
                 return new Vector2Int(current.x + 1, current.y);
+            //up right
+            case 5:
+                return new Vector2Int(current.x + 1, current.y + 1);
+            //down right
+            case 6:
+                return new Vector2Int(current.x + 1, current.y - 1);
+            //down left
+            case 7:
+                return new Vector2Int(current.x - 1, current.y - 1);
+            //up left
+            case 8:
+                return new Vector2Int(current.x - 1, current.y + 1);
         }
 
         return current;
