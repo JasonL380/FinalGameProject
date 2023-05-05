@@ -22,6 +22,12 @@ namespace DefaultNamespace
         private SpriteRenderer mySpriteRenderer;
         
         
+        struct ParabolaCastResult
+        {
+            public RaycastHit2D hit;
+            public Vector2 velocity;
+        }
+        
         private void Start()
         {
             //print(gameObject.layer);
@@ -77,6 +83,31 @@ namespace DefaultNamespace
             LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
             
             myRB2D.velocity = new Vector2(velocity3d.x, velocity3d.y + velocity3d.z);
+        }
+        
+        
+        ParabolaCastResult ParabolaCast(Vector2 velocity, Vector2 start)
+        {
+            ParabolaCastResult result = new ParabolaCastResult();
+            RaycastHit2D hit;
+            Vector2 nextPos;
+
+            int count = 0;
+            
+            do
+            {
+                nextPos = start + (velocity / 20);
+                velocity += Physics2D.gravity / 20;
+                hit = Physics2D.CircleCast(start, 0.5f, nextPos - start, (nextPos - start).magnitude, 0);
+                Debug.DrawLine(start, nextPos, Color.magenta, 30);
+                start = nextPos;
+                count++;
+            } while (hit.collider == null && count < 100);
+
+            result.hit = hit;
+            result.velocity = velocity;
+            
+            return result;
         }
     }
 }
