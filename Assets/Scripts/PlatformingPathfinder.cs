@@ -378,7 +378,7 @@ namespace Utils
                     break;
                 }
                 //print(i + " id: " + current.id + " camefrom: " + cameFrom[current].Value.id);
-                Path p;
+                //Path p;
                 int j = 0;
                 foreach (var currentPath in cameFrom[current].Value.paths)
                 {
