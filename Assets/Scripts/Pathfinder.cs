@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
+[RequireComponent(typeof(CircleCollider2D), typeof(Rigidbody2D))]
 public class Pathfinder : MonoBehaviour
 {
     public float speed; //the speed that this should move at, do not set this too high or it won't work
@@ -52,6 +53,8 @@ public class Pathfinder : MonoBehaviour
 
     private float lastDensity;
 
+    public float closeEnough;
+    
     private void Start()
     {
         print("initializing pathfinder");
@@ -181,7 +184,7 @@ public class Pathfinder : MonoBehaviour
             for (int i = 1; i <= 8; ++i)
             {
                 Vector2Int next = getNeighbor(current, i);
-                if (next != current)
+                if (graph[next.x, next.y] != 0)
                 {
                     float new_cost = cost_so_far[current] + 1;
                     if (!cost_so_far.ContainsKey(next) || new_cost < cost_so_far[next])
@@ -306,7 +309,7 @@ public class Pathfinder : MonoBehaviour
         currentPos.x = transform.position.x;
         currentPos.y = transform.position.y;
         //check if close to target, if so go to next one if possible
-        if (direction.magnitude <= 0.5)
+        if (direction.magnitude <= closeEnough)
         {
             ++currentWaypoint;
             if (currentWaypoint >= pathfindingWaypoints.Count - 1)
