@@ -68,9 +68,9 @@ namespace DefaultNamespace
                 {
                     Debug.DrawLine(hit.point + (Vector2)direction + (rotate(direction) * i * 2), hit.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
                     Vector3Int currentGridPos = grid.WorldToCell(hit.point + (Vector2)direction + (rotate(direction) * i * 2));
-                    
-                    
-                    
+
+
+                    //wallMap.getTile(currentGridPos);
                     if (wallMap.GetTile(currentGridPos) == (isShort ? tallTile : shortTile))
                     {
                         //print();
@@ -85,10 +85,6 @@ namespace DefaultNamespace
                         wallMap.SetTile(data, false);
                     }
                 }
-
-                    
-
-                
             }
         }
 
