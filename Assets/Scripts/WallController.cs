@@ -46,7 +46,7 @@ namespace DefaultNamespace
         private void Update()
         {
             switchWalls(new Vector3(0.25f, -0.125f), true);
-            switchWalls(new Vector3(-0.125f, -0.25f), true);
+            switchWalls(new Vector3(-0.25f, -0.125f), true);
             switchWalls(new Vector3(0.25f, 0.125f), false);
             switchWalls(new Vector3(-0.25f, 0.125f), false);
         }
@@ -54,25 +54,47 @@ namespace DefaultNamespace
         private void switchWalls(Vector3 direction, bool isShort)
         {
             RaycastHit2D hit = Physics2D.Linecast(transform.position, transform.position + (direction * 20f), mask);
+
+            Debug.DrawLine(transform.position, transform.position + (direction * 20f), isShort ? Color.green : Color.magenta);
             
-            //Debug.DrawLine(transform.position, hit.point + (new Vector2(2, -1) * 0.125f), Color.red);
-            Debug.DrawLine(transform.position, hit.point + (Vector2) direction, isShort ? Color.red : Color.blue);
-
-            Vector3Int gridPos = grid.WorldToCell(hit.point + (Vector2) direction);
-
-            if (wallMap.GetTile(gridPos) == shortTile)
+            if (hit.collider != null)
             {
-                //print();
-                //print(transformMatrix);
+                //Debug.DrawLine(transform.position, hit.point + (new Vector2(2, -1) * 0.125f), Color.red);
+                Debug.DrawLine(transform.position, hit.point, isShort ? Color.red : Color.blue);
+                Vector3Int gridPos = grid.WorldToCell(hit.point + (Vector2) direction);
                 
-                print("changing tile");
-                TileChangeData data = new TileChangeData();
-                data.transform = wallMap.GetTransformMatrix(gridPos);
-                data.tile = tallTile;
-                data.position = gridPos;
+
+                for (int i = -15; i < 15; ++i)
+                {
+                    Debug.DrawLine(hit.point + (Vector2)direction + (rotate(direction) * i * 2), hit.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
+                    Vector3Int currentGridPos = grid.WorldToCell(hit.point + (Vector2)direction + (rotate(direction) * i * 2));
+                    
+                    
+                    
+                    if (wallMap.GetTile(currentGridPos) == (isShort ? tallTile : shortTile))
+                    {
+                        //print();
+                        //print(transformMatrix);
                 
-                wallMap.SetTile(data, false);
+                        print("changing tile");
+                        TileChangeData data = new TileChangeData();
+                        data.transform = wallMap.GetTransformMatrix(currentGridPos);
+                        data.tile = isShort ? shortTile : tallTile;
+                        data.position = currentGridPos;
+                
+                        wallMap.SetTile(data, false);
+                    }
+                }
+
+                    
+
+                
             }
+        }
+
+        private Vector2 rotate(Vector2 vec)
+        {
+            return new Vector2(vec.x * -1, vec.y);
         }
     }
 }
