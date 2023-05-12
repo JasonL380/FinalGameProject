@@ -763,68 +763,44 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 7312965731791497983}
     m_ColliderPaths:
-    - - X: -10000041
-        Y: -22500100
-      - X: 41
-        Y: -22500100
-      - X: 100
-        Y: -22500041
-      - X: 100
-        Y: -2500000
-      - X: 30000000
-        Y: -2500000
-      - X: 30000000
+    - - X: 0
         Y: -52500000
-      - X: 100
-        Y: -52500000
-      - X: 100
-        Y: -32499959
-      - X: 41
-        Y: -32499900
-      - X: -10000041
-        Y: -32499900
-      - X: -10000100
-        Y: -32499959
-      - X: -10000100
-        Y: -62500041
-      - X: -10000041
-        Y: -62500100
-      - X: 41
-        Y: -62500100
-      - X: 100
-        Y: -62500041
-      - X: 100
+      - X: 0
+        Y: -32500000
+      - X: -10000000
+        Y: -32500000
+      - X: -10000000
         Y: -62500000
       - X: 40000000
         Y: -62500000
       - X: 40000000
         Y: 7500000
-      - X: 100
+      - X: -10000000
         Y: 7500000
-      - X: 100
-        Y: 7500041
-      - X: 41
-        Y: 7500100
-      - X: -10000041
-        Y: 7500100
-      - X: -10000100
-        Y: 7500041
-      - X: -10000100
-        Y: -22500041
+      - X: -10000000
+        Y: -22500000
+      - X: 0
+        Y: -22500000
+      - X: 0
+        Y: -2500000
+      - X: 30000000
+        Y: -2500000
+      - X: 30000000
+        Y: -52500000
   m_CompositePaths:
     m_Paths:
-    - - {x: -1.00001, y: -5.9999747}
-      - {x: 4, y: -5.999971}
+    - - {x: 3.999971, y: -6}
       - {x: 3.999971, y: 1}
-      - {x: -1.00001, y: 0.9999748}
-      - {x: -0.9999748, y: -2.00001}
-      - {x: 0.00001, y: -1.9999747}
-      - {x: 0.0000394, y: 0}
+      - {x: -1, y: 0.99997073}
+      - {x: -0.99997073, y: -2}
+      - {x: 0, y: -1.9999709}
+      - {x: 0.0000294, y: 0}
       - {x: 3, y: -0.000029414892}
       - {x: 2.9999707, y: -5}
-      - {x: 0.00001, y: -4.9999704}
-      - {x: -0.0000252, y: -2.99999}
-      - {x: -1.00001, y: -3.0000253}
+      - {x: 0, y: -4.9999704}
+      - {x: -0.000029300001, y: -3}
+      - {x: -1, y: -3.0000293}
+      - {x: -0.99997073, y: -6}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &7312965731791497981
@@ -858,6 +834,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7312965732056077878}
   - component: {fileID: 6504360451191737359}
+  - component: {fileID: 2970627105976182863}
   m_Layer: 0
   m_Name: Room 1
   m_TagString: Untagged
@@ -895,3 +872,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorPos: {x: -2, y: -3}
+  facing: 0
+--- !u!61 &2970627105976182863
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312965732056077879}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.4956386, y: -2.4871283}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.9885445, y: 6.9914036}
+  m_EdgeRadius: 0

@@ -5,4 +5,5 @@ using UnityEngine;
 public class roomStats : MonoBehaviour
 {
     public Vector2 doorPos;
+    public int facing;
 }
