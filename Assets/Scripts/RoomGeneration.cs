@@ -13,22 +13,26 @@ public class RoomGeneration : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(/*!roomGend &&*/ collision.name.Equals("Player"))
+        if(!roomGend && collision.name.Equals("Player"))
         {
             int rand = UnityEngine.Random.Range(0, roomTypes.Length);
             if (true/*check room size to make sure it doesn't overlap*/)
             {
-                Vector2 box;
+               /* Vector2 box;
                 box.x = 2;
                 box.y = 2;
-                RaycastHit2D bc = Physics2D.BoxCast(collision.transform.position, box, 0, box, 10000f, LayerMask.NameToLayer("door"));
-                print(LayerMask.NameToLayer("door"));
-                print(bc.collider.bounds.center);
-                print(bc.collider.name);
+                RaycastHit2D bc = Physics2D.BoxCast(collision.transform.position, box, 0, box, 10000f, LayerMask.NameToLayer("door"));*/
+                //print(LayerMask.NameToLayer("door"));
+                //print(bc.collider.bounds.center);
+                //print(bc.collider.name);
+
+                Vector3 pos = collision.transform.position;
+                pos.x = (float)Math.Round(collision.transform.position.x);
+                pos.y = (float)Math.Round(collision.transform.position.y);
                 GameObject roomClone = Instantiate(roomTypes[rand]);
                 roomClone.transform.parent = GameObject.Find("Grid").transform;
                 roomClone.SetActive(true);
-                Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(bc.transform.position);
+                Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(pos);
                 //print(collision.transform.position);
                 //print(doorPos);
                 doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
