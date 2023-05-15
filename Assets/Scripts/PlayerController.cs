@@ -21,6 +21,8 @@ namespace DefaultNamespace
 
         private SpriteRenderer mySpriteRenderer;
 
+        Animator myAnim;
+
 
         struct ParabolaCastResult
         {
@@ -36,6 +38,8 @@ namespace DefaultNamespace
             myCol2D = GetComponent<Collider2D>();
             targetCol2D = LandingTarget.GetComponent<Collider2D>();
             mySpriteRenderer = GetComponent<SpriteRenderer>();
+
+            myAnim = GetComponent<Animator>();
         }
 
         private void Update()
@@ -90,6 +94,26 @@ namespace DefaultNamespace
             LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
 
             myRB2D.velocity = new Vector2(velocity3d.x, velocity3d.y + (velocity3d.z / 2));
+
+
+
+            //animations
+            Vector2 movement = Vector2.zero;
+
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+
+            if (movement == Vector2.zero) //if not walking
+            {
+                myAnim.SetBool("Walking", false);
+            }
+            else //if walking
+            {
+                myAnim.SetBool("Walking", true);
+
+                myAnim.SetFloat("Move_X", movement.x);
+                myAnim.SetFloat("Move_Y", movement.y);
+            }
         }
 
 
