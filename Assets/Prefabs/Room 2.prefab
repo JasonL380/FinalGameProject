@@ -468,7 +468,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 1.5625, z: 0}
+  m_ChunkCullingBounds: {x: 0.5, y: 1.5625, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 1
@@ -1161,6 +1161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorPos: {x: -2, y: 0}
   facing: 0
+  pos: {x: 2, y: 0, z: 0}
 --- !u!61 &2121185202905039248
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1196,7 +1197,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5963177834462679205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f5d5631021942efa917e32320b49b3d, type: 3}
+  m_Script: {fileID: 11500000, guid: e1e80fc786d0d8388b629bf49a968a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   corners: []
@@ -1225,7 +1226,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.000000476835, y: -0.00000023841747}
-      - {x: 3.4999843, y: 1.7499918}
+    - - {x: 0, y: 0}
+      - {x: 3.4999838, y: 1.749992}
       - {x: 7.9999638, y: -0.4999976}
       - {x: 4.49998, y: -2.2499897}
