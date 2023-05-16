@@ -93,7 +93,7 @@ namespace DefaultNamespace
 
             LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
 
-            myRB2D.velocity = new Vector2(velocity3d.x, velocity3d.y + (velocity3d.z / 2));
+            myRB2D.velocity = new Vector2(velocity3d.x, (velocity3d.y * 0.5f) + (velocity3d.z / 2));
 
 
 
