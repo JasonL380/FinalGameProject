@@ -11,7 +11,6 @@ public class RoomGeneration : MonoBehaviour
     //which rooms its tried to generate
     private int[] tried;
     private int count;
-    
     public LayerMask roomLayer;
     
     //Some magical values to transform the collider to isometric, do not change
@@ -25,7 +24,7 @@ public class RoomGeneration : MonoBehaviour
         roomLayer = LayerMask.GetMask("room");
     }
 
-    //the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3
+    [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
     public int facing;
     //has the room generated
     private bool roomGend;
