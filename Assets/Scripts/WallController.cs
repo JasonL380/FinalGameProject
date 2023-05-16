@@ -62,27 +62,28 @@ namespace DefaultNamespace
                 //Debug.DrawLine(transform.position, hit.point + (new Vector2(2, -1) * 0.125f), Color.red);
                 Debug.DrawLine(transform.position, hit.point, isShort ? Color.red : Color.blue);
                 Vector3Int gridPos = grid.WorldToCell(hit.point + (Vector2) direction);
-                
+
+                Tilemap currentMap = hit.collider.gameObject.GetComponent<Tilemap>();
 
                 for (int i = -15; i < 15; ++i)
                 {
                     Debug.DrawLine(hit.point + (Vector2)direction + (rotate(direction) * i * 2), hit.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
                     Vector3Int currentGridPos = grid.WorldToCell(hit.point + (Vector2)direction + (rotate(direction) * i * 2));
-
-
+                    
+                    
                     //wallMap.getTile(currentGridPos);
-                    if (wallMap.GetTile(currentGridPos) == (isShort ? tallTile : shortTile))
+                    if (currentMap.GetTile(currentGridPos) == (isShort ? tallTile : shortTile))
                     {
                         //print();
                         //print(transformMatrix);
                 
                         print("changing tile");
                         TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(currentGridPos);
+                        data.transform = currentMap.GetTransformMatrix(currentGridPos);
                         data.tile = isShort ? shortTile : tallTile;
                         data.position = currentGridPos;
                 
-                        wallMap.SetTile(data, false);
+                        currentMap.SetTile(data, false);
                     }
                 }
             }
