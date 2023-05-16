@@ -37,6 +37,7 @@ public class RoomGeneration : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        
         /*if (this.enabled)
         {
             Vector2[] points = roomTypes[0].GetComponent<PolygonCollider2D>().points;
@@ -70,10 +71,6 @@ public class RoomGeneration : MonoBehaviour
                     return;
                 }
             }
-            //get the rounded position so it's consistent
-            Vector3 pos = collision.transform.position;
-            pos.x = (float)Math.Round(collision.transform.position.x);
-            pos.y = (float)Math.Round(collision.transform.position.y);
 
             //make the room 
             GameObject roomClone = Instantiate(roomTypes[rand]);
@@ -81,7 +78,7 @@ public class RoomGeneration : MonoBehaviour
             roomClone.SetActive(true);
 
             //get the position of the door for centering it
-            Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(pos);
+            Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(transform.position);
             //some math to properly align the door
             doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
             doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
