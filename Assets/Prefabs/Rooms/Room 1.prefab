@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 7312965731791497983}
   - component: {fileID: 7312965731791497980}
   - component: {fileID: 7312965731791497981}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,21 +615,21 @@ Tilemap:
       e33: 1
   - m_RefCount: 0
     m_Data:
-      e00: -7.1027183e+12
-      e01: NaN
-      e02: 8.5622965e+33
+      e00: 1
+      e01: 0
+      e02: 0
       e03: 0
-      e10: 3.34e-43
-      e11: NaN
-      e12: 4.5905e-41
+      e10: 0
+      e11: 1
+      e12: 0
       e13: 0
-      e20: 5.4009e-41
+      e20: 0
       e21: 0
-      e22: -7.10271e+12
+      e22: 1
       e23: 0
       e30: 0
-      e31: 7.34684e-40
-      e32: 3.34e-43
+      e31: 0
+      e32: 0
       e33: 1
   - m_RefCount: 19
     m_Data:
@@ -875,7 +875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorPos: {x: -1, y: -4}
   facing: 0
-  pos: {x: 9, y: 7, z: 0}
+  pos: {x: 2, y: -0.75, z: 0}
 --- !u!61 &2970627105976182863
 BoxCollider2D:
   m_ObjectHideFlags: 0

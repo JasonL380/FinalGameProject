@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5275959708645891533}
   - component: {fileID: 2503965739149384196}
   - component: {fileID: 5599514599913715282}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6864239978930621178}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &4674133328035257433
 Tilemap:
@@ -623,7 +623,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6864239978930621178}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &4111658751114696190
 Tilemap:
@@ -1172,8 +1172,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 664526393738896124}
   - {fileID: 2693472225533479452}
+  - {fileID: 664526393738896124}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1189,9 +1189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812ab74e42170244e83d57b85291787e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorPos: {x: 1, y: -1}
+  doorPos: {x: 5, y: -7}
   facing: 1
-  pos: {x: -15, y: -13, z: 0}
+  pos: {x: 5.5, y: -8, z: 0}
 --- !u!61 &4088961637427686346
 BoxCollider2D:
   m_ObjectHideFlags: 0

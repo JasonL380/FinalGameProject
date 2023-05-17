@@ -55,41 +55,50 @@ public class RoomGeneration : MonoBehaviour
         if(!roomGend && collision.name.Equals("Player") )
         {
             //get a random room
-            int rand = UnityEngine.Random.Range(0, roomTypes.Length);
+            Shuffle(roomTypes);
             //randomly picks from the list until it's exhausted or it finds a matching one
-            while(roomTypes[rand].GetComponent<roomStats>().facing == facing && !checkRoomFits(roomTypes[rand], collision.transform.position))
+            int i;
+            for (i = 0; i < roomTypes.Length; ++i)
             {
-                if (tried[rand] != 1)
+                if (roomTypes[i].GetComponent<roomStats>().facing != facing)
                 {
-                    ++count;
-                    tried[rand] = 1;
+                    continue;
                 }
-                rand = UnityEngine.Random.Range(0, roomTypes.Length);
-                if(count == roomTypes.Length)
+
+                if (checkRoomFits(roomTypes[i], collision.transform.position))
                 {
-                    return;
+                    //make the room 
+                    GameObject roomClone = Instantiate(roomTypes[i]);
+                    roomClone.transform.parent = GameObject.Find("Grid").transform;
+                    roomClone.SetActive(true);
+
+                    //get the position of the door for centering it
+                    Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(transform.position);
+                    //some math to properly align the door
+                    doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
+                    doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
+                    doorPos.z -= (int)(roomClone.transform.position.z);
+                    Vector3 finalPos = GetComponentInParent<Grid>().CellToWorld(doorPos);
+                    //put the room in it's proper place
+                    roomClone.transform.position = finalPos;
+                    //don't let any other rooms generate
+                    roomGend = true; 
+                    break;
                 }
             }
-
-            //make the room 
-            GameObject roomClone = Instantiate(roomTypes[rand]);
-            roomClone.transform.parent = GameObject.Find("Grid").transform;
-            roomClone.SetActive(true);
-
-            //get the position of the door for centering it
-            Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(transform.position);
-            //some math to properly align the door
-            doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
-            doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
-            doorPos.z -= (int)(roomClone.transform.position.z);
-            Vector3 finalPos = GetComponentInParent<Grid>().CellToWorld(doorPos);
-            //put the room in it's proper place
-            roomClone.transform.position = finalPos;
-            //don't let any other rooms generate
-            roomGend = true; 
         }
     }
 
+    void Shuffle (GameObject[] deck) {
+        for (int i = 0; i < deck.Length; i++) {
+            GameObject temp = deck[i];
+            int randomIndex = UnityEngine.Random.Range(i, deck.Length);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
+        }
+    }
+
+    
     bool checkRoomFits(GameObject room, Vector3 position)
     {
         Vector3 pos = position;
