@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5278366897645478910}
   - component: {fileID: 5000485462020596790}
   - component: {fileID: 1737591256556220878}
-  - component: {fileID: 2150177901668230511}
+  - component: {fileID: 4572234925553058401}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -50,6 +50,7 @@ MonoBehaviour:
   - {fileID: 7312965732056077879, guid: 8de77c85fff8fae4cbfaedcd3d713419, type: 3}
   - {fileID: 5963177834462679205, guid: 9b44d7fb13f657c43b55c95757bc7662, type: 3}
   - {fileID: 5963177834462679205, guid: 8cbb28faa5b4a48499f8c8fc69c64c4d, type: 3}
+  - {fileID: 7312965732056077879, guid: 0dfe74c740e8de90093feae3b082bc05, type: 3}
   roomLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -107,7 +108,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &2150177901668230511
+--- !u!60 &4572234925553058401
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +118,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -132,11 +133,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.1875, y: 0.2421875}
-      - {x: -0.5, y: 0.0390625}
-      - {x: -0.5, y: -0.0390625}
-      - {x: -0.1875, y: -0.2421875}
-      - {x: 0.109375, y: -0.2421875}
-      - {x: 0.5, y: -0.0859375}
-      - {x: 0.5, y: 0.1015625}
-      - {x: 0.109375, y: 0.2421875}
+    - - {x: 0.49124265, y: -0.0014160275}
+      - {x: -0.001635462, y: 0.24733423}
+      - {x: -0.49628085, y: -0.0000115484}
+      - {x: 0.004035607, y: -0.24032794}

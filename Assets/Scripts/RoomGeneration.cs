@@ -17,11 +17,15 @@ public class RoomGeneration : MonoBehaviour
     private Matrix4x4 transformMatrix = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1.41422f));
 
     public bool fits = false;
+
+    private Grid grid;
     
     private void Start()
     {
         tried = new int[roomTypes.Length];
         roomLayer = LayerMask.GetMask("room");
+
+        grid = FindObjectOfType<Grid>();
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
@@ -31,6 +35,10 @@ public class RoomGeneration : MonoBehaviour
 
     private void Update()
     {
+        if (Application.isEditor)
+        {
+            
+        }
         //fits = checkRoomFits(roomTypes[0], transform.position);
     }
 
@@ -67,18 +75,19 @@ public class RoomGeneration : MonoBehaviour
 
                 if (checkRoomFits(roomTypes[i], collision.transform.position))
                 {
-                    //make the room 
+                    //make the room
+
                     GameObject roomClone = Instantiate(roomTypes[i]);
-                    roomClone.transform.parent = GameObject.Find("Grid").transform;
+                    roomClone.transform.parent = grid.transform;
                     roomClone.SetActive(true);
 
                     //get the position of the door for centering it
-                    Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(transform.position);
+                    Vector3Int doorPos = grid.WorldToCell(transform.position);
                     //some math to properly align the door
                     doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
                     doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
                     doorPos.z -= (int)(roomClone.transform.position.z);
-                    Vector3 finalPos = GetComponentInParent<Grid>().CellToWorld(doorPos);
+                    Vector3 finalPos = grid.CellToWorld(doorPos);
                     //put the room in it's proper place
                     roomClone.transform.position = finalPos;
                     //don't let any other rooms generate
@@ -106,12 +115,12 @@ public class RoomGeneration : MonoBehaviour
         pos.y = (float)Math.Round(position.y);
 
         //get the position of the door for centering it
-        Vector3Int doorPos = GetComponentInParent<Grid>().WorldToCell(pos);
+        Vector3Int doorPos = grid.WorldToCell(pos);
         //some math to properly align the door
         doorPos.x -= (int)(room.transform.position.x) + (int)room.GetComponent<roomStats>().doorPos.x;
         doorPos.y -= (int)(room.transform.position.y) + (int)room.GetComponent<roomStats>().doorPos.y;
         doorPos.z -= (int)(room.transform.position.z);
-        Vector2 finalPos = GetComponentInParent<Grid>().CellToWorld(doorPos);
+        Vector2 finalPos = grid.CellToWorld(doorPos);
         
         PolygonCollider2D collider = room.GetComponent<PolygonCollider2D>();
 

@@ -27,9 +27,13 @@ namespace DefaultNamespace
                                                          new Vector4(0.0f, 1.0f, 0.0f, 0.0f),
                                                          new Vector4(0.0f, 0.0f, 1.0f, 0.0f),
                                                          new Vector4(0.0f, -0.25f, 0.0f, 1.0f));
+
+        private Vector3 lastPos = Vector2.zero;
         
         private void Start()
         {
+            
+            lastPos = transform.position;
             /*tallData = new TileChangeData();
             tallData.transform = transformMatrix;
             tallData.tile = tallTile;
@@ -46,10 +50,15 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            switchWalls(new Vector3(0.25f, -0.125f), true);
-            switchWalls(new Vector3(-0.25f, -0.125f), true);
-            switchWalls(new Vector3(0.25f, 0.125f), false);
-            switchWalls(new Vector3(-0.25f, 0.125f), false);
+            if ((transform.position - lastPos).sqrMagnitude > 2)
+            {
+                switchWalls(new Vector3(0.25f, -0.125f), true);
+                switchWalls(new Vector3(-0.25f, -0.125f), true);
+                switchWalls(new Vector3(0.25f, 0.125f), false);
+                switchWalls(new Vector3(-0.25f, 0.125f), false);
+                lastPos = transform.position;
+            }
+            
         }
 
         private void switchWalls(Vector3 direction, bool isShort)
