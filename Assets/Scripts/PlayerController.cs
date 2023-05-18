@@ -23,6 +23,8 @@ namespace DefaultNamespace
 
         Animator myAnim;
 
+        public int holdingItem;
+
 
         struct ParabolaCastResult
         {
@@ -113,6 +115,15 @@ namespace DefaultNamespace
 
                 myAnim.SetFloat("Move_X", movement.x);
                 myAnim.SetFloat("Move_Y", movement.y);
+            }
+
+            if (holdingItem > 0)
+            {
+                myAnim.SetBool("Holding", true);
+            }
+            else
+            {
+                myAnim.SetBool("Holding", false);
             }
         }
 
