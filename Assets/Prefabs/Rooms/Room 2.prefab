@@ -1244,10 +1244,6 @@ PrefabInstance:
       propertyPath: roomTypes.Array.data[1]
       value: 
       objectReference: {fileID: 5963177834462679205}
-    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: roomTypes.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_RootOrder
       value: 2

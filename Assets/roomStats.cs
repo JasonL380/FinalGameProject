@@ -16,7 +16,7 @@ public class roomStats : MonoBehaviour
         if (Application.isEditor)
         {
             Gizmos.color = Color.red;
-            Grid grid = GetComponentInParent<Grid>();
+            Grid grid = FindObjectOfType<Grid>();
             pos = grid.CellToWorld(grid.WorldToCell(transform.position) + (Vector3Int)doorPos);
 
             switch (facing)

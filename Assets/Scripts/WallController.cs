@@ -82,7 +82,7 @@ namespace DefaultNamespace
                         Debug.DrawLine(h.point + (Vector2)direction + (rotate(direction) * i * 2), h.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
                         Vector3Int currentGridPos = wallMap.WorldToCell(h.point + (Vector2)direction + (rotate(direction) * i * 2));
                         
-                        print(currentGridPos);
+                       // print(currentGridPos);
 
                         //wallMap.getTile(currentGridPos);
                         

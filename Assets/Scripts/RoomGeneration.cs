@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.VisualScripting;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class RoomGeneration : MonoBehaviour
 {
-    //kinds of rooms
-    public GameObject[] roomTypes;
-    //which rooms its tried to generate
-    private int[] tried;
     private int count;
     public LayerMask roomLayer;
     
@@ -19,13 +16,14 @@ public class RoomGeneration : MonoBehaviour
     public bool fits = false;
 
     private Grid grid;
+    private RoomList _list;
     
     private void Start()
     {
-        tried = new int[roomTypes.Length];
         roomLayer = LayerMask.GetMask("room");
-
+        
         grid = FindObjectOfType<Grid>();
+        _list = grid.gameObject.GetComponent<RoomList>();
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
@@ -63,21 +61,21 @@ public class RoomGeneration : MonoBehaviour
         if(!roomGend && collision.name.Equals("Player") )
         {
             //get a random room
-            Shuffle(roomTypes);
+            Shuffle(_list.rooms);
             //randomly picks from the list until it's exhausted or it finds a matching one
             int i;
-            for (i = 0; i < roomTypes.Length; ++i)
+            for (i = 0; i < _list.rooms.Length; ++i)
             {
-                if (roomTypes[i].GetComponent<roomStats>().facing != facing)
+                if (_list.rooms[i].GetComponent<roomStats>().facing != facing)
                 {
                     continue;
                 }
 
-                if (checkRoomFits(roomTypes[i], collision.transform.position))
+                if (checkRoomFits(_list.rooms[i], collision.transform.position))
                 {
                     //make the room
 
-                    GameObject roomClone = Instantiate(roomTypes[i]);
+                    GameObject roomClone = Instantiate(_list.rooms[i]);
                     roomClone.transform.parent = grid.transform;
                     roomClone.SetActive(true);
 
