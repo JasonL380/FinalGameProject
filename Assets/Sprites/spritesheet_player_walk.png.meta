@@ -161,8 +161,8 @@ TextureImporter:
       name: spritesheet_player_walk_2
       rect:
         serializedVersion: 2
-        x: 66
-        y: 192
+        x: 70
+        y: 190
         width: 33
         height: 64
       alignment: 7
