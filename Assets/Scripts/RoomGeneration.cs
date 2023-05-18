@@ -15,21 +15,25 @@ public class RoomGeneration : MonoBehaviour
 
     public bool fits = false;
 
+    public bool debug = false;
+    
     private Grid grid;
     private RoomList _list;
     
     private void Start()
     {
-        roomLayer = LayerMask.GetMask("room");
-        
-        grid = FindObjectOfType<Grid>();
-        _list = grid.gameObject.GetComponent<RoomList>();
+        //roomLayer = LayerMask.GetMask("room");
+
+            grid = FindObjectOfType<Grid>();
+            _list = grid.gameObject.GetComponent<RoomList>();
+
+            
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
     public int facing;
     //has the room generated
-    private bool roomGend;
+    public bool roomGend;
 
     private void Update()
     {
@@ -37,6 +41,25 @@ public class RoomGeneration : MonoBehaviour
         {
             
         }
+        
+        if (Application.isPlaying && !roomGend)
+        {
+            if (_list.roomCount < _list.maxRooms && !_list.generated)
+            {
+                _list.roomCount += 1;
+            
+                generateRoom();
+                _list.generated = true;
+                
+                roomGend = true;
+            }
+            else if (_list.roomCount >= _list.maxRooms)
+            {
+                roomGend = true;
+            }
+            
+        }
+
         //fits = checkRoomFits(roomTypes[0], transform.position);
     }
 
@@ -58,44 +81,65 @@ public class RoomGeneration : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //if no room has generated and the player collides
-        if(!roomGend && collision.name.Equals("Player") )
+        if (!roomGend && collision.name.Equals("Player"))
         {
-            //get a random room
-            Shuffle(_list.rooms);
-            //randomly picks from the list until it's exhausted or it finds a matching one
-            int i;
-            for (i = 0; i < _list.rooms.Length; ++i)
+            generateRoom();
+        }
+    }
+
+    private void generateRoom()
+    {
+        
+        print("[RoomGeneration.cs] Attempting to generate room");
+        //get a random room
+        Shuffle(_list.rooms);
+        //randomly picks from the list until it's exhausted or it finds a matching one
+        int i;
+        for (i = 0; i < _list.rooms.Length; ++i)
+        {
+            if (_list.rooms[i].GetComponent<roomStats>().facing != facing)
             {
-                if (_list.rooms[i].GetComponent<roomStats>().facing != facing)
+                if (debug)
                 {
-                    continue;
+                    print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
                 }
+                continue;
+            }
 
-                if (checkRoomFits(_list.rooms[i], collision.transform.position))
+            if (checkRoomFits(_list.rooms[i], transform.position))
+            {
+                print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
+                
+                //make the room
+                GameObject roomClone = Instantiate(_list.rooms[i]);
+                roomClone.transform.parent = grid.transform;
+                roomClone.SetActive(true);
+
+                //get the position of the door for centering it
+                Vector3Int doorPos = grid.WorldToCell(transform.position);
+                //some math to properly align the door
+                doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
+                doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
+                doorPos.z -= (int)(roomClone.transform.position.z);
+                Vector3 finalPos = grid.CellToWorld(doorPos);
+                
+                Debug.DrawLine(finalPos, transform.position, Color.magenta);
+                //put the room in it's proper place
+                roomClone.transform.position = finalPos;
+                //don't let any other rooms generate
+                roomGend = true; 
+                break;
+            }
+            else
+            {
+                if (debug)
                 {
-                    //make the room
-
-                    GameObject roomClone = Instantiate(_list.rooms[i]);
-                    roomClone.transform.parent = grid.transform;
-                    roomClone.SetActive(true);
-
-                    //get the position of the door for centering it
-                    Vector3Int doorPos = grid.WorldToCell(transform.position);
-                    //some math to properly align the door
-                    doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
-                    doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
-                    doorPos.z -= (int)(roomClone.transform.position.z);
-                    Vector3 finalPos = grid.CellToWorld(doorPos);
-                    //put the room in it's proper place
-                    roomClone.transform.position = finalPos;
-                    //don't let any other rooms generate
-                    roomGend = true; 
-                    break;
+                    print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
                 }
             }
         }
     }
-
+    
     void Shuffle (GameObject[] deck) {
         for (int i = 0; i < deck.Length; i++) {
             GameObject temp = deck[i];
@@ -109,8 +153,8 @@ public class RoomGeneration : MonoBehaviour
     bool checkRoomFits(GameObject room, Vector3 position)
     {
         Vector3 pos = position;
-        pos.x = (float)Math.Round(position.x);
-        pos.y = (float)Math.Round(position.y);
+        //pos.x = (float)Math.Round(position.x);
+        //pos.y = (float)Math.Round(position.y);
 
         //get the position of the door for centering it
         Vector3Int doorPos = grid.WorldToCell(pos);
@@ -122,30 +166,51 @@ public class RoomGeneration : MonoBehaviour
         
         PolygonCollider2D collider = room.GetComponent<PolygonCollider2D>();
 
-        RaycastHit2D hit = new RaycastHit2D();
-        
+        ContactFilter2D filter2D = new ContactFilter2D();
+
+        RaycastHit2D[] hit = new []{new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D()};
+
         for (int i = 0; i < collider.points.Length; ++i)
         {
-            print(i);
+            //print(i);
+            //Physics2D.Lin
             if (i + 1 == collider.points.Length)
             {
-                hit = Physics2D.Linecast(collider.points[i] + finalPos, collider.points[0] + finalPos, LayerMask.GetMask("room"));
+                Physics2D.LinecastNonAlloc(collider.points[i] + finalPos, collider.points[0] + finalPos, hit, roomLayer);
             }
             else
             {
-                hit = Physics2D.Linecast(collider.points[i] + finalPos, collider.points[i + 1] + finalPos, LayerMask.GetMask("room"));
+                Physics2D.LinecastNonAlloc(collider.points[i] + finalPos, collider.points[i + 1] + finalPos, hit,roomLayer);
             }
 
+            foreach (RaycastHit2D h in hit)
+            {
+                if (h.collider != null)
+                {
+                    
+                    if (debug)
+                    {
+                        print("[RoomGeneration.cs] Failed to place " + room.name + ": room collides with " + h.collider.name + " " + this.transform.parent.name);
+                    }
+                    
+                    if (h.collider.gameObject.transform.position == this.transform.parent.position)
+                    {
+                        print("not self colliding...");
+                        Debug.DrawLine(collider.points[i] + finalPos, i + 1 == collider.points.Length ? collider.points[0] + finalPos : collider.points[i + 1] + finalPos, Color.blue);
+                    }
+                    else
+                    {
+                        Debug.DrawLine(collider.points[i] + finalPos, i + 1 == collider.points.Length ? collider.points[0] + finalPos : collider.points[i + 1] + finalPos, Color.red);
+                        return false;
+                    }
+                    
+                }
+                else
+                {
+                    Debug.DrawLine(collider.points[i] + finalPos, i + 1 == collider.points.Length ? collider.points[0] + finalPos : collider.points[i + 1] + finalPos, Color.green);
+                }
+            }
             
-            if (hit.collider != null)
-            {
-                return false;
-                Debug.DrawLine(collider.points[i] + finalPos, i + 1 == collider.points.Length ? collider.points[0] + finalPos : collider.points[i + 1] + finalPos, Color.red);
-            }
-            else
-            {
-                Debug.DrawLine(collider.points[i] + finalPos, i + 1 == collider.points.Length ? collider.points[0] + finalPos : collider.points[i + 1] + finalPos, Color.green);
-            }
             
         }
 
