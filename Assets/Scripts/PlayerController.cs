@@ -46,6 +46,14 @@ namespace DefaultNamespace
 
         private void Update()
         {
+            if (holdingItem > 0)
+            {
+                myAnim.SetBool("Holding", true);
+            }
+            else
+            {
+                myAnim.SetBool("Holding", false);
+            }
             //fake 3d physics
             if (!onGround)
             {
@@ -115,15 +123,6 @@ namespace DefaultNamespace
 
                 myAnim.SetFloat("Move_X", movement.x);
                 myAnim.SetFloat("Move_Y", movement.y);
-            }
-
-            if (holdingItem > 0)
-            {
-                myAnim.SetBool("Holding", true);
-            }
-            else
-            {
-                myAnim.SetBool("Holding", false);
             }
         }
 

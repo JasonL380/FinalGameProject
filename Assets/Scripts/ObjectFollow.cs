@@ -11,7 +11,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ObjectFollow : MonoBehaviour
 {
-    private GameObject follow;
+    public GameObject follow;
     private new ParticleSystem particleSystem;
 
     private SpriteRenderer followSpriteRenderer;
