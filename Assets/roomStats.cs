@@ -27,6 +27,13 @@ public class roomStats : MonoBehaviour
                 case 1:
                     pos += new Vector3(-0.5f, 0.5f, 0);
                     break;
+                case 2:
+                    pos += new Vector3(-0.5f, -0.5f, 0);
+                    break;
+                case 3:
+                    pos += new Vector3(0.5f, -0.5f, 0);
+                    break;
+                
             }
 
             Gizmos.DrawLine(pos, pos + new Vector3(0, 0.1f, 0));

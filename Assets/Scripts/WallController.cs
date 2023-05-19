@@ -58,7 +58,6 @@ namespace DefaultNamespace
                 switchWalls(new Vector3(-0.25f, 0.125f), false);
                 lastPos = transform.position;
             }
-            
         }
 
         private void switchWalls(Vector3 direction, bool isShort)
@@ -91,7 +90,7 @@ namespace DefaultNamespace
                             //print();
                             //print(transformMatrix);
                 
-                            print("changing tile");
+                            //print("changing tile");
                             TileChangeData data = new TileChangeData();
                             data.transform = wallMap.GetTransformMatrix(currentGridPos);
                             data.tile = isShort ? shortTile : tallTile;
@@ -101,7 +100,7 @@ namespace DefaultNamespace
                         }
                         else if (wallMap.GetTile(currentGridPos) != null)
                         {
-                            print(wallMap.GetTile(currentGridPos).name);
+                            //print(wallMap.GetTile(currentGridPos).name);
                         }
                     }
                 }
