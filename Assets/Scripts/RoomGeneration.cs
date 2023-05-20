@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DefaultNamespace;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ public class RoomGeneration : MonoBehaviour
     
     private Grid grid;
     private RoomList _list;
+    
+    
+    public bool exitOnly = false;
     
     private void Start()
     {
@@ -52,6 +56,7 @@ public class RoomGeneration : MonoBehaviour
                 _list.generated = true;
                 
                 roomGend = true;
+                this.enabled = false;
             }
             else if (_list.roomCount >= _list.maxRooms)
             {
@@ -97,46 +102,67 @@ public class RoomGeneration : MonoBehaviour
         int i;
         for (i = 0; i < _list.rooms.Length; ++i)
         {
-            if (_list.rooms[i].GetComponent<roomStats>().facing != facing)
+            RoomGeneration[] doors = _list.rooms[i].GetComponentsInChildren<RoomGeneration>();
+
+            foreach (RoomGeneration d in doors)
             {
-                if (debug)
+                if (invertFacing(d.facing) != facing)
                 {
-                    print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
+                    if (debug)
+                    {
+                        print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
+                    }
+                    continue;
                 }
-                continue;
-            }
-
-            if (checkRoomFits(_list.rooms[i], transform.position))
-            {
-                print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
                 
-                //make the room
-                GameObject roomClone = Instantiate(_list.rooms[i]);
-                roomClone.transform.parent = grid.transform;
-                roomClone.SetActive(true);
-
-                //get the position of the door for centering it
                 Vector3Int doorPos = grid.WorldToCell(transform.position);
                 //some math to properly align the door
-                doorPos.x -= (int)(roomClone.transform.position.x) + (int)roomClone.GetComponent<roomStats>().doorPos.x;
-                doorPos.y -= (int)(roomClone.transform.position.y) + (int)roomClone.GetComponent<roomStats>().doorPos.y;
-                doorPos.z -= (int)(roomClone.transform.position.z);
+
+                Vector3Int doorOffset = (grid.WorldToCell(d.transform.position + _list.rooms[i].transform.position + getDoorOffset(d.facing)) - grid.WorldToCell(_list.rooms[i].transform.position));
+                
+                doorPos.x -= (int)(_list.rooms[i].transform.position.x) + doorOffset.x;
+                doorPos.y -= (int)(_list.rooms[i].transform.position.y) + doorOffset.y;
+                doorPos.z -= (int)(_list.rooms[i].transform.position.z);
                 Vector3 finalPos = grid.CellToWorld(doorPos);
                 
-                Debug.DrawLine(finalPos, transform.position, Color.magenta);
-                //put the room in it's proper place
-                roomClone.transform.position = finalPos;
-                //don't let any other rooms generate
-                roomGend = true; 
-                break;
-            }
-            else
-            {
-                if (debug)
+                
+                if (checkRoomFits(_list.rooms[i], finalPos))
                 {
-                    print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
+                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
+                
+                    //make the room
+                    GameObject roomClone = Instantiate(_list.rooms[i]);
+                    roomClone.transform.parent = grid.transform;
+                    roomClone.SetActive(true);
+                
+                    Debug.DrawLine(transform.position, d.transform.position + finalPos, Color.magenta);
+                    //put the room in it's proper place
+                    roomClone.transform.position = finalPos;
+                    
+                    RoomGeneration[] doors1 = roomClone.GetComponentsInChildren<RoomGeneration>();
+
+                    foreach (RoomGeneration d1 in doors)
+                    {
+                        if (d1.facing == d.facing)
+                        {
+                            d1.enabled = false;
+                            break;
+                        }
+                    }
+
+                    //don't let any other rooms generate
+                    roomGend = true; 
+                    return;
+                }
+                else
+                {
+                    if (debug)
+                    {
+                        print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
+                    }
                 }
             }
+            
         }
     }
     
@@ -162,7 +188,7 @@ public class RoomGeneration : MonoBehaviour
         doorPos.x -= (int)(room.transform.position.x) + (int)room.GetComponent<roomStats>().doorPos.x;
         doorPos.y -= (int)(room.transform.position.y) + (int)room.GetComponent<roomStats>().doorPos.y;
         doorPos.z -= (int)(room.transform.position.z);
-        Vector2 finalPos = grid.CellToWorld(doorPos);
+        Vector2 finalPos = pos;//grid.CellToWorld(doorPos);
         
         PolygonCollider2D collider = room.GetComponent<PolygonCollider2D>();
 
@@ -170,6 +196,34 @@ public class RoomGeneration : MonoBehaviour
 
         RaycastHit2D[] hit = new []{new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D(), new RaycastHit2D()};
 
+        Collider2D point = Physics2D.OverlapPoint(finalPos, roomLayer);
+
+        if (point != null && point.transform != transform.parent)
+        {
+            
+            Debug.DrawLine(finalPos, finalPos + new Vector2(0, 0.1f), Color.magenta);
+            if (debug)
+            {
+                print("[RoomGeneration.cs] Failed to place " + room.name + ": room is inside " + point.name);
+            }
+
+            for (int i = 0; i < collider.points.Length; ++i)
+            {
+                //print(i);
+                //Physics2D.Lin
+                if (i + 1 == collider.points.Length)
+                {
+                    Debug.DrawLine(collider.points[i] + finalPos, collider.points[0] + finalPos, Color.magenta);
+                }
+                else
+                {
+                    Debug.DrawLine(collider.points[i] + finalPos, collider.points[i + 1] + finalPos, Color.magenta);
+                }
+            }
+
+            return false;
+        }
+        
         for (int i = 0; i < collider.points.Length; ++i)
         {
             //print(i);
@@ -235,5 +289,39 @@ public class RoomGeneration : MonoBehaviour
     Vector3 divideY(Vector3 vec)
     {
         return new Vector3(vec.x, vec.y * 0.5f, vec.z);
+    }
+
+    int invertFacing(int f)
+    {
+        switch (f)
+        {
+            case 0:
+                return 2;
+            case 1:
+                return 3;
+            case 2:
+                return 0;
+            case 3:
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+    Vector3 getDoorOffset(int facing)
+    {
+        switch (facing)
+        {
+            case 0:
+                return new Vector3(0.5f, 0, 0);
+            case 1:
+                return new Vector3(-0.5f, 0, 0);
+            case 2:
+                return new Vector3(-0.5f, -0.5f, 0);
+            case 3:
+                return new Vector3(0.5f, 0.5f, 0);
+        }
+
+        return Vector3.zero;
     }
 }

@@ -13,7 +13,7 @@ public class roomStats : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (Application.isEditor)
+        if (!Application.isPlaying)
         {
             Gizmos.color = Color.red;
             Grid grid = FindObjectOfType<Grid>();
@@ -28,7 +28,7 @@ public class roomStats : MonoBehaviour
                     pos += new Vector3(-0.5f, 0.5f, 0);
                     break;
                 case 2:
-                    pos += new Vector3(-0.5f, -0.5f, 0);
+                    pos += new Vector3(-0.5f, 0.0f, 0);
                     break;
                 case 3:
                     pos += new Vector3(0.5f, -0.5f, 0);

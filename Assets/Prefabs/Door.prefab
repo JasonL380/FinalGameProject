@@ -50,7 +50,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   fits: 0
-  facing: 0
+  debug: 0
+  exitOnly: 0
+  facing: 3
+  roomGend: 0
 --- !u!212 &1737591256556220878
 SpriteRenderer:
   m_ObjectHideFlags: 0
