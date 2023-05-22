@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5000485462020596790}
   - component: {fileID: 1737591256556220878}
   - component: {fileID: 4572234925553058401}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   fits: 0
   debug: 0
   exitOnly: 0
-  facing: 3
+  facing: 0
   roomGend: 0
 --- !u!212 &1737591256556220878
 SpriteRenderer:
@@ -131,7 +131,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.49124265, y: -0.0014160275}
-      - {x: -0.001635462, y: 0.24733423}
-      - {x: -0.49628085, y: -0.0000115484}
-      - {x: 0.004035607, y: -0.24032794}
+    - - {x: 0.5, y: 0}
+      - {x: 0, y: 0.25}
+      - {x: -0.5, y: 0}
+      - {x: 0, y: -0.25}

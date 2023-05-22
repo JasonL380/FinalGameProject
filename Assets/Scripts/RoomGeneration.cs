@@ -4,10 +4,14 @@ using DefaultNamespace;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+
+
 
 [ExecuteInEditMode]
 public class RoomGeneration : MonoBehaviour
 {
+
     private int count;
     public LayerMask roomLayer;
     
@@ -20,7 +24,8 @@ public class RoomGeneration : MonoBehaviour
     
     private Grid grid;
     private RoomList _list;
-    
+
+    private SpriteRenderer _renderer;
     
     public bool exitOnly = false;
     
@@ -28,10 +33,10 @@ public class RoomGeneration : MonoBehaviour
     {
         //roomLayer = LayerMask.GetMask("room");
 
-            grid = FindObjectOfType<Grid>();
-            _list = grid.gameObject.GetComponent<RoomList>();
+        grid = FindObjectOfType<Grid>();
+        _list = grid.gameObject.GetComponent<RoomList>();
+        _renderer = GetComponent<SpriteRenderer>();
 
-            
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
@@ -56,7 +61,20 @@ public class RoomGeneration : MonoBehaviour
                 _list.generated = true;
                 
                 roomGend = true;
-                this.enabled = false;
+
+                foreach (Tilemap t in transform.parent.GetComponentsInChildren<Tilemap>())
+                {
+                    if (t.name == "Floor")
+                    {
+                        Tile tile = new Tile();
+
+                        tile.sprite = _renderer.sprite;
+                        
+                        t.SetTile(grid.WorldToCell(transform.position), tile);
+                        Destroy(this);
+                    }
+                }
+
             }
             else if (_list.roomCount >= _list.maxRooms)
             {
@@ -124,14 +142,38 @@ public class RoomGeneration : MonoBehaviour
                 doorPos.y -= (int)(_list.rooms[i].transform.position.y) + doorOffset.y;
                 doorPos.z -= (int)(_list.rooms[i].transform.position.z);
                 Vector3 finalPos = grid.CellToWorld(doorPos);
+
+                roomStats stats = _list.rooms[i].GetComponent<roomStats>();
                 
-                
-                if (checkRoomFits(_list.rooms[i], finalPos))
+                if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
                     print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
-                
-                    //make the room
-                    GameObject roomClone = Instantiate(_list.rooms[i]);
+
+                    Tilemap[] tilemaps = _list.rooms[i].transform.GetComponentsInChildren<Tilemap>();
+                    
+                    foreach (Tilemap t in tilemaps)
+                    {
+                        if (t.gameObject.name.Equals("Wall"))
+                        {
+                            _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
+                        }
+                        else if(t.gameObject.name.Equals("Floor"))
+                        {
+                            _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
+                        }
+                    }
+
+                    //make the doors
+                    foreach (RoomGeneration r in _list.rooms[i].GetComponentsInChildren<RoomGeneration>())
+                    {
+                        if (r.facing != d.facing)
+                        {
+                            Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                        }
+                    }
+                    
+                //make the room
+                    /*GameObject roomClone = Instantiate(_list.rooms[i]);
                     roomClone.transform.parent = grid.transform;
                     roomClone.SetActive(true);
                 
@@ -148,7 +190,7 @@ public class RoomGeneration : MonoBehaviour
                             d1.enabled = false;
                             break;
                         }
-                    }
+                    }*/
 
                     //don't let any other rooms generate
                     roomGend = true; 

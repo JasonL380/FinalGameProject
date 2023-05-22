@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2046458565816984558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.01, y: -1.01, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -522,56 +522,56 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2503965739149384196}
     m_ColliderPaths:
-    - - X: -5000000
-        Y: 0
-      - X: -20000000
+    - - X: 0
+        Y: 37500000
+      - X: 50000000
+        Y: 37500000
+      - X: 50000000
         Y: 7500000
-      - X: 5000000
-        Y: 20000000
-      - X: 20000000
-        Y: 12500000
-      - X: 25000000
-        Y: 15000000
-      - X: 5000000
-        Y: 25000000
-      - X: -30000000
+      - X: 60000000
         Y: 7500000
+      - X: 60000000
+        Y: 47500000
       - X: -10000000
+        Y: 47500000
+      - X: -10000000
+        Y: 7500000
+      - X: 0
+        Y: 7500000
+    - - X: 60000000
         Y: -2500000
-    - - X: 50000000
-        Y: 2500000
-      - X: 30000000
-        Y: 12500000
-      - X: 25000000
-        Y: 10000000
-      - X: 40000000
-        Y: 2500000
-      - X: 15000000
-        Y: -10000000
+      - X: 50000000
+        Y: -2500000
+      - X: 50000000
+        Y: -32500000
+      - X: 0
+        Y: -32500000
       - X: 0
         Y: -2500000
-      - X: -5000000
-        Y: -5000000
-      - X: 15000000
-        Y: -15000000
+      - X: -10000000
+        Y: -2500000
+      - X: -10000000
+        Y: -42500000
+      - X: 60000000
+        Y: -42500000
   m_CompositePaths:
     m_Paths:
-    - - {x: -1.0000118, y: 0.0000057965517}
-      - {x: -0.5000617, y: 0.2500309}
-      - {x: -1.9999382, y: 1.000031}
-      - {x: 0.5000118, y: 2.249994}
-      - {x: 2.000012, y: 1.500006}
-      - {x: 2.4999385, y: 1.7500309}
-      - {x: 0.4999882, y: 2.7499943}
-      - {x: -2.9999385, y: 0.9999691}
-    - - {x: 1.4999882, y: -1.2499942}
-      - {x: 4.9999385, y: 0.5000309}
-      - {x: 2.9999883, y: 1.4999942}
-      - {x: 2.5000615, y: 1.2499691}
-      - {x: 3.9999385, y: 0.49996912}
-      - {x: 1.4999882, y: -0.7499941}
-      - {x: -0.0000118, y: -0.00000590086}
-      - {x: -0.4999383, y: -0.25003093}
+    - - {x: -0.000029300001, y: 1}
+      - {x: 0.0000294, y: 4}
+      - {x: 5, y: 3.9999704}
+      - {x: 5.000029, y: 1}
+      - {x: 6, y: 1.0000293}
+      - {x: 5.999971, y: 5}
+      - {x: -1, y: 4.999971}
+      - {x: -0.99997073, y: 1}
+    - - {x: 5.999971, y: -4}
+      - {x: 5.999971, y: 0}
+      - {x: 5, y: -0.000029295683}
+      - {x: 4.9999704, y: -3}
+      - {x: 0, y: -2.9999707}
+      - {x: -0.000029300001, y: 0}
+      - {x: -1, y: -0.000029295683}
+      - {x: -0.99997073, y: -4}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!1 &2638246985557042985
@@ -600,7 +600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2638246985557042985}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1165,7 +1165,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorPos: {x: -1, y: -5}
   facing: 0
-  pos: {x: 10.5, y: -1, z: 0}
+  pos: {x: 2.5, y: -1, z: 0}
+  min: {x: -1, y: -4, z: 0}
+  max: {x: 5, y: 4, z: 0}
+  generate: 0
 --- !u!61 &2121185202905039248
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1212,7 +1215,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5963177834462679205}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1242,8 +1245,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 6864239978930621178}
     m_Modifications:
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: m_Enabled
+      propertyPath: facing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: roomTypes.Array.data[1]
@@ -1255,11 +1262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1312,6 +1319,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 6864239978930621178}
     m_Modifications:
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
+      propertyPath: facing
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: roomTypes.Array.data[1]
       value: 
       objectReference: {fileID: 5963177834462679205}
@@ -1321,11 +1332,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5278366897645478910, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_LocalPosition.z
