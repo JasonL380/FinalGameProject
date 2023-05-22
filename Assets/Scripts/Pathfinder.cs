@@ -8,17 +8,19 @@
  */
 using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using Utils;
 
 [RequireComponent(typeof(CircleCollider2D), typeof(Rigidbody2D))]
+[ExecuteInEditMode]
 public class Pathfinder : MonoBehaviour
 {
     public float speed; //the speed that this should move at, do not set this too high or it won't work
 
     [Tooltip("list of points for the AI follow")]
     public Vector2[] waypoints;
-    private List<Vector2> pathfindingWaypoints = new List<Vector2>();
+    private List<Vector3Int> pathfindingWaypoints = new List<Vector3Int>();
 
     [Tooltip("select all layers that contain objects which should be treated as walls")]
     public LayerMask wallLayers;
@@ -29,7 +31,7 @@ public class Pathfinder : MonoBehaviour
     private Rigidbody2D myRB2D;
     private CircleCollider2D myCirc;
     public bool displayDebug = true;
-    private Vector2 currentTarget;
+    //private Vector2 currentTarget;
     [Tooltip("The center of the pathfinding area")]
     public Vector2 boxCenter;
 
@@ -47,30 +49,39 @@ public class Pathfinder : MonoBehaviour
     private Vector2 gridStart = new Vector2();
 
     //stores 5 boolean values in the order right, down, left, up, isPoint
-    public byte[,] graph;
+    //public byte[,] graph;
 
     private Vector2Int graphDimensions = new Vector2Int();
 
     private float lastDensity;
 
     public float closeEnough;
+
+    private RoomList _list;
     
+    private Grid _grid;
+
     private void Start()
     {
-        print("initializing pathfinder");
-        myRB2D = GetComponent<Rigidbody2D>();
-        myCirc = GetComponent<CircleCollider2D>();
-        //target = waypoints[0];
-        generateGraph();
-        //print(graph[graphDimensions.x/2,graphDimensions.y/2]);
-        pathfindingWaypoints = a_star_search(actualToGrid(transform.position),
-           actualToGrid(waypoints[currentPathWaypoint]));
-        print(gridToActual(graphDimensions));
-        print(actualToGrid(transform.position));
-        print(gridToActual(actualToGrid(transform.position)));
+        if (Application.isPlaying)
+        {
+            _list = FindObjectOfType<RoomList>();
+            _grid = FindObjectOfType<Grid>();
+            print("initializing pathfinder");
+            myRB2D = GetComponent<Rigidbody2D>();
+            myCirc = GetComponent<CircleCollider2D>();
+            //target = waypoints[0];
+            //generateGraph();
+            //print(graph[graphDimensions.x/2,graphDimensions.y/2]);
+            pathfindingWaypoints = a_star_search(actualToGrid(transform.position),
+                actualToGrid(waypoints[currentPathWaypoint]));
+            //print(gridToActual(graphDimensions));
+            //print(actualToGrid(transform.position));
+            //print(gridToActual(actualToGrid(transform.position)));
+        }
     }
 
-    void generateGraph()
+    /*void generateGraph()
     {
         //calculate the grid size and dimensions from nodeDensity
         gridSize = new Vector2(1 / nodeDensity, 1 / nodeDensity); //boxSize / nodeDensity;
@@ -148,31 +159,44 @@ public class Pathfinder : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
     private void FixedUpdate()
     {
-        pace();
+        if (Application.isPlaying)
+        {
+            pace();
+        }
     }
 
-    
+    private void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+        {
+            Gizmos.color = Color.blue;
+            for (int i = 0; i < waypoints.Length - 1; ++i)
+            { 
+                Gizmos.DrawLine((Vector3) waypoints[i] + transform.parent.position, (Vector3) waypoints[i + 1] + transform.parent.position);
+            }
+        }
+    }
 
     //calculate the shortest path between start and end, return array of waypoints
-    List<Vector2> a_star_search(Vector2Int start, Vector2Int goal)
+    List<Vector3Int> a_star_search(Vector3Int start, Vector3Int goal)
     {
-        PriorityQueue<Vector2Int, float> queue = new PriorityQueue<Vector2Int, float>();
+        PriorityQueue<Vector3Int, float> queue = new PriorityQueue<Vector3Int, float>();
         queue.Enqueue(start, 0);
 
-        Dictionary<Vector2Int, Vector2Int?> cameFrom = new Dictionary<Vector2Int, Vector2Int?>();
+        Dictionary<Vector3Int, Vector3Int?> cameFrom = new Dictionary<Vector3Int, Vector3Int?>();
 
-        Dictionary<Vector2Int, float> cost_so_far = new Dictionary<Vector2Int, float>();
+        Dictionary<Vector3Int, float> cost_so_far = new Dictionary<Vector3Int, float>();
         cameFrom[start] = null;
         cost_so_far[start] = 0;
 
         //print("running search " + queue.Count);
         while (queue.Count != 0)
         {
-            Vector2Int current = queue.Dequeue();
+            Vector3Int current = queue.Dequeue();
 
             if (current == goal)
             {
@@ -180,11 +204,11 @@ public class Pathfinder : MonoBehaviour
             }
 
             //print("Visiting " + current);
-            int currentPoint = graph[current.x, current.y];
+            int currentPoint = _list.mapDataGet(current.x, current.y);//graph[current.x, current.y];
             for (int i = 1; i <= 8; ++i)
             {
-                Vector2Int next = getNeighbor(current, i);
-                if (graph[next.x, next.y] != 0)
+                Vector3Int next = getNeighbor(current, i);
+                if (_list.mapDataGet(next.x, next.y) == 1)
                 {
                     float new_cost = cost_so_far[current] + 1;
                     if (!cost_so_far.ContainsKey(next) || new_cost < cost_so_far[next])
@@ -196,7 +220,7 @@ public class Pathfinder : MonoBehaviour
                         //print(((gridSize * next) - gridStart).ToString() + ", " + (gridSize * current) + gridStart);
                         if (displayDebug)
                         {
-                            Debug.DrawLine((gridSize * next) + gridStart, (gridSize * current) + gridStart, Color.magenta, 30);
+                            //Debug.DrawLine((gridSize * next) + gridStart, (gridSize * current) + gridStart, Color.magenta, 30);
                         }
                     }
                 }
@@ -206,15 +230,15 @@ public class Pathfinder : MonoBehaviour
         return reconstruct_path(cameFrom, start, goal);
     }
 
-    float heuristic(Vector2Int pos1, Vector2Int pos2)
+    float heuristic(Vector3Int pos1, Vector3Int pos2)
     {
         return (Math.Abs(pos1.x - pos2.x) + Math.Abs(pos1.y - pos2.y));
     }
     
-    List<Vector2> reconstruct_path(Dictionary<Vector2Int, Vector2Int?> cameFrom, Vector2Int start, Vector2Int goal)
+    List<Vector3Int> reconstruct_path(Dictionary<Vector3Int, Vector3Int?> cameFrom, Vector3Int start, Vector3Int goal)
     {
-        Vector2Int current = goal;
-        List<Vector2> path = new List<Vector2>();
+        Vector3Int current = goal;
+        List<Vector3Int> path = new List<Vector3Int>();
         if (!cameFrom.ContainsKey(goal))
         {
             print("No path found");
@@ -223,10 +247,10 @@ public class Pathfinder : MonoBehaviour
 
         while (current != start)
         {
-            path.Add(gridToActual(current));
+            path.Add(current);
             if (cameFrom[current] != null)
             {
-                Vector2 lastpath = current;
+                Vector3Int lastpath = current;
                 current = cameFrom[current].Value;
                 if (displayDebug)
                 {
@@ -240,50 +264,52 @@ public class Pathfinder : MonoBehaviour
         return path;
     }
 
-    Vector2Int getNeighbor(Vector2Int current, int direction)
+    Vector3Int getNeighbor(Vector3Int current, int direction)
     {
         switch (direction)
         {
             //up
             case 1:
-                return new Vector2Int(current.x, current.y + 1);
+                return new Vector3Int(current.x, current.y + 1);
             //left
             case 2:
-                return new Vector2Int(current.x - 1, current.y);
+                return new Vector3Int(current.x - 1, current.y);
             //down
             case 3:
-                return new Vector2Int(current.x, current.y - 1);
+                return new Vector3Int(current.x, current.y - 1);
             //right
             case 4:
-                return new Vector2Int(current.x + 1, current.y);
+                return new Vector3Int(current.x + 1, current.y);
             //up right
             case 5:
-                return new Vector2Int(current.x + 1, current.y + 1);
+                return new Vector3Int(current.x + 1, current.y + 1);
             //down right
             case 6:
-                return new Vector2Int(current.x + 1, current.y - 1);
+                return new Vector3Int(current.x + 1, current.y - 1);
             //down left
             case 7:
-                return new Vector2Int(current.x - 1, current.y - 1);
+                return new Vector3Int(current.x - 1, current.y - 1);
             //up left
             case 8:
-                return new Vector2Int(current.x - 1, current.y + 1);
+                return new Vector3Int(current.x - 1, current.y + 1);
         }
 
         return current;
     }
 
-    Vector2 gridToActual(Vector2 gridCoord)
+    Vector2 gridToActual(Vector3Int gridCoord)
     {
-        return (gridSize * gridCoord) + gridStart;
+        return _grid.CellToWorld(gridCoord);
+        //return (gridSize * gridCoord) + gridStart;
     }
 
-    Vector2Int actualToGrid(Vector2 actual)
+    Vector3Int actualToGrid(Vector2 actual)
     {
-        Vector2 grid = (actual - (boxCenter - (boxSize / 2))) / gridSize;
+        return _grid.WorldToCell(actual);
+        /*Vector2 grid = (actual - (boxCenter - (boxSize / 2))) / gridSize;
         grid.x = Math.Min(Math.Max(grid.x, 0), graphDimensions.x - 1);
         grid.y = Math.Min(Math.Max(grid.y, 0), graphDimensions.y - 1);
-        return new Vector2Int((int) grid.x, (int) grid.y);
+        return new Vector2Int((int) grid.x, (int) grid.y);*/
     }
 
     bool hasNodes(byte[,] list)
@@ -304,7 +330,7 @@ public class Pathfinder : MonoBehaviour
 
     void pace()
     {
-        Vector3 direction = pathfindingWaypoints[currentWaypoint] - (Vector2) transform.position;
+        Vector3 direction = gridToActual(pathfindingWaypoints[currentWaypoint]) - (Vector2) transform.position;
         Vector2 currentPos;
         currentPos.x = transform.position.x;
         currentPos.y = transform.position.y;
@@ -322,7 +348,7 @@ public class Pathfinder : MonoBehaviour
                 pathfindingWaypoints = a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentPathWaypoint]));
                 currentWaypoint = 0;
             }
-            currentTarget = pathfindingWaypoints[currentWaypoint];
+            //currentTarget = pathfindingWaypoints[currentWaypoint];
             //a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentWaypoint]));
         }
         

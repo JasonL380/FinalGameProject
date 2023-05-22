@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using DefaultNamespace;
 using TMPro;
 using Unity.VisualScripting;
@@ -55,27 +56,19 @@ public class RoomGeneration : MonoBehaviour
         {
             if (_list.roomCount < _list.maxRooms && !_list.generated)
             {
-                _list.roomCount += 1;
-            
+
                 generateRoom();
-                _list.generated = true;
                 
                 roomGend = true;
 
-                foreach (Tilemap t in transform.parent.GetComponentsInChildren<Tilemap>())
-                {
-                    if (t.name == "Floor")
-                    {
-                        Tile tile = new Tile();
+                Tile tile = new Tile();
 
-                        tile.sprite = _renderer.sprite;
-                        
-                        t.SetTile(grid.WorldToCell(transform.position), tile);
-                        Destroy(this);
-                    }
-                }
-
+                tile.sprite = _renderer.sprite;
+                
+                _list.floor.SetTile(grid.WorldToCell(transform.position), tile);
+                Destroy(gameObject);
             }
+            
             else if (_list.roomCount >= _list.maxRooms)
             {
                 roomGend = true;
@@ -110,7 +103,7 @@ public class RoomGeneration : MonoBehaviour
         }
     }
 
-    private void generateRoom()
+    private bool generateRoom()
     {
         
         print("[RoomGeneration.cs] Attempting to generate room");
@@ -150,29 +143,56 @@ public class RoomGeneration : MonoBehaviour
                     print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
 
                     Tilemap[] tilemaps = _list.rooms[i].transform.GetComponentsInChildren<Tilemap>();
-                    
-                    foreach (Tilemap t in tilemaps)
+
+                    ;
+
+                    for (int j = 0; j < _list.rooms[i].transform.childCount; ++j)
                     {
-                        if (t.gameObject.name.Equals("Wall"))
+                        GameObject child = _list.rooms[i].transform.GetChild(j).gameObject;
+
+                        Tilemap t = child.GetComponent<Tilemap>();
+
+                        RoomGeneration r = child.GetComponent<RoomGeneration>();
+
+                        Pathfinder p = child.GetComponent<Pathfinder>();
+                        
+                        if (t != null)
                         {
-                            _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
+                            if (child.name.Equals("Wall"))
+                            {
+                                _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
+                            }
+                            else if(child.name.Equals("Floor"))
+                            {
+                                _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
+                            }
                         }
-                        else if(t.gameObject.name.Equals("Floor"))
+                        else if(r != null)
                         {
-                            _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
+                            if (r.facing != d.facing)
+                            {
+                                Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                            }
+                        }
+                        else if(p != null)
+                        {
+                            GameObject pathfinder = Instantiate(child, child.transform.position + finalPos, Quaternion.identity);
+                            pathfinder.transform.parent = grid.gameObject.transform;
+
+                            Pathfinder p1 = pathfinder.GetComponent<Pathfinder>();
+
+                            for (int k = 0; k < p1.waypoints.Length; ++k)
+                            {
+                                p1.waypoints[k] += (Vector2) finalPos;
+                            }
+                        }
+                        else
+                        {
+                            Instantiate(child, child.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
                         }
                     }
 
-                    //make the doors
-                    foreach (RoomGeneration r in _list.rooms[i].GetComponentsInChildren<RoomGeneration>())
-                    {
-                        if (r.facing != d.facing)
-                        {
-                            Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
-                        }
-                    }
-                    
-                //make the room
+                    //make the room
                     /*GameObject roomClone = Instantiate(_list.rooms[i]);
                     roomClone.transform.parent = grid.transform;
                     roomClone.SetActive(true);
@@ -194,7 +214,7 @@ public class RoomGeneration : MonoBehaviour
 
                     //don't let any other rooms generate
                     roomGend = true; 
-                    return;
+                    return true;
                 }
                 else
                 {
@@ -202,10 +222,13 @@ public class RoomGeneration : MonoBehaviour
                     {
                         print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
                     }
+
+                    return false;
                 }
             }
-            
         }
+
+        return false;
     }
     
     void Shuffle (GameObject[] deck) {
@@ -361,7 +384,7 @@ public class RoomGeneration : MonoBehaviour
             case 2:
                 return new Vector3(-0.5f, -0.5f, 0);
             case 3:
-                return new Vector3(0.5f, 0.5f, 0);
+                return new Vector3(0.5f, -0.5f, 0);
         }
 
         return Vector3.zero;

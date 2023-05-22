@@ -36,27 +36,56 @@ namespace DefaultNamespace
         public Dictionary<TileBase, TileBase> shortToTall;
 
         private Grid _grid;
-        
-        
+
+
         public void Start()
         {
             mapData = new gridBlock[256, 256];
-            
+
             //mapDataSet(120, 483, 8);
-            
-           // mapDataSet(2, 34, 3);
-            
+
+            // mapDataSet(2, 34, 3);
+
             print(mapDataGet(2, 34));
 
             print(mapDataGet(120, 483));
             print(mapDataGet(120, 484));
 
             _grid = GetComponent<Grid>();
+
+
+            Tilemap[] tilemaps = GetComponentsInChildren<Tilemap>();
+
+
+            Grid grid = FindObjectOfType<Grid>();
+
+            bool hasTile = false;
+            for (int x = -256; x < 256; ++x)
+            {
+                for (int y = -256; y < 256; ++y)
+                {
+                    hasTile = false;
+                    foreach (Tilemap t in tilemaps)
+                    {
+                        if (t.HasTile(new Vector3Int(x, y)))
+                        {
+                            mapDataSet(x, y, (byte) (t.name == "Floor" ? 1 : 2));
+                        }
+                    }
+                }
+            }
         }
 
         public void FixedUpdate()
         {
-            generated = false;
+            if (generated && roomCount > maxRooms)
+            {
+                generated = false;
+            }
+            else
+            {
+                roomCount++;
+            }
         }
 
         public void tilemapCopy(Tilemap src, Tilemap dest, Vector3Int min, Vector3Int max, Vector3Int offset, byte type)
