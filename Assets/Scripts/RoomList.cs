@@ -27,7 +27,7 @@ namespace DefaultNamespace
 
         public bool generated = false;
 
-        public gridBlock[,] mapData;
+        public byte[,] mapData;
 
         public Tilemap floor;
         
@@ -40,7 +40,7 @@ namespace DefaultNamespace
 
         public void Start()
         {
-            mapData = new gridBlock[256, 256];
+            mapData = new Byte[4096, 4096];
 
             //mapDataSet(120, 483, 8);
 
@@ -78,19 +78,19 @@ namespace DefaultNamespace
 
         public void FixedUpdate()
         {
-            if (generated && roomCount > maxRooms)
+            if (roomCount < maxRooms)
             {
                 generated = false;
             }
             else
             {
-                roomCount++;
+                generated = true;
             }
         }
 
         public void tilemapCopy(Tilemap src, Tilemap dest, Vector3Int min, Vector3Int max, Vector3Int offset, byte type)
         {
-            print("copying " + src.name + " to " + dest.name + " bounds: " + min + ", " + max + " offset: " + offset);
+            //print("copying " + src.name + " to " + dest.name + " bounds: " + min + ", " + max + " offset: " + offset);
 
             Vector3 worldMin = _grid.CellToWorld(min);
 
@@ -156,7 +156,7 @@ namespace DefaultNamespace
         
         public void mapDataSet(int x, int y, byte val)
         {
-            int bx = (x / 256) + 128;
+            /*int bx = (x / 256) + 128;
             int by = (y / 256) + 128;
 
             if (mapData[bx, by].data == null)
@@ -164,13 +164,15 @@ namespace DefaultNamespace
                 print("Allocating new block at " + bx + ", " + by);
                 mapData[bx, by] = new gridBlock();
                 mapData[bx, by].data = new byte[256, 256];
+                
+                for(int i = 0)
             }
             
             Debug.DrawLine(_grid.CellToWorld(new Vector3Int(x, y, 0)), _grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0, 0.1f, 0), Color.magenta);
             
-            print( x+", "+y+"  " + ((x + 32768) % 256) + ", " + ((y + 32768)  % 256));
-            
-            mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256] = val;
+            //print( x+", "+y+"  " + ((x + 32768) % 256) + ", " + ((y + 32768)  % 256));*/
+            mapData[x + 2048, y + 2048] = val;
+            //mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256] = val;
         }
 
         /*public void OnApplicationQuit()
@@ -187,7 +189,7 @@ namespace DefaultNamespace
 
         public byte mapDataGet(int x, int y)
         {
-            int bx = (x / 256) + 128;
+            /*int bx = (x / 256) + 128;
             int by = (y / 256) + 128;
 
             if (mapData[bx, by].data == null)
@@ -195,7 +197,8 @@ namespace DefaultNamespace
                 return 0;
             }
 
-            return mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256];
+            return mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256];*/
+            return mapData[x + 2048, y + 2048];
         }
     }
 }

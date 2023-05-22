@@ -220,7 +220,7 @@ public class Pathfinder : MonoBehaviour
                         //print(((gridSize * next) - gridStart).ToString() + ", " + (gridSize * current) + gridStart);
                         if (displayDebug)
                         {
-                            //Debug.DrawLine((gridSize * next) + gridStart, (gridSize * current) + gridStart, Color.magenta, 30);
+                            Debug.DrawLine(gridToActual(next), gridToActual(current), Color.magenta, 30);
                         }
                     }
                 }
@@ -260,7 +260,7 @@ public class Pathfinder : MonoBehaviour
         }
 
         path.Reverse(0, path.Count);
-	print(path.Count);
+	//print(path.Count);
         return path;
     }
 

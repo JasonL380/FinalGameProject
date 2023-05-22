@@ -4670,7 +4670,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642055619}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29262fe826a043bda6c76cc2b6fb8221, type: 3}
   m_Name: 
@@ -4839,7 +4839,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642055619}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68576b0393934f18b42347a9dc3af73a, type: 3}
   m_Name: 
@@ -5024,7 +5024,7 @@ MonoBehaviour:
   - {fileID: 7312965732056077879, guid: 3ec4328895af92b4c893e05ed0352fbc, type: 3}
   - {fileID: 3574268287540822522, guid: 8ce602f62cd403817a89607d626e1b3a, type: 3}
   roomCount: 0
-  maxRooms: 2048
+  maxRooms: 1024
   generated: 0
   floor: {fileID: 1353635279}
   walls: {fileID: 1218053564}

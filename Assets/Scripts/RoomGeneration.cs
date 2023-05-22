@@ -54,11 +54,17 @@ public class RoomGeneration : MonoBehaviour
         
         if (Application.isPlaying && !roomGend)
         {
-            if (_list.roomCount < _list.maxRooms && !_list.generated)
+            if (!_list.generated)
             {
 
-                generateRoom();
+                if (generateRoom())
+                {
+                    _list.generated = true;
+                    _list.roomCount += 1;
+                }
+
                 
+
                 roomGend = true;
 
                 Tile tile = new Tile();
@@ -69,10 +75,10 @@ public class RoomGeneration : MonoBehaviour
                 Destroy(gameObject);
             }
             
-            else if (_list.roomCount >= _list.maxRooms)
+            /*else if (_list.roomCount >= _list.maxRooms)
             {
                 roomGend = true;
-            }
+            }*/
             
         }
 
@@ -106,7 +112,7 @@ public class RoomGeneration : MonoBehaviour
     private bool generateRoom()
     {
         
-        print("[RoomGeneration.cs] Attempting to generate room");
+        //print("[RoomGeneration.cs] Attempting to generate room");
         //get a random room
         Shuffle(_list.rooms);
         //randomly picks from the list until it's exhausted or it finds a matching one
@@ -121,7 +127,7 @@ public class RoomGeneration : MonoBehaviour
                 {
                     if (debug)
                     {
-                        print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
+                       // print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
                     }
                     continue;
                 }
@@ -140,7 +146,7 @@ public class RoomGeneration : MonoBehaviour
                 
                 if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
-                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
+                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
 
                     Tilemap[] tilemaps = _list.rooms[i].transform.GetComponentsInChildren<Tilemap>();
 
@@ -220,7 +226,7 @@ public class RoomGeneration : MonoBehaviour
                 {
                     if (debug)
                     {
-                        print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
+                        //print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
                     }
 
                     return false;
