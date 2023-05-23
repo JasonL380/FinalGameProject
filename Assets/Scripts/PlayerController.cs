@@ -25,6 +25,9 @@ namespace DefaultNamespace
 
         public int holdingItem;
 
+        public int numCandles;
+        public int numBatteries;
+
 
         struct ParabolaCastResult
         {

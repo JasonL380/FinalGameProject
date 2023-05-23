@@ -14,7 +14,6 @@ public class ObjectFollow : MonoBehaviour
     public GameObject follow;
     private new ParticleSystem particleSystem;
 
-    private SpriteRenderer followSpriteRenderer;
     private SpriteRenderer spriteRenderer;
     private ParticleSystemRenderer particleRenderer;
 
@@ -23,6 +22,10 @@ public class ObjectFollow : MonoBehaviour
     public Vector3 topOffset;
     public Vector3 bottomOffset;
     public bool changeLayer = true;
+    public int leftLayer;
+    public int rightLayer;
+    public int topLayer;
+    public int bottomLayer;
     private Vector3 lastOffset;
 
     public bool will_flip = true;
@@ -66,8 +69,8 @@ public class ObjectFollow : MonoBehaviour
                     //set offset right
                     if (changeLayer)
                     {
-                        spriteRenderer.sortingOrder = 0;
-                        particleRenderer.sortingOrder = 0;
+                        spriteRenderer.sortingOrder = rightLayer;
+                        particleRenderer.sortingOrder = rightLayer;
                     }
 
                     lastOffset = rightOffset;
@@ -80,8 +83,8 @@ public class ObjectFollow : MonoBehaviour
                     //set offset left
                     if (changeLayer)
                     {
-                        spriteRenderer.sortingOrder = 0;
-                        particleRenderer.sortingOrder = 0;
+                        spriteRenderer.sortingOrder = leftLayer;
+                        particleRenderer.sortingOrder = leftLayer;
                     }
                     lastOffset = leftOffset;
                     spriteRenderer.flipX = false;
@@ -94,8 +97,8 @@ public class ObjectFollow : MonoBehaviour
                     //set offset top
                     if (changeLayer)
                     {
-                        spriteRenderer.sortingOrder = 0;
-                        particleRenderer.sortingOrder = 0;
+                        spriteRenderer.sortingOrder = topLayer;
+                        particleRenderer.sortingOrder = topLayer;
                     }
                     lastOffset = topOffset;
 
@@ -105,8 +108,8 @@ public class ObjectFollow : MonoBehaviour
                     //set offset bottom
                     if (changeLayer)
                     {
-                        spriteRenderer.sortingOrder = 2;
-                        particleRenderer.sortingOrder = 2;
+                        spriteRenderer.sortingOrder = bottomLayer;
+                        particleRenderer.sortingOrder = bottomLayer;
                     }
                     lastOffset = bottomOffset;
                 }
@@ -128,6 +131,5 @@ public class ObjectFollow : MonoBehaviour
     public void setFollow(GameObject target)
     {
         follow = target;
-        followSpriteRenderer = follow.GetComponent<SpriteRenderer>();
     }
 }
