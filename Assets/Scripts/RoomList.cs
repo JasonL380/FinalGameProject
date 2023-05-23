@@ -33,6 +33,8 @@ namespace DefaultNamespace
         
         public Tilemap walls;
 
+        public Tilemap doors;
+
         public Dictionary<TileBase, TileBase> shortToTall;
 
         private Grid _grid;

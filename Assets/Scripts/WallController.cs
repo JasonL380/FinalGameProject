@@ -13,8 +13,7 @@ namespace DefaultNamespace
     public class WallController : MonoBehaviour
     {
         public Tilemap wallMap;
-        public TileBase tallTile;
-        public TileBase shortTile;
+        public Tilemap hiddenWallMap;
         public Grid grid;
 
         public LayerMask mask;
@@ -62,30 +61,30 @@ namespace DefaultNamespace
 
         private void switchWalls(Vector3 direction, bool isShort)
         {
-            RaycastHit2D[] hit = Physics2D.LinecastAll(transform.position, transform.position + (direction * 20f), mask);
+            RaycastHit2D hit = Physics2D.Linecast(transform.position, transform.position + (direction * 20f), mask);
 
-            foreach (RaycastHit2D h in hit)
-            {
-                if (h.collider != null)
+            //foreach (RaycastHit2D h in hit)
+           // {
+                if (hit.collider != null)
                 {
                     //Debug.DrawLine(transform.position, hit.point + (new Vector2(2, -1) * 0.125f), Color.red);
-                    Debug.DrawLine(transform.position, h.point, isShort ? Color.red : Color.blue);
-                    Vector3Int gridPos = grid.WorldToCell(h.point + (Vector2) direction);
+                    Debug.DrawLine(transform.position, hit.point, isShort ? Color.red : Color.blue);
+                    Vector3Int gridPos = grid.WorldToCell(hit.point + (Vector2) direction);
 
-                    wallMap = h.collider.gameObject.GetComponent<Tilemap>();
+                    wallMap = hit.collider.gameObject.GetComponent<Tilemap>();
 
                     //print(h.collider.gameObject.name);
                 
-                    for (int i = -15; i < 15; ++i)
+                    for (int i = 2; i < 2; ++i)
                     {
-                        Debug.DrawLine(h.point + (Vector2)direction + (rotate(direction) * i * 2), h.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
-                        Vector3Int currentGridPos = wallMap.WorldToCell(h.point + (Vector2)direction + (rotate(direction) * i * 2));
+                        Debug.DrawLine(hit.point + (Vector2)direction + (rotate(direction) * i * 2), hit.point + (Vector2)direction + (rotate(direction) * i * 2) + new Vector2(0,0.1f), Color.cyan);
+                        Vector3Int currentGridPos = wallMap.WorldToCell(hit.point + (Vector2)direction + (rotate(direction) * i * 2));
                         
                        // print(currentGridPos);
 
                         //wallMap.getTile(currentGridPos);
                         
-                        if (wallMap.GetTile(currentGridPos) == (isShort ? tallTile : shortTile))
+                        if (wallMap.HasTile(currentGridPos))
                         {
                             //print();
                             //print(transformMatrix);
@@ -93,22 +92,24 @@ namespace DefaultNamespace
                             //print("changing tile");
                             TileChangeData data = new TileChangeData();
                             data.transform = wallMap.GetTransformMatrix(currentGridPos);
-                            data.tile = isShort ? shortTile : tallTile;
                             data.position = currentGridPos;
-                
+                            data.tile = wallMap.GetTile(currentGridPos);
+
+                            hiddenWallMap.SetTile(data, false);
+
+                            data.tile = null;
+                            
                             wallMap.SetTile(data, false);
                         }
-                        else if (wallMap.GetTile(currentGridPos) != null)
+                        else if (hiddenWallMap.HasTile(currentGridPos))
                         {
                             //print(wallMap.GetTile(currentGridPos).name);
                         }
                     }
-                }
-            }
+                } 
+        //  }
         
             Debug.DrawLine(transform.position, transform.position + (direction * 20f), isShort ? Color.green : Color.magenta);
-            
-            
         }
 
         private Vector2 rotate(Vector2 vec)

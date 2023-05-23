@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace DefaultNamespace
 {
@@ -9,7 +10,22 @@ namespace DefaultNamespace
     public class WallMaskController : MonoBehaviour
     {
         public GameObject mask;
-            
+
+        public Tilemap wallMap;
+
+        public Tilemap hiddenWallMap;
+        
+        private Vector3Int[] hiddenWallList;
+
+        private Vector3 curPos;
+
+        private Collider2D _collider2D;
+
+        private void Start()
+        {
+            _collider2D = GetComponent<Collider2D>();
+        }
+
         private void Update()
         {
             RaycastHit2D left = Physics2D.Raycast(transform.position, new Vector2(-1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
@@ -18,6 +34,7 @@ namespace DefaultNamespace
 
             Vector2 leftPoint = left.point;
             Vector2 rightPoint = right.point;
+
             
             if (((Vector3) leftPoint - transform.position).magnitude > 7)
             {
@@ -36,10 +53,31 @@ namespace DefaultNamespace
                 new Vector3(rightPoint.x, rightPoint.y, -0.5f));
             Debug.DrawLine(intersect, transform.position, Color.green);
 
+            
+            RaycastHit2D leftDown = Physics2D.Raycast(leftPoint, new Vector2(-1, -0.5f), Mathf.Infinity,
+                LayerMask.GetMask("Wall", "door"));
+            
+            RaycastHit2D rightDown = Physics2D.Raycast(rightPoint, new Vector2(1, -0.5f), Mathf.Infinity,
+                LayerMask.GetMask("Wall", "door"));
+            
+            
+            for (int i = 0; i < 3; ++i)
+            {
+                
+            }
+            
+            for (int i = 0; i < 3; ++i)
+            {
+                
+            }
+            
             //intersect.x = ((int) intersect.x * (int) 64) / 64f;
             //intersect.y = ((int) intersect.y * (int) 64) / 64f;
-            
-            mask.transform.position = intersect;
+            Collider2D[] contacts =  new Collider2D[8];
+            if (_collider2D.GetContacts(contacts) == 0)
+            {
+                mask.transform.position = intersect;
+            }
         }
 
         Vector2 findIntersect(Vector3 vec1, Vector3 vec2)

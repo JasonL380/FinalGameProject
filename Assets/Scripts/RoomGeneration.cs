@@ -5,6 +5,7 @@ using DefaultNamespace;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 
@@ -57,21 +58,28 @@ public class RoomGeneration : MonoBehaviour
             if (!_list.generated)
             {
 
+                
+                Tile tile = new Tile();
+
+                tile.sprite = _renderer.sprite;
+                tile.colliderType = Tile.ColliderType.Grid;
+                
                 if (generateRoom())
                 {
                     _list.generated = true;
                     _list.roomCount += 1;
+                
+                    _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
                 }
-
+                else
+                {
+                    _list.walls.SetTile(grid.WorldToCell(transform.position), tile);
+                }
                 
 
                 roomGend = true;
 
-                Tile tile = new Tile();
-
-                tile.sprite = _renderer.sprite;
                 
-                _list.floor.SetTile(grid.WorldToCell(transform.position), tile);
                 Destroy(gameObject);
             }
             
