@@ -25,8 +25,8 @@ namespace DefaultNamespace
 
         public int holdingItem;
 
-        public int numCandles;
-        public int numBatteries;
+        //0 = candle, 1 = flashlight
+        public int[] numLights = {0, 0};
 
 
         struct ParabolaCastResult
