@@ -25,9 +25,11 @@ namespace DefaultNamespace
 
         public int holdingItem;
 
-        //0 = candle, 1 = flashlight
-        public int[] numLights = {0, 0};
-
+        public int numCandles;
+        public int numBatteries;
+        
+        //up right = 0, up left = 1, down left = 2, down right = 3
+        public int walkDir = 0;
 
         struct ParabolaCastResult
         {
@@ -58,7 +60,7 @@ namespace DefaultNamespace
                 myAnim.SetBool("Holding", false);
             }
             //fake 3d physics
-            if (!onGround)
+            /*if (!onGround)
             {
                 if (myCol2D.IsTouching(targetCol2D))
                 {
@@ -99,24 +101,26 @@ namespace DefaultNamespace
 
                 //LandingTarget.transform.position = transform.position;
 
-            }
+           // }
 
+
+            Vector2 velocity = Vector2.zero;
+           
+            velocity += Input.GetAxis("Horizontal") * moveSpeed * new Vector2(-1, 0.5f);
+
+            velocity += Input.GetAxis("Vertical") * moveSpeed * new Vector2(-1, -0.5f);
+           
             pos3d.x = transform.position.x;
             pos3d += velocity3d * Time.deltaTime;
 
-            LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
+            //LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
 
-            myRB2D.velocity = new Vector2(velocity3d.x, (velocity3d.y * 0.5f) + (velocity3d.z / 2));
-
-
+            myRB2D.velocity = velocity * new Vector2(-1, -1) * Time.deltaTime;//new Vector2(velocity3d.x, (velocity3d.y * 0.5f) + (velocity3d.z / 2));
+            
 
             //animations
-            Vector2 movement = Vector2.zero;
 
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
-
-            if (movement == Vector2.zero) //if not walking
+            if (velocity == Vector2.zero) //if not walking
             {
                 myAnim.SetBool("Walking", false);
             }
@@ -124,8 +128,27 @@ namespace DefaultNamespace
             {
                 myAnim.SetBool("Walking", true);
 
-                myAnim.SetFloat("Move_X", movement.x);
-                myAnim.SetFloat("Move_Y", movement.y);
+                myAnim.SetFloat("Move_X", velocity.x);
+                myAnim.SetFloat("Move_Y", velocity.y);
+            }
+            
+            //walking direction
+            //up right = 0, up left = 1, down left = 2, down right = 3
+            if (Input.GetAxis("Horizontal") > 0)
+            {
+                walkDir = 0;
+            }
+            else if (Input.GetAxis("Vertical") > 0)
+            {
+                walkDir = 1;
+            }
+            else if (Input.GetAxis("Horizontal") < 0)
+            {
+                walkDir = 2;
+            }
+            else if (Input.GetAxis("Vertical") < 0)
+            {
+                walkDir = 3;
             }
         }
 
