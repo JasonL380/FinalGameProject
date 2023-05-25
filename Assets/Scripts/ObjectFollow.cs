@@ -3,6 +3,7 @@
  * Date: October 4 2022
  * Desc: Allows objects to follow the specified object
  */
+using DefaultNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -28,6 +29,8 @@ public class ObjectFollow : MonoBehaviour
     public int bottomLayer;
     private Vector3 lastOffset;
 
+    private int walkDir;
+
     public bool will_flip = true;
 
     [Range(0, 1)]
@@ -41,12 +44,14 @@ public class ObjectFollow : MonoBehaviour
 
         particleSystem = GetComponent<ParticleSystem>();
         particleRenderer = GetComponent<ParticleSystemRenderer>();
+
+        walkDir = follow.gameObject.GetComponent<PlayerController>().walkDir;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        walkDir = follow.gameObject.GetComponent<PlayerController>().walkDir;
     }
 
     private void FixedUpdate()
@@ -55,17 +60,11 @@ public class ObjectFollow : MonoBehaviour
         {
             //Offsets the object
 
-            Vector2 movement = Vector2.zero;
-
-            //Get the input to see what way the player is movingn using Unity's old input system
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
-
- 
-            if (movement.x != 0)
+            //down right = 0, up right = 1, up left = 2, down left = 3
+            switch (walkDir)
             {
-                if (movement.x > 0)
-                {
+
+                case 0:
                     //set offset right
                     if (changeLayer)
                     {
@@ -75,11 +74,18 @@ public class ObjectFollow : MonoBehaviour
 
                     lastOffset = rightOffset;
                     spriteRenderer.flipX = true;
+                    break;
+                case 1:
+                    //set offset top
+                    if (changeLayer)
+                    {
+                        spriteRenderer.sortingOrder = topLayer;
+                        particleRenderer.sortingOrder = topLayer;
+                    }
+                    lastOffset = topOffset;
+                    break;
 
-
-                }
-                else if (movement.x < 0)
-                {
+                case 2:
                     //set offset left
                     if (changeLayer)
                     {
@@ -88,23 +94,9 @@ public class ObjectFollow : MonoBehaviour
                     }
                     lastOffset = leftOffset;
                     spriteRenderer.flipX = false;
-                }
-            }
-            if (movement.y != 0)
-            {
-                if (movement.y > 0)
-                {
-                    //set offset top
-                    if (changeLayer)
-                    {
-                        spriteRenderer.sortingOrder = topLayer;
-                        particleRenderer.sortingOrder = topLayer;
-                    }
-                    lastOffset = topOffset;
+                    break;
 
-                }
-                else if (movement.y < 0)
-                {
+                case 3:
                     //set offset bottom
                     if (changeLayer)
                     {
@@ -112,9 +104,9 @@ public class ObjectFollow : MonoBehaviour
                         particleRenderer.sortingOrder = bottomLayer;
                     }
                     lastOffset = bottomOffset;
-                }
+                    break;
             }
-
+            
             //grab the targets location
             Vector3 targetPos = follow.transform.position + lastOffset;
 

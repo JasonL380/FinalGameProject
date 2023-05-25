@@ -426,12 +426,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   follow: {fileID: 1642055619}
-  leftOffset: {x: -0.3, y: 0.85, z: 0}
+  leftOffset: {x: -0.04, y: 0.97, z: 0}
   rightOffset: {x: 0.1, y: 0.86, z: 0}
-  topOffset: {x: -0.05, y: 0.95, z: 0}
+  topOffset: {x: 0.34, y: 0.84, z: 0}
   bottomOffset: {x: -0.29, y: 0.83, z: 0}
   changeLayer: 1
-  leftLayer: 34
+  leftLayer: 2
   rightLayer: 39
   topLayer: 2
   bottomLayer: 25
@@ -5334,8 +5334,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 1
-  m_Color: {r: 1, g: 0.9901961, b: 0.9, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.9686344, b: 0.9386792, a: 1}
+  m_Intensity: 1.37
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000
