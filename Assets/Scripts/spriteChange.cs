@@ -54,6 +54,7 @@ public class spriteChange : MonoBehaviour
         else if( currentTime < 0 && currentSprite >= sprites.Length - 1 && GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight] <= 0)
         {
             GetComponent<Light2D>().enabled = false;
+            GetComponent<ParticleSystemRenderer>().enabled = false;
         }
         currentTime -= Time.deltaTime;
     }
