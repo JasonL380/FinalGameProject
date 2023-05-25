@@ -108,13 +108,15 @@ namespace DefaultNamespace
             velocity += Input.GetAxis("Horizontal") * moveSpeed * new Vector2(-1, 0.5f);
 
             velocity += Input.GetAxis("Vertical") * moveSpeed * new Vector2(-1, -0.5f);
-           
+            velocity *= new Vector2(-1, -1);
             pos3d.x = transform.position.x;
             pos3d += velocity3d * Time.deltaTime;
 
             //LandingTarget.transform.position = new Vector2(pos3d.x, pos3d.y);
 
-            myRB2D.velocity = velocity * new Vector2(-1, -1) * Time.deltaTime;//new Vector2(velocity3d.x, (velocity3d.y * 0.5f) + (velocity3d.z / 2));
+            velocity = velocity.normalized;
+            
+            myRB2D.velocity = velocity * moveSpeed;//new Vector2(velocity3d.x, (velocity3d.y * 0.5f) + (velocity3d.z / 2));
             
 
             //animations
