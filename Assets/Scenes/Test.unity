@@ -525,7 +525,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -546,11 +546,11 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.009
+  m_MaxParticleSize: 0.006
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -659,7 +659,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -712,7 +712,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 4.87836
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -766,7 +766,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0, b: 0.18196487, a: 1}
+      maxColor: {r: 1, g: 0.27978843, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1205,12 +1205,12 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 0.29
+    angle: 0.2863718
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0.9682498
     donutRadius: 0.2
-    m_Position: {x: -0.008426926, y: 0.036219876, z: -0.00064962887}
+    m_Position: {x: -0.0077792895, y: 0.035895787, z: -0.000642286}
     m_Rotation: {x: 359.00662, y: 359.84753, z: 306.80893}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
