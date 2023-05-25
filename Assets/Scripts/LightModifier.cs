@@ -7,11 +7,12 @@ public class LightModifier : MonoBehaviour
 {
     private Light2D light;
     private float initLight;
-
-    private float random;
+    private float lightRandom;
 
     private float timer;
-    public float freq;
+    public float frequency;
+    public float margin;
+    private float time;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +25,10 @@ public class LightModifier : MonoBehaviour
     {
         if (timer < 0)
         {
-            random = Random.Range(initLight - 1, initLight + 1);
-            light.pointLightOuterRadius = random;
-            timer = freq;
+            lightRandom = Random.Range(initLight - 1, initLight + 1);
+            light.pointLightOuterRadius = lightRandom;
+            time = Random.Range(frequency - margin, frequency + margin);
+            timer = time;
         }
         timer -= Time.deltaTime;
     }
