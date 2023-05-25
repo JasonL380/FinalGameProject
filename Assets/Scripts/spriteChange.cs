@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class spriteChange : MonoBehaviour
 {
     public SpriteRenderer sprite;
-    public ParticleSystemRenderer pr;
+    public ParticleSystem pr;
     public Sprite[] sprites;
+
+    private ParticleSystem.ShapeModule ps;
 
     public float[] decrease;
     public float tick;
@@ -23,8 +26,9 @@ public class spriteChange : MonoBehaviour
     private void Start()
     {
         sprite = gameObject.GetComponent<SpriteRenderer>();
-        pr = gameObject.GetComponent<ParticleSystemRenderer>();
-        initLightPos = pr.pivot;
+        pr = gameObject.GetComponent<ParticleSystem>();
+        ps = pr.shape;
+        initLightPos = pr.shape.position;
         currentTime = tick;
     }
     // Update is called once per frame
@@ -35,9 +39,9 @@ public class spriteChange : MonoBehaviour
             ++currentSprite;
             sprite.sprite = sprites[currentSprite];
             currentTime = tick;
-            Vector3 py = pr.pivot;
+            Vector3 py = ps.position;
             py.y -= decrease[currentSprite];
-            pr.pivot = py;
+            ps.position = py;
         }
         else if(currentTime < 0 && currentSprite >= sprites.Length - 1 && GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight] > 0)
         {
@@ -45,11 +49,11 @@ public class spriteChange : MonoBehaviour
             currentTime = tick;
             sprite.sprite = sprites[currentSprite];
             --GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight];
-            pr.pivot = initLightPos;
+            ps.position = initLightPos;
         }
-        else
+        else if( currentTime < 0 && currentSprite >= sprites.Length - 1 && GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight] <= 0)
         {
-            //turn off light
+            GetComponent<Light2D>().enabled = false;
         }
         currentTime -= Time.deltaTime;
     }
