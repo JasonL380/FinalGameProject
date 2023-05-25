@@ -25,8 +25,7 @@ namespace DefaultNamespace
 
         public int holdingItem;
 
-        public int numCandles;
-        public int numBatteries;
+        public int[] numLights = {0, 0};
         
         //up right = 0, up left = 1, down left = 2, down right = 3
         public int walkDir = 0;

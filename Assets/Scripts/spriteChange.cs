@@ -39,13 +39,17 @@ public class spriteChange : MonoBehaviour
             py.y -= decrease[currentSprite];
             pr.pivot = py;
         }
-        if(currentTime < 0 && currentSprite >= sprites.Length - 1 && GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight] > 0)
+        else if(currentTime < 0 && currentSprite >= sprites.Length - 1 && GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight] > 0)
         {
             currentSprite = 0;
             currentTime = tick;
             sprite.sprite = sprites[currentSprite];
             --GetComponent<ObjectFollow>().follow.GetComponent<PlayerController>().numLights[typeLight];
             pr.pivot = initLightPos;
+        }
+        else
+        {
+            //turn off light
         }
         currentTime -= Time.deltaTime;
     }
