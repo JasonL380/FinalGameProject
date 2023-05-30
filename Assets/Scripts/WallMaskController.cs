@@ -36,7 +36,7 @@ namespace DefaultNamespace
         {
             RaycastHit2D left = Physics2D.Raycast(transform.position, new Vector2(-1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
             RaycastHit2D right = Physics2D.Raycast(transform.position, new Vector2(1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
-            print("left: " + left.point + " right: " + right.point);
+            //print("left: " + left.point + " right: " + right.point);
 
             Vector2 leftPoint = left.point;
             Vector2 rightPoint = right.point;
@@ -72,7 +72,7 @@ namespace DefaultNamespace
             if ((mask.transform.position - curPos).sqrMagnitude > 2)
             {
                 curPos = intersect;
-                print("updating edge walls");
+                //print("updating edge walls");
                 for (int i = 0; i < 6; ++i)
                 {
                     if (hiddenWallList[i] != new Vector3Int(Int32.MinValue, Int32.MinValue))
@@ -104,7 +104,7 @@ namespace DefaultNamespace
                     Vector2 point = rightDown.point - new Vector2(-0.25f, 0.125f) + (new Vector2(-0.5f, -0.25f) * i);
                     Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.blue);
 
-                    print("right down " + i);
+                    //print("right down " + i);
                     
                     Vector3Int gridPoint = _grid.WorldToCell(point);
                     
@@ -134,7 +134,7 @@ namespace DefaultNamespace
                     Vector2 point = leftDown.point - new Vector2(0.25f, 0.125f) + (new Vector2(0.5f, -0.25f) * i);
                     Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.cyan);
 
-                    print("left down " + i);
+                    //print("left down " + i);
                     
                     Vector3Int gridPoint = _grid.WorldToCell(point);
                     

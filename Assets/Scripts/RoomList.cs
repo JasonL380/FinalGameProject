@@ -48,10 +48,10 @@ namespace DefaultNamespace
 
             // mapDataSet(2, 34, 3);
 
-            print(mapDataGet(2, 34));
+            //print(mapDataGet(2, 34));
 
-            print(mapDataGet(120, 483));
-            print(mapDataGet(120, 484));
+            //print(mapDataGet(120, 483));
+            //print(mapDataGet(120, 484));
 
             _grid = GetComponent<Grid>();
 
