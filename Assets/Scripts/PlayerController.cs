@@ -1,6 +1,7 @@
 using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DefaultNamespace
 {
@@ -23,8 +24,9 @@ namespace DefaultNamespace
 
         Animator myAnim;
 
+        //0 = nothing, 1 = candle, 2 = flashlight
         public int holdingItem;
-
+        public GameObject[] lights;
         public int[] numLights = {0, 0};
         
         //up right = 0, up left = 1, down left = 2, down right = 3
@@ -58,50 +60,31 @@ namespace DefaultNamespace
             {
                 myAnim.SetBool("Holding", false);
             }
-            //fake 3d physics
-            /*if (!onGround)
+
+            if(Input.GetKeyDown(KeyCode.Q))
             {
-                if (myCol2D.IsTouching(targetCol2D))
+                holdingItem = (holdingItem + 1) % (numLights.Length + 1);
+                switch(holdingItem)
                 {
-                    onGround = true;
-                    gameObject.layer = 7;
-                    mySpriteRenderer.rendererPriority = 1;
-                    targetCol2D.isTrigger = true;
-                    velocity3d.z = 0;
-                    transform.position = new Vector3(transform.position.x, pos3d.y);
-                }
-                else
-                {
-                    velocity3d.z += gravity * Time.deltaTime;
+                    case 0:
+                        lights[0].SetActive(false);
+                        lights[1].SetActive(false);
+                        break;
+                    case 1:
+                        lights[0].SetActive(true);
+                        lights[1].SetActive(false);
+                        break;
+                    case 2:
+                        lights[0].SetActive(false);
+                        lights[1].SetActive(true);
+                        break;
                 }
             }
-            else
-            {
-                /*if (Input.GetButton("Jump"))
-                {
-                    onGround = false;
+            
+            pos3d.y = transform.position.y;
+            velocity3d.x = Input.GetAxis("Horizontal") * moveSpeed;
 
-                    mySpriteRenderer.rendererPriority = 2;
-                    gameObject.layer = 8;
-                    targetCol2D.isTrigger = false;
-                    velocity3d.z = jumpSpeed;
-                    pos3d.y = transform.position.y;
-                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.25f);
-                    pos3d.z = 0;
-
-                    ParabolaCast(velocity3d, pos3d);
-                }*/
-                pos3d.y = transform.position.y;
-                velocity3d.x = Input.GetAxis("Horizontal") * moveSpeed;
-
-                velocity3d.y = Input.GetAxis("Vertical") * moveSpeed;
-
-
-
-                //LandingTarget.transform.position = transform.position;
-
-           // }
-
+            velocity3d.y = Input.GetAxis("Vertical") * moveSpeed;
 
             Vector2 velocity = Vector2.zero;
            
