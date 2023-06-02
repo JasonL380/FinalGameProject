@@ -122,8 +122,8 @@ namespace DefaultNamespace
             {
                 myAnim.SetBool("Walking", true);
 
-                myAnim.SetFloat("Move_X", velocity.x);
-                myAnim.SetFloat("Move_Y", velocity.y);
+                myAnim.SetFloat("Move_X", velocity.x > 0 ? 1 : -1);
+                myAnim.SetFloat("Move_Y", velocity.y > 0 ? 1 : -1);
             }
             
             //walking direction
