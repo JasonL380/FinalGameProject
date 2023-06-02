@@ -41,6 +41,7 @@ public class RoomGeneration : MonoBehaviour
         _list = grid.gameObject.GetComponent<RoomList>();
         _renderer = GetComponent<SpriteRenderer>();
         isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
+        //print(isBorderDoor);
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
@@ -57,7 +58,7 @@ public class RoomGeneration : MonoBehaviour
         
         if (Application.isPlaying && !roomGend)
         {
-            if (!_list.generated)
+            //if (!_list.generated)
             {
 
                 
@@ -161,7 +162,7 @@ public class RoomGeneration : MonoBehaviour
                 
                 if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
-                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
+                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
 
                     Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
 

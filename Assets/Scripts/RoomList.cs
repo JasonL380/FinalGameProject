@@ -47,9 +47,22 @@ namespace DefaultNamespace
         
         private Grid _grid;
 
-        private int arraySize;
+        public int arraySize;
 
-        public void Start()
+        public void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            int max = (arraySize - borderSize) - arraySize / 2;
+
+            int min = (arraySize / 2) * -1 + borderSize;
+            
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(max, max)),  _grid.CellToWorld(new Vector3Int(max,min)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(max,min)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(min,max)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(max, max)),  _grid.CellToWorld(new Vector3Int(min,max)));
+        }
+
+        public void Awake()
         {
             arraySize = maxSize + borderSize * 2;
             mapData = new Byte[arraySize, arraySize];
@@ -151,9 +164,33 @@ namespace DefaultNamespace
         public bool inBorder(Vector3Int pos)
         {
             pos += new Vector3Int(arraySize / 2, arraySize / 2);
+            if (pos.x > arraySize - borderSize)
+            {
+                print("in border: positive x " + pos.x + " " + arraySize + " - " + borderSize + " = " + (arraySize - borderSize));
+                return true;
+            }
+            
+            if (pos.y > arraySize - borderSize)
+            {
+                print("in border: positive y " + pos.y + " " + (arraySize - borderSize));
+                return true;
+            }
+            
+            if (pos.x < borderSize)
+            {
+                print("in border: negative x " + pos.x + " " + (borderSize));
+                return true;
+            }
+            
+            if (pos.y < borderSize)
+            {
+                print("in border: negative y " + pos.y + " " + (borderSize));
+                return true;
+            }
 
-            return pos.x < borderSize || pos.y < borderSize || pos.x > arraySize - borderSize ||
-                   pos.y > arraySize - borderSize;
+            return false;
+
+            //return !(pos.x > ((arraySize / 2) * -1) + borderSize && pos.x < ((arraySize / 2)) - borderSize && pos.y > ((arraySize / 2) * -1) + borderSize && pos.y < ((arraySize / 2)) - borderSize);
         }
         
         public bool checkFit(Vector3Int min, Vector3Int max, Vector3Int offset)
