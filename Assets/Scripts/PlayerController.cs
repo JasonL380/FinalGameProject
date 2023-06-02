@@ -35,6 +35,8 @@ namespace DefaultNamespace
 
         public GameObject[] lightIndicator;
 
+        public GameObject flashlight;
+
         //up right = 0, up left = 1, down left = 2, down right = 3
         public int walkDir = 0;
 
@@ -54,10 +56,13 @@ namespace DefaultNamespace
             mySpriteRenderer = GetComponent<SpriteRenderer>();
 
             myAnim = GetComponent<Animator>();
+            numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
         }
 
         private void Update()
         {
+            numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+
             candlestxt.text = "x" + numLights[0];
             batteriestxt.text = "x" + numLights[1];
 

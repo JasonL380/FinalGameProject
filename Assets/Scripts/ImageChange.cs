@@ -19,18 +19,40 @@ public class ImageChange : MonoBehaviour
 
     //0 = candle, 1 = flashlight
 
+    public float battery;
+
     public GameObject candle;
+
+    public int holdingItem;
+
+    public Sprite[] flashlightImages;
+
+    public GameObject flashlight;
+
+    public GameObject player;
+
     private void Start()
     {
         image = gameObject.GetComponent<Image>();
         //pr = gameObject.GetComponent<ParticleSystem>();
         //ps = pr.shape;
         //initLightPos = pr.shape.position;
-        
+        battery = flashlight.GetComponent<Flashlight>().currentBattery;
     }
     // Update is called once per frame
     void Update()
     {
-        image.sprite = candle.GetComponent<SpriteRenderer>().sprite;
+        holdingItem = player.GetComponent<PlayerController>().holdingItem;
+
+        if (holdingItem == 1)
+        {
+            image.sprite = candle.GetComponent<SpriteRenderer>().sprite;
+        }
+
+        else if (holdingItem == 2)
+        {
+            battery = flashlight.GetComponent<Flashlight>().currentBattery - 0.001f;
+            image.sprite = flashlightImages[(int)battery];
+        }
     }
 }

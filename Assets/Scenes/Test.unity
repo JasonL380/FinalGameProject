@@ -15599,7 +15599,7 @@ GameObject:
   - component: {fileID: 1480792541}
   - component: {fileID: 1480792540}
   m_Layer: 5
-  m_Name: CandleIndicator
+  m_Name: HoldingIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15638,15 +15638,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 0}
-  pr: {fileID: 0}
-  images:
-  - {fileID: 1795439945, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -565234959, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -232093803, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -588538083, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -402851252, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -787060262, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: 1677479245, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
   decrease:
   - 0
   - 0
@@ -15655,11 +15646,20 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  tick: 3
-  currentTime: 0
-  initLightPos: {x: 0, y: 0, z: 0}
-  typeLight: 0
-  currentImage: 0
+  battery: 0
+  candle: {fileID: 685567908}
+  holdingItem: 0
+  flashlightImages:
+  - {fileID: -1327662474, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -1557686385, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -192553813, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: 833825204, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -394841997, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -372388968, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -903677704, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -934464010, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -1330032575, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  flashlight: {fileID: 1651044321}
   player: {fileID: 1642055619}
 --- !u!114 &1480792541
 MonoBehaviour:
@@ -15866,10 +15866,11 @@ MonoBehaviour:
   lights:
   - {fileID: 685567908}
   - {fileID: 1651044321}
-  numLights: 0100000000000000
+  numLights: 0300000003000000
   candlestxt: {fileID: 536707386}
   batteriestxt: {fileID: 149864958}
   lightIndicator: []
+  flashlight: {fileID: 1651044321}
   walkDir: 0
 --- !u!95 &1642055625
 Animator:
@@ -16087,10 +16088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28faebd6873520447a25da7e038a79e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  candlestxt: {fileID: 536707386}
-  batteriestxt: {fileID: 149864958}
-  candles: 1
-  batteries: 1
 --- !u!1 &1651044321
 GameObject:
   m_ObjectHideFlags: 0
@@ -16101,6 +16098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1651044323}
   - component: {fileID: 1651044322}
+  - component: {fileID: 1651044324}
   m_Layer: 0
   m_Name: flashlight
   m_TagString: Untagged
@@ -16176,6 +16174,23 @@ Transform:
   m_Father: {fileID: 220389724}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 12.2}
+--- !u!114 &1651044324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651044321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e544aad84d74324b910d4ed1a658f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numBatteries: 1
+  player: {fileID: 1642055619}
+  fLight: {fileID: 150835540}
+  totalBattery: 9
+  currentBattery: 0
 --- !u!1 &1693669686
 GameObject:
   m_ObjectHideFlags: 0
