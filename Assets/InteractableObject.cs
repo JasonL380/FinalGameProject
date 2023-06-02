@@ -9,20 +9,17 @@ public class InteractableObject : MonoBehaviour
 
     public int randLight;
 
-    private bool beenRansacked;
-
     // Start is called before the first frame update
     void Start()
     {
         gameObject.GetComponent<Collider2D>().isTrigger = true;
         randLight = Random.Range(1, 51);
-        beenRansacked = false;
     }
 
     // Update is called once per frame
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetKeyDown(KeyCode.E) && collision.name.Equals("Player") && !beenRansacked)
+        if (Input.GetKeyDown(KeyCode.E) && collision.name.Equals("Player"))
         {
             if(randLight == 51)
             {
@@ -41,7 +38,6 @@ public class InteractableObject : MonoBehaviour
                     ++collision.GetComponent<PlayerController>().numLights[1];
                 }
             }
-            beenRansacked = true;
         }
     }
     
