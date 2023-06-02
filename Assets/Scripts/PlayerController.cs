@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -28,7 +29,12 @@ namespace DefaultNamespace
         public int holdingItem;
         public GameObject[] lights;
         public int[] numLights = {0, 0};
-        
+
+        public TMP_Text candlestxt;
+        public TMP_Text batteriestxt;
+
+        public GameObject[] lightIndicator;
+
         //up right = 0, up left = 1, down left = 2, down right = 3
         public int walkDir = 0;
 
@@ -52,6 +58,10 @@ namespace DefaultNamespace
 
         private void Update()
         {
+            candlestxt.text = "x" + numLights[0];
+            batteriestxt.text = "x" + numLights[1];
+
+
             if (holdingItem > 0)
             {
                 myAnim.SetBool("Holding", true);
@@ -66,15 +76,15 @@ namespace DefaultNamespace
                 holdingItem = (holdingItem + 1) % (numLights.Length + 1);
                 switch(holdingItem)
                 {
-                    case 0:
+                    case 0: //candle off flashlight off
                         lights[0].SetActive(false);
                         lights[1].SetActive(false);
                         break;
-                    case 1:
+                    case 1: //candle on flashlight off
                         lights[0].SetActive(true);
                         lights[1].SetActive(false);
                         break;
-                    case 2:
+                    case 2: //candle off flashlight on
                         lights[0].SetActive(false);
                         lights[1].SetActive(true);
                         break;
