@@ -16,11 +16,13 @@ namespace DefaultNamespace
     {
         public byte[,] data;
     }
-    
+
     public class RoomList : MonoBehaviour
     {
         public GameObject[] rooms;
 
+        public GameObject[] endRooms;
+        
         public int roomCount;
 
         public int maxRooms;
@@ -34,15 +36,36 @@ namespace DefaultNamespace
         public Tilemap walls;
 
         public Tilemap doors;
-
+        
         public Dictionary<TileBase, TileBase> shortToTall;
 
+        [Tooltip("The max size of the map, this is one dimension of a square area")]
+        public int maxSize;
+
+        [Tooltip("The width of the border that goes around the edge of the map which only end rooms can generate in.")]
+        public int borderSize = 128;
+        
         private Grid _grid;
 
+        public int arraySize;
 
-        public void Start()
+        public void OnDrawGizmos()
         {
-            mapData = new Byte[4096, 4096];
+            Gizmos.color = Color.green;
+            int max = (arraySize - borderSize) - arraySize / 2;
+
+            int min = (arraySize / 2) * -1 + borderSize;
+            
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(max, max)),  _grid.CellToWorld(new Vector3Int(max,min)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(max,min)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(min,max)));
+            Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(max, max)),  _grid.CellToWorld(new Vector3Int(min,max)));
+        }
+
+        public void Awake()
+        {
+            arraySize = maxSize + borderSize * 2;
+            mapData = new Byte[arraySize, arraySize];
 
             //mapDataSet(120, 483, 8);
 
@@ -62,9 +85,9 @@ namespace DefaultNamespace
             Grid grid = FindObjectOfType<Grid>();
 
             bool hasTile = false;
-            for (int x = -256; x < 256; ++x)
+            for (int x = (arraySize / 2) * -1; x < (arraySize / 2); ++x)
             {
-                for (int y = -256; y < 256; ++y)
+                for (int y = (arraySize / 2) * -1; y < (arraySize / 2); ++y)
                 {
                     hasTile = false;
                     foreach (Tilemap t in tilemaps)
@@ -138,6 +161,38 @@ namespace DefaultNamespace
             }
         }
 
+        public bool inBorder(Vector3Int pos)
+        {
+            pos += new Vector3Int(arraySize / 2, arraySize / 2);
+            if (pos.x > arraySize - borderSize)
+            {
+                print("in border: positive x " + pos.x + " " + arraySize + " - " + borderSize + " = " + (arraySize - borderSize));
+                return true;
+            }
+            
+            if (pos.y > arraySize - borderSize)
+            {
+                print("in border: positive y " + pos.y + " " + (arraySize - borderSize));
+                return true;
+            }
+            
+            if (pos.x < borderSize)
+            {
+                print("in border: negative x " + pos.x + " " + (borderSize));
+                return true;
+            }
+            
+            if (pos.y < borderSize)
+            {
+                print("in border: negative y " + pos.y + " " + (borderSize));
+                return true;
+            }
+
+            return false;
+
+            //return !(pos.x > ((arraySize / 2) * -1) + borderSize && pos.x < ((arraySize / 2)) - borderSize && pos.y > ((arraySize / 2) * -1) + borderSize && pos.y < ((arraySize / 2)) - borderSize);
+        }
+        
         public bool checkFit(Vector3Int min, Vector3Int max, Vector3Int offset)
         {
             for (int x = min.x; x < max.x; ++x)
@@ -173,7 +228,7 @@ namespace DefaultNamespace
             Debug.DrawLine(_grid.CellToWorld(new Vector3Int(x, y, 0)), _grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0, 0.1f, 0), Color.magenta);
             
             //print( x+", "+y+"  " + ((x + 32768) % 256) + ", " + ((y + 32768)  % 256));*/
-            mapData[x + 2048, y + 2048] = val;
+            mapData[x + (arraySize / 2), y + (arraySize / 2)] = val;
             //mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256] = val;
         }
 
@@ -200,7 +255,7 @@ namespace DefaultNamespace
             }
 
             return mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256];*/
-            return mapData[x + 2048, y + 2048];
+            return mapData[x + (arraySize / 2), y + (arraySize / 2)];
         }
     }
 }
