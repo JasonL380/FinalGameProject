@@ -6143,8 +6143,8 @@ MonoBehaviour:
   - {fileID: -232093803, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
   - {fileID: -588538083, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
   - {fileID: -402851252, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: -787060262, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
-  - {fileID: 1677479245, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
+  - {fileID: 415611973, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
+  - {fileID: -1948021116, guid: c4e0c1b7b82ac9a469e61dba60fa9dc5, type: 3}
   decrease:
   - 0.1
   - 0.02
@@ -6864,7 +6864,7 @@ ParticleSystem:
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0.9682498
     donutRadius: 0.2
-    m_Position: {x: 0.00000040380291, y: 0.035895698, z: 0}
+    m_Position: {x: 0.00000040380291, y: 0.23, z: 0}
     m_Rotation: {x: 359.0183, y: 0.21526775, z: 169.2777}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
