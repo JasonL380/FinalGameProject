@@ -47,12 +47,15 @@ namespace DefaultNamespace
         
         private Grid _grid;
 
-        public int arraySize;
+        [NonSerialized] public int arraySize;
 
         public TileBase WallTile;
 
-        [NonSerialized] public Matrix4x4 wallTransform;
+        [NonSerialized] public Matrix4x4 wallTransform = Matrix4x4.zero;
 
+        public Sprite[] openDoors;
+
+        public Sprite[] closedDoors;
         
         /*public void OnDrawGizmos()
         {
@@ -69,7 +72,8 @@ namespace DefaultNamespace
 
         public void Awake()
         {
-            mapData = new Byte[4096, 4096];
+            arraySize = maxSize + borderSize * 2;
+            mapData = new Byte[arraySize, arraySize];
 
             //mapDataSet(120, 483, 8);
 
@@ -169,7 +173,7 @@ namespace DefaultNamespace
                     }
                 }
             }
-            if (wallTransform == null && type == 2)
+            if (wallTransform == Matrix4x4.zero && type == 2)
             {
                 wallTransform = data.transform;
             }
@@ -180,25 +184,25 @@ namespace DefaultNamespace
             pos += new Vector3Int(arraySize / 2, arraySize / 2);
             if (pos.x > arraySize - borderSize)
             {
-                print("in border: positive x " + pos.x + " " + arraySize + " - " + borderSize + " = " + (arraySize - borderSize));
+                //print("in border: positive x " + pos.x + " " + arraySize + " - " + borderSize + " = " + (arraySize - borderSize));
                 return true;
             }
             
             if (pos.y > arraySize - borderSize)
             {
-                print("in border: positive y " + pos.y + " " + (arraySize - borderSize));
+                //print("in border: positive y " + pos.y + " " + (arraySize - borderSize));
                 return true;
             }
             
             if (pos.x < borderSize)
             {
-                print("in border: negative x " + pos.x + " " + (borderSize));
+                //print("in border: negative x " + pos.x + " " + (borderSize));
                 return true;
             }
             
             if (pos.y < borderSize)
             {
-                print("in border: negative y " + pos.y + " " + (borderSize));
+                //print("in border: negative y " + pos.y + " " + (borderSize));
                 return true;
             }
 

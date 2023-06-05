@@ -16,23 +16,24 @@ public class RoomGeneration : MonoBehaviour
 
     private int count;
     public LayerMask roomLayer;
-    
+
     //Some magical values to transform the collider to isometric, do not change
-    private Matrix4x4 transformMatrix = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1.41422f));
+    private Matrix4x4 transformMatrix = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0),
+        new Vector4(0, 0, 1, 0), new Vector4(0, 0, 0, 1.41422f));
 
     public bool fits = false;
 
     public bool debug = false;
-    
+
     private Grid grid;
     private RoomList _list;
 
     private SpriteRenderer _renderer;
-    
+
     public bool exitOnly = false;
 
     private bool isBorderDoor;
-    
+
     private void Start()
     {
         //roomLayer = LayerMask.GetMask("room");
@@ -41,15 +42,40 @@ public class RoomGeneration : MonoBehaviour
         _list = grid.gameObject.GetComponent<RoomList>();
         _renderer = GetComponent<SpriteRenderer>();
         isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
+        
+        closeDoor();
+
         //print(isBorderDoor);
     }
 
-    [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
+    [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3"), Range(0, 3)]
     public int facing;
+
+    public bool open;
+
     //has the room generated
     public bool roomGend;
 
     private void Update()
+    {
+        
+        print("update");
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            //print("update");
+            if (open)
+            {
+                openDoor();
+            }
+            else
+            {
+                closeDoor();
+            }
+        }
+        
+    }
+    
+    /*private void Update()
     {
         if (Application.isEditor)
         {
@@ -58,7 +84,7 @@ public class RoomGeneration : MonoBehaviour
         
         if (Application.isPlaying && !roomGend)
         {
-            //if (!_list.generated)
+            if (!_list.generated)
             {
 
                 
@@ -78,6 +104,8 @@ public class RoomGeneration : MonoBehaviour
                 }
                 else
                 {
+                    print("replacing self with wall at " + transform.position);
+                    Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
                     TileChangeData data = new TileChangeData();
                     data.tile = _list.WallTile;
                     data.transform = _list.wallTransform;
@@ -96,15 +124,15 @@ public class RoomGeneration : MonoBehaviour
             {
                 roomGend = true;
             }*/
-            
-        }
 
-        //fits = checkRoomFits(roomTypes[0], transform.position);
-    }
+    //    }
+
+    //fits = checkRoomFits(roomTypes[0], transform.position);
+    //  }
 
     private void OnDrawGizmos()
     {
-        
+
         /*if (this.enabled)
         {
             Vector2[] points = roomTypes[0].GetComponent<PolygonCollider2D>().points;
@@ -122,10 +150,49 @@ public class RoomGeneration : MonoBehaviour
         //if no room has generated and the player collides
         if (!roomGend && collision.name.Equals("Player"))
         {
-            generateRoom();
+            //Tile tile = new Tile();
+
+           // tile.sprite = _renderer.sprite;
+           // tile.colliderType = Tile.ColliderType.Grid;
+
+
+
+            if (generateRoom())
+            {
+                _list.generated = true;
+                _list.roomCount += 1;
+                
+                openDoor();
+            }
+            else
+            {
+                print("replacing self with wall at " + transform.position);
+                Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
+                TileChangeData data = new TileChangeData();
+                data.tile = _list.WallTile;
+                data.transform = _list.wallTransform;
+                data.position = grid.WorldToCell(transform.position);
+                _list.walls.SetTile(data, false);
+                
+                Destroy(gameObject);
+            }
+            
+            
+
+            roomGend = true;
         }
     }
 
+    private void openDoor()
+    {
+        _renderer.sprite = _list.openDoors[facing];
+    }
+
+    private void closeDoor()
+    {
+        _renderer.sprite = _list.closedDoors[facing];
+    }
+    
     private bool generateRoom()
     {
         
@@ -168,7 +235,7 @@ public class RoomGeneration : MonoBehaviour
                 
                 if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
-                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
+                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
 
                     Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
 
