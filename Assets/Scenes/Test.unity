@@ -15647,6 +15647,7 @@ MonoBehaviour:
   - 0
   - 0
   battery: 0
+  initBattery: 0
   candle: {fileID: 685567908}
   holdingItem: 0
   flashlightImages:
@@ -16286,7 +16287,7 @@ MonoBehaviour:
   numBatteries: 1
   player: {fileID: 1642055619}
   fLight: {fileID: 150835540}
-  totalBattery: 9
+  totalBattery: 18
   currentBattery: 0
 --- !u!1 &1693669686
 GameObject:

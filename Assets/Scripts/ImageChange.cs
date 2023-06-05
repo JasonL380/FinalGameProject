@@ -21,6 +21,8 @@ public class ImageChange : MonoBehaviour
 
     public float battery;
 
+    public float initBattery;
+
     public GameObject candle;
 
     public int holdingItem;
@@ -38,6 +40,7 @@ public class ImageChange : MonoBehaviour
         //ps = pr.shape;
         //initLightPos = pr.shape.position;
         battery = flashlight.GetComponent<Flashlight>().currentBattery;
+        initBattery = flashlight.GetComponent<Flashlight>().totalBattery;
     }
     // Update is called once per frame
     void Update()
@@ -52,7 +55,7 @@ public class ImageChange : MonoBehaviour
         else if (holdingItem == 2)
         {
             battery = flashlight.GetComponent<Flashlight>().currentBattery - 0.001f;
-            image.sprite = flashlightImages[(int)battery];
+            image.sprite = flashlightImages[(int) (battery/(initBattery/9))];
         }
     }
 }
