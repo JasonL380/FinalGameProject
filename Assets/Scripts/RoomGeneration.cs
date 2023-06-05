@@ -30,6 +30,8 @@ public class RoomGeneration : MonoBehaviour
     private SpriteRenderer _renderer;
     
     public bool exitOnly = false;
+
+    private bool isBorderDoor;
     
     private void Start()
     {
@@ -38,7 +40,8 @@ public class RoomGeneration : MonoBehaviour
         grid = FindObjectOfType<Grid>();
         _list = grid.gameObject.GetComponent<RoomList>();
         _renderer = GetComponent<SpriteRenderer>();
-
+        isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
+        //print(isBorderDoor);
     }
 
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3")]
@@ -55,7 +58,7 @@ public class RoomGeneration : MonoBehaviour
         
         if (Application.isPlaying && !roomGend)
         {
-            if (!_list.generated)
+            //if (!_list.generated)
             {
 
                 
@@ -63,6 +66,8 @@ public class RoomGeneration : MonoBehaviour
 
                 tile.sprite = _renderer.sprite;
                 tile.colliderType = Tile.ColliderType.Grid;
+
+                
                 
                 if (generateRoom())
                 {
@@ -73,7 +78,11 @@ public class RoomGeneration : MonoBehaviour
                 }
                 else
                 {
-                    _list.walls.SetTile(grid.WorldToCell(transform.position), tile);
+                    TileChangeData data = new TileChangeData();
+                    data.tile = _list.WallTile;
+                    data.transform = _list.wallTransform;
+                    data.position = grid.WorldToCell(transform.position);
+                    _list.walls.SetTile(data, false);
                 }
                 
 
@@ -121,13 +130,18 @@ public class RoomGeneration : MonoBehaviour
     {
         
         //print("[RoomGeneration.cs] Attempting to generate room");
+
+        
         //get a random room
-        Shuffle(_list.rooms);
+        GameObject[] list = isBorderDoor ? _list.endRooms : _list.rooms;
+        
+        Shuffle(list);
+        
         //randomly picks from the list until it's exhausted or it finds a matching one
         int i;
-        for (i = 0; i < _list.rooms.Length; ++i)
+        for (i = 0; i < list.Length; ++i)
         {
-            RoomGeneration[] doors = _list.rooms[i].GetComponentsInChildren<RoomGeneration>();
+            RoomGeneration[] doors = list[i].GetComponentsInChildren<RoomGeneration>();
 
             foreach (RoomGeneration d in doors)
             {
@@ -143,26 +157,26 @@ public class RoomGeneration : MonoBehaviour
                 Vector3Int doorPos = grid.WorldToCell(transform.position);
                 //some math to properly align the door
 
-                Vector3Int doorOffset = (grid.WorldToCell(d.transform.position + _list.rooms[i].transform.position + getDoorOffset(d.facing)) - grid.WorldToCell(_list.rooms[i].transform.position));
+                Vector3Int doorOffset = (grid.WorldToCell(d.transform.position + list[i].transform.position + getDoorOffset(d.facing)) - grid.WorldToCell(list[i].transform.position));
                 
-                doorPos.x -= (int)(_list.rooms[i].transform.position.x) + doorOffset.x;
-                doorPos.y -= (int)(_list.rooms[i].transform.position.y) + doorOffset.y;
-                doorPos.z -= (int)(_list.rooms[i].transform.position.z);
+                doorPos.x -= (int)(list[i].transform.position.x) + doorOffset.x;
+                doorPos.y -= (int)(list[i].transform.position.y) + doorOffset.y;
+                doorPos.z -= (int)(list[i].transform.position.z);
                 Vector3 finalPos = grid.CellToWorld(doorPos);
 
-                roomStats stats = _list.rooms[i].GetComponent<roomStats>();
+                roomStats stats = list[i].GetComponent<roomStats>();
                 
                 if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
-                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name);
+                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
 
-                    Tilemap[] tilemaps = _list.rooms[i].transform.GetComponentsInChildren<Tilemap>();
+                    Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
 
                     ;
 
-                    for (int j = 0; j < _list.rooms[i].transform.childCount; ++j)
+                    for (int j = 0; j < list[i].transform.childCount; ++j)
                     {
-                        GameObject child = _list.rooms[i].transform.GetChild(j).gameObject;
+                        GameObject child = list[i].transform.GetChild(j).gameObject;
 
                         Tilemap t = child.GetComponent<Tilemap>();
 
