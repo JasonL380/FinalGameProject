@@ -58,7 +58,7 @@ public class RoomGeneration : MonoBehaviour
         
         if (Application.isPlaying && !roomGend)
         {
-            //if (!_list.generated)
+            if (!_list.generated)
             {
 
                 
@@ -78,6 +78,8 @@ public class RoomGeneration : MonoBehaviour
                 }
                 else
                 {
+                    print("replacing self with wall at " + transform.position);
+                    Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
                     TileChangeData data = new TileChangeData();
                     data.tile = _list.WallTile;
                     data.transform = _list.wallTransform;
@@ -168,7 +170,7 @@ public class RoomGeneration : MonoBehaviour
                 
                 if (_list.checkFit(stats.min, stats.max, doorPos))
                 {
-                    print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
+                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
 
                     Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
 
