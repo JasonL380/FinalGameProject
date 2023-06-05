@@ -15599,7 +15599,7 @@ GameObject:
   - component: {fileID: 1480792541}
   - component: {fileID: 1480792540}
   m_Layer: 5
-  m_Name: CandleIndicator
+  m_Name: HoldingIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15646,7 +15646,21 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  battery: 0
   candle: {fileID: 685567908}
+  holdingItem: 0
+  flashlightImages:
+  - {fileID: -1327662474, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -1557686385, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -192553813, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: 833825204, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -394841997, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -372388968, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -903677704, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -934464010, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  - {fileID: -1330032575, guid: 9056f0ee5398f574f999eb45cfb618ec, type: 3}
+  flashlight: {fileID: 1651044321}
+  player: {fileID: 1642055619}
 --- !u!114 &1480792541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15852,10 +15866,11 @@ MonoBehaviour:
   lights:
   - {fileID: 685567908}
   - {fileID: 1651044321}
-  numLights: 0100000000000000
+  numLights: 0300000003000000
   candlestxt: {fileID: 536707386}
   batteriestxt: {fileID: 149864958}
   lightIndicator: []
+  flashlight: {fileID: 1651044321}
   walkDir: 0
 --- !u!95 &1642055625
 Animator:
@@ -16083,6 +16098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1651044323}
   - component: {fileID: 1651044322}
+  - component: {fileID: 1651044324}
   m_Layer: 0
   m_Name: flashlight
   m_TagString: Untagged
@@ -16158,6 +16174,23 @@ Transform:
   m_Father: {fileID: 220389724}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 12.2}
+--- !u!114 &1651044324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651044321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e544aad84d74324b910d4ed1a658f56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numBatteries: 1
+  player: {fileID: 1642055619}
+  fLight: {fileID: 150835540}
+  totalBattery: 9
+  currentBattery: 0
 --- !u!1 &1693669686
 GameObject:
   m_ObjectHideFlags: 0
@@ -16465,60 +16498,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1001 &6301221020064393157
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.933575
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.702719
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277835, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301221018939277839, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
-      propertyPath: m_Name
-      value: Drawer
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7b50d28a6b3429747b5703a949592fa7, type: 3}
