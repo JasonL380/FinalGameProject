@@ -53,6 +53,9 @@ namespace DefaultNamespace
 
         [NonSerialized] public Matrix4x4 wallTransform = Matrix4x4.zero;
 
+        public Sprite[] openDoors;
+
+        public Sprite[] closedDoors;
         
         /*public void OnDrawGizmos()
         {
