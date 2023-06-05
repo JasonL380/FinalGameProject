@@ -15716,7 +15716,6 @@ GameObject:
   - component: {fileID: 1642055626}
   - component: {fileID: 1642055627}
   - component: {fileID: 1642055628}
-  - component: {fileID: 1642055629}
   - component: {fileID: 1642055630}
   m_Layer: 7
   m_Name: Player
@@ -16077,18 +16076,6 @@ MonoBehaviour:
   wallMap: {fileID: 1218053564}
   hiddenWallMap: {fileID: 746001927}
   hiddenWallList: []
---- !u!114 &1642055629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642055619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28faebd6873520447a25da7e038a79e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1642055630
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16263,7 +16250,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651044321}
   m_LocalRotation: {x: -0, y: -0, z: 0.10626403, w: 0.994338}
-  m_LocalPosition: {x: -0.27799988, y: 0.26349998, z: 0}
+  m_LocalPosition: {x: 0.02, y: 0.15, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
