@@ -54,7 +54,7 @@ namespace DefaultNamespace
         [NonSerialized] public Matrix4x4 wallTransform;
 
         
-        public void OnDrawGizmos()
+        /*public void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
             int max = (arraySize - borderSize) - arraySize / 2;
@@ -65,7 +65,7 @@ namespace DefaultNamespace
             Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(max,min)));
             Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(min, min)),  _grid.CellToWorld(new Vector3Int(min,max)));
             Gizmos.DrawLine( _grid.CellToWorld(new Vector3Int(max, max)),  _grid.CellToWorld(new Vector3Int(min,max)));
-        }
+        }*/
 
         public void Awake()
         {
