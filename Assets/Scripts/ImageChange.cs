@@ -55,7 +55,7 @@ public class ImageChange : MonoBehaviour
         else if (holdingItem == 2)
         {
             battery = flashlight.GetComponent<Flashlight>().currentBattery - 0.001f;
-            image.sprite = flashlightImages[(int) (battery/(initBattery/9))];
+            image.sprite = flashlightImages[(int) (battery/(initBattery/9))];   
         }
     }
 }
