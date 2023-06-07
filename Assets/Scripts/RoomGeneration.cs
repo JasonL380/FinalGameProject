@@ -51,7 +51,10 @@ public class RoomGeneration : MonoBehaviour
         _list = grid.gameObject.GetComponent<RoomList>();
         isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
         //_renderer = GetComponentInChildren<SpriteRenderer>();
-        
+        if (isBorderDoor)
+        {
+            _list.ungeneneratedDoors += 1;
+        }
         closeDoor();
 
         //print(isBorderDoor);
@@ -60,6 +63,37 @@ public class RoomGeneration : MonoBehaviour
 
     private void Update()
     {
+        if (!roomGend && !_list.generated)
+        {
+            if (generateRoom())
+            {
+                _list.generated = true;
+                _list.roomCount += 1;
+                if (isBorderDoor)
+                {
+                    _list.ungeneneratedDoors -= 1;
+                }
+            }
+            else
+            {
+              //  print("replacing self with wall at " + transform.position);
+                if (isBorderDoor)
+                {
+                    _list.ungeneneratedDoors -= 1;
+                }
+                Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
+                TileChangeData data = new TileChangeData();
+                data.tile = _list.WallTile;
+                data.transform = _list.wallTransform;
+                data.position = grid.WorldToCell(transform.position);
+                _list.walls.SetTile(data, false);
+                
+                Destroy(gameObject);
+            }
+
+
+            roomGend = true;
+        }
         if (Application.isEditor && !Application.isPlaying)
         {
             //_renderer = GetComponentInChildren<SpriteRenderer>();
@@ -148,8 +182,11 @@ public class RoomGeneration : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //TODO: add open animation here
+        
+        openDoor();
         //if no room has generated and the player collides
-        if (!roomGend && collision.name.Equals("Player"))
+        /*if (!roomGend && collision.name.Equals("Player"))
         {
             //Tile tile = new Tile();
 
@@ -163,7 +200,7 @@ public class RoomGeneration : MonoBehaviour
                 _list.generated = true;
                 _list.roomCount += 1;
                 
-                openDoor();
+                
             }
             else
             {
@@ -181,7 +218,7 @@ public class RoomGeneration : MonoBehaviour
             
 
             roomGend = true;
-        }
+        }*/
     }
 
     private void openDoor()
@@ -212,136 +249,156 @@ public class RoomGeneration : MonoBehaviour
 
         
         //get a random room
-        GameObject[] list = isBorderDoor ? _list.endRooms : _list.rooms;
-        
-        Shuffle(list);
-        
+
+
+        Shuffle(_list.generatableRooms);
+
+        List<GameObject> list = _list.generatableRooms;
+
         //randomly picks from the list until it's exhausted or it finds a matching one
         int i;
-        for (i = 0; i < list.Length; ++i)
+        
+
+        bool needOneTime = _list.ungeneneratedDoors <= _list.ungeneratedOneTimeRooms && isBorderDoor;
+        for (i = 0; i < list.Count; ++i)
         {
-            RoomGeneration[] doors = list[i].GetComponentsInChildren<RoomGeneration>();
-
-            foreach (RoomGeneration d in doors)
+            roomStats stats = list[i].GetComponent<roomStats>();
+            if ((!stats.endRoom && !isBorderDoor) || (stats.endRoom && isBorderDoor))
             {
-                if (invertFacing(d.facing) != facing)
+                RoomGeneration[] doors = list[i].GetComponentsInChildren<RoomGeneration>();
+                foreach (RoomGeneration d in doors)
                 {
-                    if (debug)
+                    if (invertFacing(d.facing) != facing)
                     {
-                       // print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
+                        if (debug)
+                        {
+                            // print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": wrong facing dir");
+                        }
+
+                        continue;
                     }
-                    continue;
-                }
-                
-                Vector3Int doorPos = grid.WorldToCell(transform.position);
-                //some math to properly align the door
 
-                Vector3Int doorOffset = (grid.WorldToCell(d.transform.position + list[i].transform.position + getDoorOffset(d.facing)) - grid.WorldToCell(list[i].transform.position));
-                
-                doorPos.x -= (int)(list[i].transform.position.x) + doorOffset.x;
-                doorPos.y -= (int)(list[i].transform.position.y) + doorOffset.y;
-                doorPos.z -= (int)(list[i].transform.position.z);
-                Vector3 finalPos = grid.CellToWorld(doorPos);
+                    Vector3Int doorPos = grid.WorldToCell(transform.position);
+                    //some math to properly align the door
 
-                roomStats stats = list[i].GetComponent<roomStats>();
-                
-                if (_list.checkFit(stats.min, stats.max, doorPos))
-                {
-                    //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
+                    Vector3Int doorOffset =
+                        (grid.WorldToCell(d.transform.position + list[i].transform.position + getDoorOffset(d.facing)) -
+                         grid.WorldToCell(list[i].transform.position));
 
-                    Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
+                    doorPos.x -= (int)(list[i].transform.position.x) + doorOffset.x;
+                    doorPos.y -= (int)(list[i].transform.position.y) + doorOffset.y;
+                    doorPos.z -= (int)(list[i].transform.position.z);
+                    Vector3 finalPos = grid.CellToWorld(doorPos);
 
-                    ;
-
-                    for (int j = 0; j < list[i].transform.childCount; ++j)
+                    //check if the room fits or override the check if a one time room is necessary
+                    if ((_list.checkFit(stats.min, stats.max, doorPos) && !needOneTime) || (stats.oneTime && needOneTime))
                     {
-                        GameObject child = list[i].transform.GetChild(j).gameObject;
+                        if (stats.oneTime)
+                        {
+                            print("Generating one time room " + list[i].name + " at " + finalPos + " needed: " + needOneTime);
+                        }
+                        //print("[RoomGeneration.cs] Generating " + _list.rooms[i].name + " at " + grid.WorldToCell(transform.position));
 
-                        Tilemap t = child.GetComponent<Tilemap>();
+                        Tilemap[] tilemaps = list[i].transform.GetComponentsInChildren<Tilemap>();
 
-                        RoomGeneration r = child.GetComponent<RoomGeneration>();
+                        ;
 
-                        Pathfinder p = child.GetComponent<Pathfinder>();
+                        for (int j = 0; j < list[i].transform.childCount; ++j)
+                        {
+                            GameObject child = list[i].transform.GetChild(j).gameObject;
+
+                            Tilemap t = child.GetComponent<Tilemap>();
+
+                            RoomGeneration r = child.GetComponent<RoomGeneration>();
+
+                            Pathfinder p = child.GetComponent<Pathfinder>();
+                            
+                            if (t != null)
+                            {
+                                if (child.name.Equals("Wall"))
+                                {
+                                    _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
+                                }
+                                else if(child.name.Equals("Floor"))
+                                {
+                                    _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
+                                }
+                            }
+                            else if(r != null)
+                            {
+                                if (r.facing != d.facing)
+                                {
+                                    Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                                }
+                            }
+                            else if(p != null)
+                            {
+                                GameObject pathfinder = Instantiate(child, child.transform.position + finalPos, Quaternion.identity);
+                                pathfinder.transform.parent = grid.gameObject.transform;
+
+                                Pathfinder p1 = pathfinder.GetComponent<Pathfinder>();
+
+                                for (int k = 0; k < p1.waypoints.Length; ++k)
+                                {
+                                    p1.waypoints[k] += (Vector2) finalPos;
+                                }
+                            }
+                            else
+                            {
+                                Instantiate(child, child.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                            }
+                        }
+
+                        //if room is one time remove it
+                        if (stats.oneTime)
+                        {
+                            _list.ungeneratedOneTimeRooms -= 1;
+                            _list.generatableRooms.Remove(list[i]);
+                        }
                         
-                        if (t != null)
-                        {
-                            if (child.name.Equals("Wall"))
-                            {
-                                _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
-                            }
-                            else if(child.name.Equals("Floor"))
-                            {
-                                _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
-                            }
-                        }
-                        else if(r != null)
-                        {
-                            if (r.facing != d.facing)
-                            {
-                                Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
-                            }
-                        }
-                        else if(p != null)
-                        {
-                            GameObject pathfinder = Instantiate(child, child.transform.position + finalPos, Quaternion.identity);
-                            pathfinder.transform.parent = grid.gameObject.transform;
-
-                            Pathfinder p1 = pathfinder.GetComponent<Pathfinder>();
-
-                            for (int k = 0; k < p1.waypoints.Length; ++k)
-                            {
-                                p1.waypoints[k] += (Vector2) finalPos;
-                            }
-                        }
-                        else
-                        {
-                            Instantiate(child, child.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
-                        }
-                    }
-
-                    //make the room
-                    /*GameObject roomClone = Instantiate(_list.rooms[i]);
-                    roomClone.transform.parent = grid.transform;
-                    roomClone.SetActive(true);
-                
-                    Debug.DrawLine(transform.position, d.transform.position + finalPos, Color.magenta);
-                    //put the room in it's proper place
-                    roomClone.transform.position = finalPos;
+                        //make the room
+                        /*GameObject roomClone = Instantiate(_list.rooms[i]);
+                        roomClone.transform.parent = grid.transform;
+                        roomClone.SetActive(true);
                     
-                    RoomGeneration[] doors1 = roomClone.GetComponentsInChildren<RoomGeneration>();
+                        Debug.DrawLine(transform.position, d.transform.position + finalPos, Color.magenta);
+                        //put the room in it's proper place
+                        roomClone.transform.position = finalPos;
+                        
+                        RoomGeneration[] doors1 = roomClone.GetComponentsInChildren<RoomGeneration>();
 
-                    foreach (RoomGeneration d1 in doors)
-                    {
-                        if (d1.facing == d.facing)
+                        foreach (RoomGeneration d1 in doors)
                         {
-                            d1.enabled = false;
-                            break;
-                        }
-                    }*/
+                            if (d1.facing == d.facing)
+                            {
+                                d1.enabled = false;
+                                break;
+                            }
+                        }*/
 
-                    //don't let any other rooms generate
-                    roomGend = true; 
-                    return true;
-                }
-                else
-                {
-                    if (debug)
-                    {
-                        //print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
+                        //don't let any other rooms generate
+                        roomGend = true; 
+                        return true;
                     }
+                    else
+                    {
+                        if (debug)
+                        {
+                            //print("[RoomGeneration.cs] Failed to place " + _list.rooms[i].name + ": room does not fit");
+                        }
 
-                    return false;
+                        return false;
+                    }
                 }
             }
         }
-
         return false;
     }
     
-    void Shuffle (GameObject[] deck) {
-        for (int i = 0; i < deck.Length; i++) {
+    void Shuffle (List<GameObject> deck) {
+        for (int i = 0; i < deck.Count; i++) {
             GameObject temp = deck[i];
-            int randomIndex = UnityEngine.Random.Range(i, deck.Length);
+            int randomIndex = UnityEngine.Random.Range(i, deck.Count);
             deck[i] = deck[randomIndex];
             deck[randomIndex] = temp;
         }

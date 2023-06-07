@@ -22,6 +22,10 @@ namespace DefaultNamespace
         public GameObject[] rooms;
 
         public GameObject[] endRooms;
+
+        public GameObject[] goalRooms;
+        
+        public List<GameObject> generatableRooms;
         
         public int roomCount;
 
@@ -37,7 +41,6 @@ namespace DefaultNamespace
 
         public Tilemap doors;
         
-        public Dictionary<TileBase, TileBase> shortToTall;
 
         [Tooltip("The max size of the map, this is one dimension of a square area")]
         public int maxSize;
@@ -50,12 +53,17 @@ namespace DefaultNamespace
         [NonSerialized] public int arraySize;
 
         public Tile WallTile;
-
         [NonSerialized] public Matrix4x4 wallTransform = Matrix4x4.zero;
 
         public Sprite[] openDoors;
 
         public Sprite[] closedDoors;
+
+        public int ungeneneratedDoors = 0;
+
+        public int ungeneratedOneTimeRooms;
+        
+        
         
         /*public void OnDrawGizmos()
         {
@@ -72,6 +80,20 @@ namespace DefaultNamespace
 
         public void Awake()
         {
+            generatableRooms = new List<GameObject>();
+
+            ungeneratedOneTimeRooms = goalRooms.Length;
+            
+            foreach (GameObject g in rooms)
+            {
+                generatableRooms.Add(g);
+            }
+
+            foreach (GameObject g in endRooms)
+            {
+                generatableRooms.Add(g);
+            }
+            
             arraySize = maxSize + borderSize * 2;
             mapData = new Byte[arraySize, arraySize];
 
@@ -109,15 +131,18 @@ namespace DefaultNamespace
             }
         }
 
+        private bool addOneTime = false;
         public void FixedUpdate()
         {
-            if (roomCount < maxRooms)
+            generated = false;
+            
+            if (roomCount >= 20 && !addOneTime)
             {
-                generated = false;
-            }
-            else
-            {
-                generated = true;
+                addOneTime = true;
+                foreach (GameObject g in goalRooms)
+                {
+                    generatableRooms.Add(g);
+                }
             }
         }
 

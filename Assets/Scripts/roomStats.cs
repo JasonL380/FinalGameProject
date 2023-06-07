@@ -16,9 +16,13 @@ public class roomStats : MonoBehaviour
     public Vector3Int min;
     public Vector3Int max;
 
+    public bool endRoom = false;
+    public bool oneTime = false;
+    
     [Tooltip("Trigger this to determine the bounds of this room automatically")]
     public bool generate;
 
+    
     private Grid _grid;
 
     private void Start()
