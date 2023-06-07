@@ -16380,6 +16380,7 @@ GameObject:
   - component: {fileID: 1651044323}
   - component: {fileID: 1651044322}
   - component: {fileID: 1651044324}
+  - component: {fileID: 1651044325}
   m_Layer: 0
   m_Name: flashlight
   m_TagString: Untagged
@@ -16472,6 +16473,22 @@ MonoBehaviour:
   fLight: {fileID: 150835540}
   totalBattery: 18000
   currentBattery: 0
+--- !u!114 &1651044325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651044321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663a7430698d44e8810375085e514841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1651044322}
+  particleSystem: {fileID: 0}
+  holder: {fileID: 220389725}
+  hasHolder: 0
 --- !u!1 &1693669686
 GameObject:
   m_ObjectHideFlags: 0
