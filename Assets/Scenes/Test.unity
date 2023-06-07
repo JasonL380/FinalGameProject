@@ -16060,7 +16060,9 @@ MonoBehaviour:
   onGround: 1
   LandingTarget: {fileID: 1284431007}
   holdingItem: 0
-  lights: []
+  lights:
+  - {fileID: 685567908}
+  - {fileID: 1651044321}
   numLights: 0000000000000000
   candlestxt: {fileID: 536707386}
   batteriestxt: {fileID: 149864958}
@@ -16468,7 +16470,7 @@ MonoBehaviour:
   numBatteries: 1
   player: {fileID: 1642055619}
   fLight: {fileID: 150835540}
-  totalBattery: 18
+  totalBattery: 18000
   currentBattery: 0
 --- !u!1 &1693669686
 GameObject:

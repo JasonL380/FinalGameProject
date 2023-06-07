@@ -58,7 +58,7 @@ namespace DefaultNamespace
             myAnim = GetComponent<Animator>();
             if (flashlight != null)
             {
-                numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+                //numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
             }
             else
             {
