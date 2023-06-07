@@ -51,10 +51,7 @@ public class RoomGeneration : MonoBehaviour
         _list = grid.gameObject.GetComponent<RoomList>();
         isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
         //_renderer = GetComponentInChildren<SpriteRenderer>();
-        if (isBorderDoor)
-        {
-            _list.ungeneneratedDoors += 1;
-        }
+        _list.ungeneneratedDoors += 1;
         closeDoor();
 
         //print(isBorderDoor);
@@ -69,18 +66,12 @@ public class RoomGeneration : MonoBehaviour
             {
                 _list.generated = true;
                 _list.roomCount += 1;
-                if (isBorderDoor)
-                {
-                    _list.ungeneneratedDoors -= 1;
-                }
+                _list.ungeneneratedDoors -= 1;
             }
             else
             {
               //  print("replacing self with wall at " + transform.position);
-                if (isBorderDoor)
-                {
-                    _list.ungeneneratedDoors -= 1;
-                }
+                _list.ungeneneratedDoors -= 1;
                 Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
                 TileChangeData data = new TileChangeData();
                 data.tile = _list.WallTile;
@@ -259,7 +250,7 @@ public class RoomGeneration : MonoBehaviour
         int i;
         
 
-        bool needOneTime = _list.ungeneneratedDoors <= _list.ungeneratedOneTimeRooms && isBorderDoor;
+        bool needOneTime = _list.ungeneneratedDoors <= _list.ungeneratedOneTimeRooms && _list.ungeneratedOneTimeRooms > 0;
         for (i = 0; i < list.Count; ++i)
         {
             roomStats stats = list[i].GetComponent<roomStats>();
@@ -317,11 +308,11 @@ public class RoomGeneration : MonoBehaviour
                             {
                                 if (child.name.Equals("Wall"))
                                 {
-                                    _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2);
+                                    _list.tilemapCopy(t, _list.walls, stats.min, stats.max, doorPos, 2, false);
                                 }
                                 else if(child.name.Equals("Floor"))
                                 {
-                                    _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1);
+                                    _list.tilemapCopy(t, _list.floor, stats.min, stats.max, doorPos, 1, needOneTime);
                                 }
                             }
                             else if(r != null)
