@@ -35,7 +35,10 @@ namespace DefaultNamespace
         {
             if (hasHolder)
             {
-                spriteRenderer.sortingOrder = holder.order;
+                if(particleSystem != null)
+                {
+                    spriteRenderer.sortingOrder = holder.order;
+                }
                 particleSystem.sortingOrder = holder.order + 1;
             }
         }
