@@ -49,7 +49,7 @@ namespace DefaultNamespace
 
         [NonSerialized] public int arraySize;
 
-        public TileBase WallTile;
+        public Tile WallTile;
 
         [NonSerialized] public Matrix4x4 wallTransform = Matrix4x4.zero;
 

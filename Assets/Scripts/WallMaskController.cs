@@ -24,12 +24,27 @@ namespace DefaultNamespace
 
         private Grid _grid;
 
+        private RoomList _list;
+
+        private Tile hiddenTile;
+
+        private Tile normalTile;
+        
         private void Start()
         {
             _collider2D = GetComponent<Collider2D>();
             _grid = FindObjectOfType<Grid>();
 
+            _list = _grid.GetComponent<RoomList>();
+            
             hiddenWallList = new Vector3Int[6];
+
+            normalTile = _list.WallTile;
+            
+            hiddenTile = new Tile();
+            
+            hiddenTile.sprite = null;
+            hiddenTile.colliderType = Tile.ColliderType.Grid;
         }
 
         private void Update()
@@ -72,21 +87,18 @@ namespace DefaultNamespace
             if ((mask.transform.position - curPos).sqrMagnitude > 2)
             {
                 curPos = intersect;
-                //print("updating edge walls");
                 for (int i = 0; i < 6; ++i)
                 {
                     if (hiddenWallList[i] != new Vector3Int(Int32.MinValue, Int32.MinValue))
                     {
+                        
+                        print("updating edge walls");
                         TileChangeData data = new TileChangeData();
-                        data.transform = hiddenWallMap.GetTransformMatrix(hiddenWallList[i]);
+                        data.transform = wallMap.GetTransformMatrix(hiddenWallList[i]);
                         data.position = hiddenWallList[i];
-                        data.tile = hiddenWallMap.GetTile(hiddenWallList[i]);
-
+                        data.tile = _list.WallTile;
+                        
                         wallMap.SetTile(data, false);
-
-                        data.tile = null;
-                                
-                        hiddenWallMap.SetTile(data, false);
 
                         hiddenWallList[i] = hiddenWallList[i];
                     }
@@ -113,12 +125,8 @@ namespace DefaultNamespace
                         TileChangeData data = new TileChangeData();
                         data.transform = wallMap.GetTransformMatrix(gridPoint);
                         data.position = gridPoint;
-                        data.tile = wallMap.GetTile(gridPoint);
+                        data.tile = hiddenTile;
 
-                        hiddenWallMap.SetTile(data, false);
-
-                        data.tile = null;
-                                
                         wallMap.SetTile(data, false);
 
                         hiddenWallList[i] = gridPoint;
@@ -143,12 +151,8 @@ namespace DefaultNamespace
                         TileChangeData data = new TileChangeData();
                         data.transform = wallMap.GetTransformMatrix(gridPoint);
                         data.position = gridPoint;
-                        data.tile = wallMap.GetTile(gridPoint);
+                        data.tile = hiddenTile;
 
-                        hiddenWallMap.SetTile(data, false);
-
-                        data.tile = null;
-                                
                         wallMap.SetTile(data, false);
 
                         hiddenWallList[i + 3] = gridPoint;

@@ -56,12 +56,26 @@ namespace DefaultNamespace
             mySpriteRenderer = GetComponent<SpriteRenderer>();
 
             myAnim = GetComponent<Animator>();
-            numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+            if (flashlight != null)
+            {
+                numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+            }
+            else
+            {
+                numLights[1] = 0;
+            }
         }
 
         private void Update()
         {
-            numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+            if (flashlight != null)
+            {
+                numLights[1] = flashlight.GetComponent<Flashlight>().numBatteries;
+            }
+            else
+            {
+                numLights[1] = 0;
+            }
 
             candlestxt.text = "x" + numLights[0];
             batteriestxt.text = "x" + numLights[1];

@@ -50,7 +50,7 @@ public class RoomGeneration : MonoBehaviour
         grid = FindObjectOfType<Grid>();
         _list = grid.gameObject.GetComponent<RoomList>();
         isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
-        _renderer = GetComponentInChildren<SpriteRenderer>();
+        //_renderer = GetComponentInChildren<SpriteRenderer>();
         
         closeDoor();
 
@@ -60,8 +60,6 @@ public class RoomGeneration : MonoBehaviour
 
     private void Update()
     {
-        
-        print("update");
         if (Application.isEditor && !Application.isPlaying)
         {
             //_renderer = GetComponentInChildren<SpriteRenderer>();
