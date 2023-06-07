@@ -188,12 +188,23 @@ public class RoomGeneration : MonoBehaviour
 
     private void openDoor()
     {
+        open = true;
         _renderer.sprite = _list.openDoors[facing];
+        _renderer.sortingOrder = 3;
     }
 
     private void closeDoor()
     {
+        open = false;
         _renderer.sprite = _list.closedDoors[facing];
+        if (facing < 2)
+        {
+            _renderer.sortingOrder = 3;
+        }
+        else
+        {
+            _renderer.sortingOrder = 1;
+        }
     }
     
     private bool generateRoom()
