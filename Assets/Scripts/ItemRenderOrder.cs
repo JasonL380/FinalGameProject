@@ -37,9 +37,9 @@ namespace DefaultNamespace
             {
                 if(particleSystem != null)
                 {
-                    spriteRenderer.sortingOrder = holder.order;
+                    particleSystem.sortingOrder = holder.order + 1;
                 }
-                particleSystem.sortingOrder = holder.order + 1;
+                spriteRenderer.sortingOrder = holder.order;
             }
         }
     }
