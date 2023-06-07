@@ -28,26 +28,13 @@ public class RoomGeneration : MonoBehaviour
     private Grid grid;
     private RoomList _list;
 
-    private SpriteRenderer _renderer;
+    public SpriteRenderer _renderer;
 
     public bool exitOnly = false;
 
     private bool isBorderDoor;
-
-    private void Start()
-    {
-        //roomLayer = LayerMask.GetMask("room");
-
-        grid = FindObjectOfType<Grid>();
-        _list = grid.gameObject.GetComponent<RoomList>();
-        _renderer = GetComponent<SpriteRenderer>();
-        isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
-        
-        closeDoor();
-
-        //print(isBorderDoor);
-    }
-
+    
+    
     [Tooltip("the way into the next room through the door up right = 0, up left = 1, down left = 2, down right = 3"), Range(0, 3)]
     public int facing;
 
@@ -56,12 +43,28 @@ public class RoomGeneration : MonoBehaviour
     //has the room generated
     public bool roomGend;
 
+    private void Start()
+    {
+        //roomLayer = LayerMask.GetMask("room");
+
+        grid = FindObjectOfType<Grid>();
+        _list = grid.gameObject.GetComponent<RoomList>();
+        isBorderDoor = _list.inBorder(grid.WorldToCell(transform.position));
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        
+        closeDoor();
+
+        //print(isBorderDoor);
+    }
+
+
     private void Update()
     {
         
         print("update");
         if (Application.isEditor && !Application.isPlaying)
         {
+            //_renderer = GetComponentInChildren<SpriteRenderer>();
             //print("update");
             if (open)
             {
