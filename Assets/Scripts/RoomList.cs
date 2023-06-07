@@ -61,7 +61,7 @@ namespace DefaultNamespace
 
         public int ungeneneratedDoors = 0;
 
-        public int ungeneratedOneTimeRooms;
+        public int ungeneratedOneTimeRooms = 0;
         
         
         
@@ -81,8 +81,6 @@ namespace DefaultNamespace
         public void Awake()
         {
             generatableRooms = new List<GameObject>();
-
-            ungeneratedOneTimeRooms = goalRooms.Length;
             
             foreach (GameObject g in rooms)
             {
@@ -139,6 +137,9 @@ namespace DefaultNamespace
             if (roomCount >= 20 && !addOneTime)
             {
                 addOneTime = true;
+                
+                    
+                ungeneratedOneTimeRooms = goalRooms.Length;
                 foreach (GameObject g in goalRooms)
                 {
                     generatableRooms.Add(g);
@@ -146,7 +147,7 @@ namespace DefaultNamespace
             }
         }
 
-        public void tilemapCopy(Tilemap src, Tilemap dest, Vector3Int min, Vector3Int max, Vector3Int offset, byte type)
+        public void tilemapCopy(Tilemap src, Tilemap dest, Vector3Int min, Vector3Int max, Vector3Int offset, byte type, bool overwriteWalls)
         {
             //print("copying " + src.name + " to " + dest.name + " bounds: " + min + ", " + max + " offset: " + offset);
 
@@ -193,6 +194,12 @@ namespace DefaultNamespace
                         data.position = currentPos + offset;
                         data.transform = src.GetTransformMatrix(currentPos);
                         dest.SetTile(data, false);
+
+                        if (overwriteWalls)
+                        {
+                            data.tile = null;
+                            walls.SetTile(data, false);
+                        }
                         
                         mapDataSet(currentPos.x + offset.x, currentPos.y + offset.y, type);
                     }
