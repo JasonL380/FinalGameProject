@@ -373,7 +373,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0, b: 0, a: 0.5529412}
+      maxColor: {r: 0.07084372, g: 0.07120133, b: 0.0754717, a: 0.3764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -815,9 +815,9 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0.52
     donutRadius: 0.2
-    m_Position: {x: -0.10017045, y: 0.03629069, z: 0}
+    m_Position: {x: -0.12841052, y: 0.052175727, z: 0}
     m_Rotation: {x: -0, y: 0, z: 0.4310462}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
@@ -898,7 +898,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.03261735
+      value: 0.045011856
       mode: 0
       spread: 0
       speed:
