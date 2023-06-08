@@ -47,13 +47,20 @@ public class ImageChange : MonoBehaviour
     {
         holdingItem = player.GetComponent<PlayerController>().holdingItem;
 
+        if (holdingItem == 0 )
+        {
+            image.enabled = false;
+        }
+        
         if (holdingItem == 1)
         {
+            image.enabled = true;
             image.sprite = candle.GetComponent<SpriteRenderer>().sprite;
         }
 
         else if (holdingItem == 2)
         {
+            image.enabled = true;
             battery = flashlight.GetComponent<Flashlight>().currentBattery - 0.001f;
             image.sprite = flashlightImages[(int) (battery/(initBattery/9))];   
         }
