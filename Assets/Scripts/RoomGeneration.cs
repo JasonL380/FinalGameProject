@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
-
+using Random = UnityEngine.Random;
 
 
 [ExecuteInEditMode]
@@ -337,6 +337,24 @@ public class RoomGeneration : MonoBehaviour
                             else
                             {
                                 Instantiate(child, child.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                            }
+                        }
+
+                        //generate drawers
+                        //get a list of places a drawer can generate
+                        List<RoomList.DrawerPos> drawerPosList = _list.getEdges(stats.min, stats.max, doorPos);
+
+                        foreach (RoomList.DrawerPos drawerPos in drawerPosList)
+                        {
+                            int rand = Random.Range(0, _list.drawerRarity);
+                            if (rand == 0)
+                            {
+                                GameObject[] objects = drawerPos.side == 0 ? _list.rightObjects : _list.leftObjects;
+
+                                rand = Random.Range(0, objects.Length);
+
+                                Instantiate(objects[rand], grid.CellToWorld(drawerPos.pos) + new Vector3(0, 0.4f), Quaternion.identity,
+                                    grid.gameObject.transform);
                             }
                         }
 

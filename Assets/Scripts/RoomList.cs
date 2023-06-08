@@ -62,8 +62,11 @@ namespace DefaultNamespace
         public int ungeneneratedDoors = 0;
 
         public int ungeneratedOneTimeRooms = 0;
-        
-        
+
+        public int drawerRarity = 10;
+
+        public GameObject[] leftObjects;
+        public GameObject[] rightObjects;
         
         /*public void OnDrawGizmos()
         {
@@ -147,6 +150,46 @@ namespace DefaultNamespace
             }
         }
 
+        public struct DrawerPos
+        {
+            public Vector3Int pos;
+            //right = 0, left = 1
+            public int side;
+        }
+
+        public List<DrawerPos> getEdges(Vector3Int min, Vector3Int max, Vector3Int offset)
+        {
+            List<DrawerPos> edges = new List<DrawerPos>();
+
+            Vector3Int currentPos = Vector3Int.zero;
+
+            
+            for (currentPos.x = min.x + offset.x; currentPos.x <= max.x + offset.x; ++currentPos.x)
+            {
+                for (currentPos.y = min.y + offset.y; currentPos.y <= max.y + offset.y; ++currentPos.y)
+                {
+                    if (floor.HasTile(currentPos))
+                    {
+                        if (walls.HasTile(currentPos + new Vector3Int(0, 1)))
+                        {
+                            DrawerPos e = new DrawerPos();
+                            e.pos = currentPos;
+                            e.side = 0;
+                            edges.Add(e);
+                        }
+                        else if(walls.HasTile(currentPos + new Vector3Int(1, 0)))
+                        {
+                            DrawerPos e = new DrawerPos();
+                            e.pos = currentPos;
+                            e.side = 1;
+                            edges.Add(e);
+                        }
+                    }
+                }
+            }
+            return edges;
+        }
+        
         public void tilemapCopy(Tilemap src, Tilemap dest, Vector3Int min, Vector3Int max, Vector3Int offset, byte type, bool overwriteWalls)
         {
             //print("copying " + src.name + " to " + dest.name + " bounds: " + min + ", " + max + " offset: " + offset);
