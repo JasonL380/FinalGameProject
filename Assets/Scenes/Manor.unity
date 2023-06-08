@@ -16080,6 +16080,7 @@ MonoBehaviour:
   batteriestxt: {fileID: 149864958}
   lightIndicator: []
   flashlight: {fileID: 1651044321}
+  pLight: {fileID: 2078078432}
   walkDir: 0
 --- !u!95 &1642055625
 Animator:

@@ -37,6 +37,8 @@ namespace DefaultNamespace
 
         public GameObject flashlight;
 
+        public GameObject pLight;
+
         //up right = 0, up left = 1, down left = 2, down right = 3
         public int walkDir = 0;
 
@@ -84,10 +86,12 @@ namespace DefaultNamespace
             if (holdingItem > 0)
             {
                 myAnim.SetBool("Holding", true);
+                pLight.SetActive(false);
             }
             else
             {
                 myAnim.SetBool("Holding", false);
+                pLight.SetActive(true);
             }
 
             if(Input.GetKeyDown(KeyCode.Q))
