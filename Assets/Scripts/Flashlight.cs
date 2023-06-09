@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    public int numBatteries;
 
     public GameObject player;
 
@@ -17,7 +16,6 @@ public class Flashlight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        numBatteries = player.GetComponent<PlayerController>().numLights[1];
         currentBattery = totalBattery;
     }
 
@@ -30,14 +28,14 @@ public class Flashlight : MonoBehaviour
         }
         else
         {
-            if (numBatteries > 0)
+            if (player.GetComponent<PlayerController>().numLights[1] > 0)
             {
                 currentBattery = totalBattery;
-                numBatteries--;
+                player.GetComponent<PlayerController>().numLights[1]--;
             }
         }
 
-        if (numBatteries == 0 && currentBattery < 1)
+        if (player.GetComponent<PlayerController>().numLights[1] == 0 && currentBattery < 1)
         {
             fLight.SetActive(false);
         }
