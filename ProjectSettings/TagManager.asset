@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - ItemHolder
+  - flashlight
   layers:
   - Default
   - TransparentFX
