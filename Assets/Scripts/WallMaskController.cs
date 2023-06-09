@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -50,8 +48,8 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            RaycastHit2D left = Physics2D.Raycast(transform.position, new Vector2(-1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
-            RaycastHit2D right = Physics2D.Raycast(transform.position, new Vector2(1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
+            RaycastHit2D left = Physics2D.Raycast(transform.position + new Vector3(0, 0.15f), new Vector2(-1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
+            RaycastHit2D right = Physics2D.Raycast(transform.position + new Vector3(0, 0.15f), new Vector2(1, 0.5f), Mathf.Infinity, LayerMask.GetMask("Wall", "door"));
             //print("left: " + left.point + " right: " + right.point);
 
             Vector2 leftPoint = left.point;
@@ -69,119 +67,117 @@ namespace DefaultNamespace
             }
             
             
-            Debug.DrawLine(leftPoint, transform.position, Color.red);
-            Debug.DrawLine(rightPoint, transform.position, Color.red);
+            Debug.DrawLine(leftPoint, transform.position + new Vector3(0, 0.15f), Color.red);
+            Debug.DrawLine(rightPoint, transform.position + new Vector3(0, 0.15f), Color.red);
 
             Vector2 intersect = findIntersect(new Vector3(leftPoint.x, leftPoint.y, 0.5f),
                 new Vector3(rightPoint.x, rightPoint.y, -0.5f));
-            Debug.DrawLine(intersect, transform.position, Color.green);
+            Debug.DrawLine(intersect, transform.position + new Vector3(0, 0.15f), Color.green);
 
             //intersect.x = ((int) intersect.x * (int) 64) / 64f;
             //intersect.y = ((int) intersect.y * (int) 64) / 64f;
             if (!_collider2D.IsTouchingLayers(LayerMask.GetMask("door"))) // don't update inside a doorway
             {
                 mask.transform.position = intersect;
-            }
-
-
-            if ((mask.transform.position - curPos).sqrMagnitude > 2)
-            {
-                curPos = intersect;
-                foreach (Vector3Int wall in hiddenWallList.ToArray())
+                if ((mask.transform.position - curPos).sqrMagnitude > 2)
                 {
-                    if (wall != new Vector3Int(Int32.MinValue, Int32.MinValue))
+                    curPos = intersect;
+                    foreach (Vector3Int wall in hiddenWallList.ToArray())
                     {
+                        if (wall != new Vector3Int(Int32.MinValue, Int32.MinValue))
+                        {
+                            
+                            //print("updating edge walls");
+                            TileChangeData data = new TileChangeData();
+                            data.transform = wallMap.GetTransformMatrix(wall);
+                            data.position = wall;
+                            data.tile = _list.WallTile;
+                            
+                            wallMap.SetTile(data, false);
+
+                            hiddenWallList.Remove(wall);
+                        }
+                    }
+
+                    RaycastHit2D leftDown = Physics2D.Raycast(leftPoint - new Vector2(-0.25f, 0.125f), new Vector2(-1, -0.5f), Mathf.Infinity,
+                    LayerMask.GetMask("Wall", "door"));
+                
+                    RaycastHit2D rightDown = Physics2D.Raycast(rightPoint  - new Vector2(0.25f, 0.125f), new Vector2(1, -0.5f), Mathf.Infinity,
+                    LayerMask.GetMask("Wall", "door"));
+                    
+                    //left down walls
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        Vector2 point = leftDown.point - new Vector2(0.25f, 0.125f) + (new Vector2(0.5f, -0.25f) * i);
+                        Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.blue, 100);
+
+                        //print("right down " + i);
+                    
+                        Vector3Int gridPoint = _grid.WorldToCell(point);
+                    
+                        if (wallMap.HasTile(gridPoint))
+                        {
+                            TileChangeData data = new TileChangeData();
+                            data.transform = wallMap.GetTransformMatrix(gridPoint);
+                            data.position = gridPoint;
+                            data.tile = hiddenTile;
+
+                            wallMap.SetTile(data, false);
+
+                            hiddenWallList.Add(gridPoint);
+                        }
                         
-                        //print("updating edge walls");
-                        TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(wall);
-                        data.position = wall;
-                        data.tile = _list.WallTile;
+                        gridPoint += new Vector3Int(-1, 0);
                         
-                        wallMap.SetTile(data, false);
+                        if (wallMap.HasTile(gridPoint))
+                        {
+                            TileChangeData data = new TileChangeData();
+                            data.transform = wallMap.GetTransformMatrix(gridPoint);
+                            data.position = gridPoint;
+                            data.tile = hiddenTile;
 
-                        hiddenWallList.Remove(wall);
-                    }
-                }
+                            wallMap.SetTile(data, false);
 
-                RaycastHit2D leftDown = Physics2D.Raycast(leftPoint - new Vector2(-0.25f, 0.125f), new Vector2(-1, -0.5f), Mathf.Infinity,
-                LayerMask.GetMask("Wall", "door"));
-            
-                RaycastHit2D rightDown = Physics2D.Raycast(rightPoint  - new Vector2(0.25f, 0.125f), new Vector2(1, -0.5f), Mathf.Infinity,
-                LayerMask.GetMask("Wall", "door"));
-                
-                //left down walls
-                for (int i = 0; i < 3; ++i)
-                {
-                    Vector2 point = leftDown.point - new Vector2(0.25f, 0.125f) + (new Vector2(0.5f, -0.25f) * i);
-                    Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.blue, 100);
-
-                    //print("right down " + i);
-                
-                    Vector3Int gridPoint = _grid.WorldToCell(point);
-                
-                    if (wallMap.HasTile(gridPoint))
-                    {
-                        TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(gridPoint);
-                        data.position = gridPoint;
-                        data.tile = hiddenTile;
-
-                        wallMap.SetTile(data, false);
-
-                        hiddenWallList.Add(gridPoint);
+                            hiddenWallList.Add(gridPoint);
+                        }
                     }
                     
-                    gridPoint += new Vector3Int(-1, 0);
                     
-                    if (wallMap.HasTile(gridPoint))
+                    //right down walls
+                    for (int i = 0; i < 3; ++i)
                     {
-                        TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(gridPoint);
-                        data.position = gridPoint;
-                        data.tile = hiddenTile;
+                        Vector2 point = rightDown.point - new Vector2(-0.25f, 0.125f) + (new Vector2(-0.5f, -0.25f) * i);
+                        Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.blue, 100);
 
-                        wallMap.SetTile(data, false);
-
-                        hiddenWallList.Add(gridPoint);
-                    }
-                }
-                
-                
-                //right down walls
-                for (int i = 0; i < 3; ++i)
-                {
-                    Vector2 point = rightDown.point - new Vector2(-0.25f, 0.125f) + (new Vector2(-0.5f, -0.25f) * i);
-                    Debug.DrawLine(point, point + new Vector2(0, 0.1f), Color.blue, 100);
-
-                    //print("right down " + i);
-                
-                    Vector3Int gridPoint = _grid.WorldToCell(point);
-                
-                    if (wallMap.HasTile(gridPoint))
-                    {
-                        TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(gridPoint);
-                        data.position = gridPoint;
-                        data.tile = hiddenTile;
-
-                        wallMap.SetTile(data, false);
-
-                        hiddenWallList.Add(gridPoint);
-                    }
-
-                    gridPoint += new Vector3Int(0, -1);
+                        //print("right down " + i);
                     
-                    if (wallMap.HasTile(gridPoint))
-                    {
-                        TileChangeData data = new TileChangeData();
-                        data.transform = wallMap.GetTransformMatrix(gridPoint);
-                        data.position = gridPoint;
-                        data.tile = hiddenTile;
+                        Vector3Int gridPoint = _grid.WorldToCell(point);
+                    
+                        if (wallMap.HasTile(gridPoint))
+                        {
+                            TileChangeData data = new TileChangeData();
+                            data.transform = wallMap.GetTransformMatrix(gridPoint);
+                            data.position = gridPoint;
+                            data.tile = hiddenTile;
 
-                        wallMap.SetTile(data, false);
+                            wallMap.SetTile(data, false);
 
-                        hiddenWallList.Add(gridPoint);
+                            hiddenWallList.Add(gridPoint);
+                        }
+
+                        gridPoint += new Vector3Int(0, -1);
+                        
+                        if (wallMap.HasTile(gridPoint))
+                        {
+                            TileChangeData data = new TileChangeData();
+                            data.transform = wallMap.GetTransformMatrix(gridPoint);
+                            data.position = gridPoint;
+                            data.tile = hiddenTile;
+
+                            wallMap.SetTile(data, false);
+
+                            hiddenWallList.Add(gridPoint);
+                        }
                     }
                 }
             }
