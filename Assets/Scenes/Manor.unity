@@ -16242,7 +16242,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b74beb51d032a174a9616e119c5380bb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 63626b2b360681221b9b4329ae0b4080, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -16707,8 +16707,7 @@ MonoBehaviour:
   - {fileID: 4645490969225385246, guid: 26e96a0824d913d749ce3d46fe5c4ba6, type: 3}
   - {fileID: 4645490969225385246, guid: 5a36c96cfba08c8fa95540c01a287b90, type: 3}
   - {fileID: 4645490969225385246, guid: 1d7224ae76c365ef69d4cfb8ae101b60, type: 3}
-  goalRooms:
-  - {fileID: 7312965732056077879, guid: 80c4618b3565fe46683642e55bd7e0ee, type: 3}
+  goalRooms: []
   generatableRooms: []
   roomCount: 0
   maxRooms: 1000
@@ -16729,7 +16728,7 @@ MonoBehaviour:
   - {fileID: -1668720773, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
   - {fileID: -442418432, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
   - {fileID: 10745653, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
-  ungeneneratedDoors: 0
+  ungeneneratedDoors: -1
   ungeneratedOneTimeRooms: 0
   drawerRarity: 10
   leftObjects:
