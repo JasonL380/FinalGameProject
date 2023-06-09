@@ -263,26 +263,29 @@ public class RoomGeneration : MonoBehaviour
 
                         //generate drawers
                         //get a list of places a drawer can generate
-                        List<RoomList.DrawerPos> drawerPosList = _list.getEdges(stats.min, stats.max, doorPos);
 
-                        foreach (RoomList.DrawerPos drawerPos in drawerPosList)
+                        if (!stats.oneTime)
                         {
-                            int rand = Random.Range(0, _list.drawerRarity);
-                            if (rand == 0)
+                            List<RoomList.DrawerPos> drawerPosList = _list.getEdges(stats.min, stats.max, doorPos);
+
+                            foreach (RoomList.DrawerPos drawerPos in drawerPosList)
                             {
-                                GameObject[] objects = drawerPos.side == 0 ? _list.rightObjects : _list.leftObjects;
-
-                                rand = Random.Range(0, objects.Length);
-
-                                GameObject furnish = Instantiate(objects[rand], grid.CellToWorld(drawerPos.pos) + new Vector3(0, 0.4f), Quaternion.identity,
-                                    grid.gameObject.transform);
-                                if(furnish.GetComponent<InteractableObject>() != null)
+                                int rand = Random.Range(0, _list.drawerRarity);
+                                if (rand == 0)
                                 {
-                                    GetComponentInParent<RoomList>().numInteractableObjects++;
+                                    GameObject[] objects = drawerPos.side == 0 ? _list.rightObjects : _list.leftObjects;
+
+                                    rand = Random.Range(0, objects.Length);
+
+                                    GameObject furnish = Instantiate(objects[rand], grid.CellToWorld(drawerPos.pos) + new Vector3(0, 0.4f), Quaternion.identity,
+                                        grid.gameObject.transform);
+                                    if(furnish.GetComponent<InteractableObject>() != null)
+                                    {
+                                        GetComponentInParent<RoomList>().numInteractableObjects++;
+                                    }
                                 }
                             }
                         }
-
                         //if room is one time remove it
                         if (stats.oneTime)
                         {
