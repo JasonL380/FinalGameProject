@@ -882,6 +882,8 @@ MonoBehaviour:
   pos: {x: 2, y: -0.75, z: 0}
   min: {x: -1, y: -6, z: 0}
   max: {x: 3, y: 0, z: 0}
+  endRoom: 0
+  oneTime: 0
   generate: 0
 --- !u!61 &2970627105976182863
 BoxCollider2D:
@@ -1028,6 +1030,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7312965732056077878}
     m_Modifications:
+    - target: {fileID: 242907170764615262, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -442418432, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: facing
       value: 2

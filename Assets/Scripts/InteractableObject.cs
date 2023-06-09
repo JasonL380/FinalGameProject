@@ -11,12 +11,15 @@ public class InteractableObject : MonoBehaviour
 
     private bool beenRansacked;
 
+    RoomList roomList;
+
     // Start is called before the first frame update
     void Start()
     {
         gameObject.GetComponent<Collider2D>().isTrigger = true;
-        randLight = Random.Range(1, 51);
+        randLight = Random.Range(0, 51);
         beenRansacked = false;
+        roomList = GetComponentInParent<RoomList>();
     }
 
     // Update is called once per frame
@@ -24,21 +27,32 @@ public class InteractableObject : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && collision.name.Equals("Player") && !beenRansacked)
         {
-            if(randLight == 51)
+            if(roomList.hasKey == false && roomList.numInteractableObjects - roomList.numRansackedObjects == 1)
             {
-                //give key
+                roomList.hasKey = true;
             }
             else
             {
-                if(randLight % 2 == 0)
+                if (randLight == 51 && roomList.hasKey != true)
                 {
-                    //give candle
-                    ++collision.GetComponent<PlayerController>().numLights[0];
+                    //give key
+                    roomList.hasKey = true;
+                    roomList.numRansackedObjects++;
+                    beenRansacked = true;
                 }
-                else if(randLight % 2 == 1)
+                else
                 {
-                    //give battery
-                    ++collision.GetComponent<PlayerController>().numLights[1];
+                    if (randLight % 2 == 0)
+                    {
+                        //give candle
+                        ++collision.GetComponent<PlayerController>().numLights[0];
+                    }
+                    else if (randLight % 2 == 1)
+                    {
+                        //give battery
+                        ++collision.GetComponent<PlayerController>().numLights[1];
+                    }
+                    roomList.numRansackedObjects++;
                 }
             }
             beenRansacked = true;

@@ -276,8 +276,12 @@ public class RoomGeneration : MonoBehaviour
 
                                 rand = Random.Range(0, objects.Length);
 
-                                Instantiate(objects[rand], grid.CellToWorld(drawerPos.pos) + new Vector3(0, 0.4f), Quaternion.identity,
+                                GameObject furnish = Instantiate(objects[rand], grid.CellToWorld(drawerPos.pos) + new Vector3(0, 0.4f), Quaternion.identity,
                                     grid.gameObject.transform);
+                                if(furnish.GetComponent<InteractableObject>() != null)
+                                {
+                                    GetComponentInParent<RoomList>().numInteractableObjects++;
+                                }
                             }
                         }
 

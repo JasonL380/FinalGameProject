@@ -69,6 +69,10 @@ namespace DefaultNamespace
         public GameObject[] rightObjects;
 
         public Sprite[] doorFloors;
+
+        public int numInteractableObjects;
+        public int numRansackedObjects;
+        public bool hasKey;
         
         /*public void OnDrawGizmos()
         {
