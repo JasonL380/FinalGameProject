@@ -61,6 +61,10 @@ public class Pathfinder : MonoBehaviour
     
     private Grid _grid;
 
+    private GameObject player;
+
+    private bool chasing = false;
+    
     private void Start()
     {
         if (Application.isPlaying)
@@ -70,6 +74,7 @@ public class Pathfinder : MonoBehaviour
             print("initializing pathfinder");
             myRB2D = GetComponent<Rigidbody2D>();
             myCirc = GetComponent<CircleCollider2D>();
+            player = GameObject.FindGameObjectWithTag("Player");
             //target = waypoints[0];
             //generateGraph();
             //print(graph[graphDimensions.x/2,graphDimensions.y/2]);
@@ -165,6 +170,23 @@ public class Pathfinder : MonoBehaviour
     {
         if (Application.isPlaying)
         {
+            if ((player.transform.position - transform.position).magnitude < 5)
+            {
+                chasing = true;
+            }
+            else if(chasing)
+            {
+                chasing = false;
+                pathfindingWaypoints = a_star_search(actualToGrid(transform.position), actualToGrid(waypoints[currentPathWaypoint]));
+                currentWaypoint = 0;
+            }
+
+            if (chasing)
+            {
+                pathfindingWaypoints = a_star_search(actualToGrid(transform.position), actualToGrid(player.transform.position));
+                currentWaypoint = 0;
+            }
+            
             pace();
         }
     }
