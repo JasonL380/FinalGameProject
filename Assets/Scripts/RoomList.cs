@@ -73,6 +73,8 @@ namespace DefaultNamespace
         public int numInteractableObjects;
         public int numRansackedObjects;
         public bool hasKey;
+
+        public GameObject keyImage;
         
         /*public void OnDrawGizmos()
         {
@@ -141,6 +143,10 @@ namespace DefaultNamespace
         private bool addOneTime = false;
         public void FixedUpdate()
         {
+            if (hasKey)
+            {
+                keyImage.SetActive(true);
+            }
             generated = false;
             
             if (roomCount >= 20 && !addOneTime)
