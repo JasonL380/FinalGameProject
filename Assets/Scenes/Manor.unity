@@ -6087,7 +6087,7 @@ MonoBehaviour:
   - 0.01
   - 0.01
   - 0.01
-  tick: 3
+  tick: 1000
   currentTime: 0
   initLightPos: {x: 0, y: 0, z: 0}
   typeLight: 0
