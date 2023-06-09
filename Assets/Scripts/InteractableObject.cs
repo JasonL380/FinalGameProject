@@ -20,7 +20,7 @@ public class InteractableObject : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<Collider2D>().isTrigger = true;
-        randLight = Random.Range(0, 52);
+        randLight = Random.Range(0, 24);
         beenRansacked = false;
         roomList = GetComponentInParent<RoomList>();
     }
@@ -55,7 +55,7 @@ public class InteractableObject : MonoBehaviour
             }
             else
             {
-                if (randLight == 51 && roomList.hasKey != true)
+                if (randLight == 23 && roomList.hasKey != true)
                 {
                     //print("key should be given");
                     //give key
