@@ -67,6 +67,8 @@ namespace DefaultNamespace
 
         public GameObject[] leftObjects;
         public GameObject[] rightObjects;
+
+        public Sprite[] doorFloors;
         
         /*public void OnDrawGizmos()
         {
