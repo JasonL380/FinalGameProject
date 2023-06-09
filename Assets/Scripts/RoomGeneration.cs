@@ -233,7 +233,15 @@ public class RoomGeneration : MonoBehaviour
                             {
                                 if (r.facing != d.facing || stats.oneTime)
                                 {
-                                    Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
+                                    GameObject door = Instantiate(r.gameObject, r.transform.position + finalPos,
+                                        Quaternion.identity);
+                                    
+                                    door.transform.parent = grid.gameObject.transform;
+
+                                    if (stats.oneTime)
+                                    {
+                                        door.GetComponent<RoomGeneration>().roomGend = true;
+                                    }
                                 }
                                 else
                                 {
