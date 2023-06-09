@@ -7,6 +7,10 @@ public class endRoom : MonoBehaviour
 {
     RoomList roomList;
 
+    private void Start()
+    {
+        roomList = GetComponentInParent<RoomList>();
+    }
     // Update is called once per frame
     void Update()
     {

@@ -9,7 +9,7 @@ public class InteractableObject : MonoBehaviour
 
     public int randLight;
 
-    private bool beenRansacked;
+    public bool beenRansacked;
 
     RoomList roomList;
 
