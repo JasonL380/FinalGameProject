@@ -376,4 +376,12 @@ public class Pathfinder : MonoBehaviour
         
         myRB2D.velocity = direction.normalized * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.name.Equals("Player"))
+        {
+            GetComponent<SceneController>().ChangeScene();
+        }
+    }
 }
