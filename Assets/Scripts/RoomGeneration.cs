@@ -231,7 +231,7 @@ public class RoomGeneration : MonoBehaviour
                             }
                             else if(r != null)
                             {
-                                if (r.facing != d.facing)
+                                if (r.facing != d.facing || stats.oneTime)
                                 {
                                     Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
                                 }
