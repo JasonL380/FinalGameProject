@@ -67,7 +67,8 @@ namespace DefaultNamespace
             {
                 rightPoint = new Vector3(7, 4.5f) + transform.position;
             }
-
+            
+            
             Debug.DrawLine(leftPoint, transform.position, Color.red);
             Debug.DrawLine(rightPoint, transform.position, Color.red);
 
@@ -77,11 +78,9 @@ namespace DefaultNamespace
 
             //intersect.x = ((int) intersect.x * (int) 64) / 64f;
             //intersect.y = ((int) intersect.y * (int) 64) / 64f;
-            Collider2D[] contacts =  new Collider2D[8];
-            if (_collider2D.GetContacts(contacts) == 0)
+            if (!_collider2D.IsTouchingLayers(LayerMask.GetMask("door"))) // don't update inside a doorway
             {
                 mask.transform.position = intersect;
-                
             }
 
 

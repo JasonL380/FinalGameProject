@@ -27,7 +27,7 @@ public class RoomGeneration : MonoBehaviour
 
     private Grid grid;
     private RoomList _list;
-
+    
     public SpriteRenderer _renderer;
 
     public bool exitOnly = false;
@@ -60,7 +60,7 @@ public class RoomGeneration : MonoBehaviour
 
     private void Update()
     {
-        if (!roomGend && !_list.generated)
+        if (!roomGend && !_list.generated && Application.isPlaying)
         {
             if (generateRoom())
             {
@@ -74,9 +74,10 @@ public class RoomGeneration : MonoBehaviour
                 _list.ungeneneratedDoors -= 1;
                 Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
                 TileChangeData data = new TileChangeData();
+                data.position = grid.WorldToCell(transform.position);
+                _list.floor.SetTile(data, false);
                 data.tile = _list.WallTile;
                 data.transform = _list.wallTransform;
-                data.position = grid.WorldToCell(transform.position);
                 _list.walls.SetTile(data, false);
                 
                 Destroy(gameObject);
@@ -85,9 +86,9 @@ public class RoomGeneration : MonoBehaviour
 
             roomGend = true;
         }
+        
         if (Application.isEditor && !Application.isPlaying)
         {
-            //_renderer = GetComponentInChildren<SpriteRenderer>();
             //print("update");
             if (open)
             {
@@ -98,63 +99,7 @@ public class RoomGeneration : MonoBehaviour
                 closeDoor();
             }
         }
-        
     }
-    
-    /*private void Update()
-    {
-        if (Application.isEditor)
-        {
-            
-        }
-        
-        if (Application.isPlaying && !roomGend)
-        {
-            if (!_list.generated)
-            {
-
-                
-                Tile tile = new Tile();
-
-                tile.sprite = _renderer.sprite;
-                tile.colliderType = Tile.ColliderType.Grid;
-
-                
-                
-                if (generateRoom())
-                {
-                    _list.generated = true;
-                    _list.roomCount += 1;
-                
-                    _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
-                }
-                else
-                {
-                    print("replacing self with wall at " + transform.position);
-                    Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
-                    TileChangeData data = new TileChangeData();
-                    data.tile = _list.WallTile;
-                    data.transform = _list.wallTransform;
-                    data.position = grid.WorldToCell(transform.position);
-                    _list.walls.SetTile(data, false);
-                }
-                
-
-                roomGend = true;
-
-                
-                Destroy(gameObject);
-            }
-            
-            /*else if (_list.roomCount >= _list.maxRooms)
-            {
-                roomGend = true;
-            }*/
-
-    //    }
-
-    //fits = checkRoomFits(roomTypes[0], transform.position);
-    //  }
 
     private void OnDrawGizmos()
     {
@@ -174,42 +119,10 @@ public class RoomGeneration : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //TODO: add open animation here
-        
-        openDoor();
-        //if no room has generated and the player collides
-        /*if (!roomGend && collision.name.Equals("Player"))
+        if (collision.name == "Player")
         {
-            //Tile tile = new Tile();
-
-           // tile.sprite = _renderer.sprite;
-           // tile.colliderType = Tile.ColliderType.Grid;
-
-
-
-            if (generateRoom())
-            {
-                _list.generated = true;
-                _list.roomCount += 1;
-                
-                
-            }
-            else
-            {
-                print("replacing self with wall at " + transform.position);
-                Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
-                TileChangeData data = new TileChangeData();
-                data.tile = _list.WallTile;
-                data.transform = _list.wallTransform;
-                data.position = grid.WorldToCell(transform.position);
-                _list.walls.SetTile(data, false);
-                
-                Destroy(gameObject);
-            }
-            
-            
-
-            roomGend = true;
-        }*/
+            openDoor();
+        }
     }
 
     private void openDoor()
@@ -223,14 +136,15 @@ public class RoomGeneration : MonoBehaviour
     {
         open = false;
         _renderer.sprite = _list.closedDoors[facing];
-        if (facing < 2)
-        {
-            _renderer.sortingOrder = 3;
-        }
-        else
-        {
-            _renderer.sortingOrder = 1;
-        }
+        Tile tile = ScriptableObject.CreateInstance<Tile>();
+        
+        _renderer.sortingOrder = 3;
+        
+        tile.colliderType = Tile.ColliderType.Grid;
+        _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
+                                    
+        tile.sprite = _list.doorFloors[facing];
+        _list.floor.SetTile(grid.WorldToCell(transform.position), tile);
     }
     
     private bool generateRoom()
@@ -321,6 +235,15 @@ public class RoomGeneration : MonoBehaviour
                                 {
                                     Instantiate(r.gameObject, r.transform.position + finalPos, Quaternion.identity).transform.parent = grid.gameObject.transform;
                                 }
+                                else
+                                {
+                                    Tile tile = ScriptableObject.CreateInstance<Tile>();
+                                    tile.colliderType = Tile.ColliderType.Grid;
+                                    _list.doors.SetTile(grid.WorldToCell(r.transform.position + finalPos), tile);
+                                    
+                                    tile.sprite = _list.doorFloors[facing];
+                                    _list.floor.SetTile(grid.WorldToCell(r.transform.position + finalPos), tile);
+                                }
                             }
                             else if(p != null)
                             {
@@ -364,26 +287,6 @@ public class RoomGeneration : MonoBehaviour
                             _list.ungeneratedOneTimeRooms -= 1;
                             _list.generatableRooms.Remove(list[i]);
                         }
-                        
-                        //make the room
-                        /*GameObject roomClone = Instantiate(_list.rooms[i]);
-                        roomClone.transform.parent = grid.transform;
-                        roomClone.SetActive(true);
-                    
-                        Debug.DrawLine(transform.position, d.transform.position + finalPos, Color.magenta);
-                        //put the room in it's proper place
-                        roomClone.transform.position = finalPos;
-                        
-                        RoomGeneration[] doors1 = roomClone.GetComponentsInChildren<RoomGeneration>();
-
-                        foreach (RoomGeneration d1 in doors)
-                        {
-                            if (d1.facing == d.facing)
-                            {
-                                d1.enabled = false;
-                                break;
-                            }
-                        }*/
 
                         //don't let any other rooms generate
                         roomGend = true; 
