@@ -238,7 +238,7 @@ public class RoomGeneration : MonoBehaviour
                                     
                                     door.transform.parent = grid.gameObject.transform;
 
-                                    if (stats.oneTime)
+                                    if (stats.oneTime && r.facing == d.facing)
                                     {
                                         door.GetComponent<RoomGeneration>().roomGend = true;
                                     }
