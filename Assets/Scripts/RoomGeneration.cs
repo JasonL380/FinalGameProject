@@ -60,7 +60,7 @@ public class RoomGeneration : MonoBehaviour
 
     private void Update()
     {
-        if (!roomGend && !_list.generated)
+        if (!roomGend && !_list.generated && Application.isPlaying)
         {
             if (generateRoom())
             {
