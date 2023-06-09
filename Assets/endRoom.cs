@@ -17,6 +17,10 @@ public class endRoom : MonoBehaviour
         if(roomList.hasKey != true)
         {
             GetComponent<PolygonCollider2D>().isTrigger = false;
-        }    
+        }
+        else
+        {
+            GetComponent<PolygonCollider2D>().isTrigger = true;
+        }
     }
 }
