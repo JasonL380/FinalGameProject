@@ -75,7 +75,7 @@ public class RoomGeneration : MonoBehaviour
                 Debug.DrawLine(transform.position, transform.position + new Vector3(0.1f, 0), Color.blue);
                 TileChangeData data = new TileChangeData();
                 data.position = grid.WorldToCell(transform.position);
-                _list.floor.SetTile(data, false);
+                _list.doors.SetTile(data, false);
                 data.tile = _list.WallTile;
                 data.transform = _list.wallTransform;
                 _list.walls.SetTile(data, false);
