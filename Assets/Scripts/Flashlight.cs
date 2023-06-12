@@ -24,6 +24,7 @@ public class Flashlight : MonoBehaviour
     {
         if (currentBattery > 0 + Time.deltaTime)
         {
+            fLight.SetActive(true);
             currentBattery -= Time.deltaTime;
         }
         else
