@@ -133,6 +133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randLight: 0
   beenRansacked: 0
+  playerNear: 0
+  player: {fileID: 0}
+  open: {fileID: 1622693642, guid: b63a7793c2edd3145a330a18dcd4a0ee, type: 3}
 --- !u!68 &6301221018939277834
 EdgeCollider2D:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ItemHolder
   - flashlight
+  - Button
   layers:
   - Default
   - TransparentFX

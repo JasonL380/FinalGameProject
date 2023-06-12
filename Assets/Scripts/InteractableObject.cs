@@ -2,6 +2,7 @@ using DefaultNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Collider2D))]
 public class InteractableObject : MonoBehaviour
@@ -15,6 +16,8 @@ public class InteractableObject : MonoBehaviour
 
     public bool playerNear;
     public Collider2D player;
+
+    public Sprite open;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +34,8 @@ public class InteractableObject : MonoBehaviour
         {
             playerNear = true;
             player = collision;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = true;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = true;
         }
     }
 
@@ -40,6 +45,8 @@ public class InteractableObject : MonoBehaviour
         {
             playerNear = false;
             player = collision;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = false;
         }
     }
 
@@ -80,6 +87,7 @@ public class InteractableObject : MonoBehaviour
                 }
             }
             beenRansacked = true;
+            gameObject.GetComponent<SpriteRenderer>().sprite = open;
         }
     }
 
