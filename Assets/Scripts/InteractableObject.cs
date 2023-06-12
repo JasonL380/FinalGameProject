@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider2D))]
 public class InteractableObject : MonoBehaviour
@@ -36,8 +37,7 @@ public class InteractableObject : MonoBehaviour
             player = collision;
             if(!beenRansacked)
             {
-                GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = true;
-                GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = true;
+                GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = true;
             }
         }
     }
@@ -48,8 +48,7 @@ public class InteractableObject : MonoBehaviour
         {
             playerNear = false;
             player = collision;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = false;
         }
     }
 
@@ -91,8 +90,7 @@ public class InteractableObject : MonoBehaviour
             }
             beenRansacked = true;
             gameObject.GetComponent<SpriteRenderer>().sprite = open;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = false;
         }
     }
 

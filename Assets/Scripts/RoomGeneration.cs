@@ -138,13 +138,16 @@ public class RoomGeneration : MonoBehaviour
         _renderer.sprite = _list.closedDoors[facing];
         
         _renderer.sortingOrder = 3;
+
+        if (Application.isPlaying)
+        {
+            Tile tile = ScriptableObject.CreateInstance<Tile>();
+            
+            tile.colliderType = Tile.ColliderType.Grid;
+            tile.sprite = _list.doorFloors[facing];
         
-        Tile tile = ScriptableObject.CreateInstance<Tile>();
-        
-        
-        tile.colliderType = Tile.ColliderType.Grid;
-        tile.sprite = _list.doorFloors[facing];
-        _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
+            _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
+        }
     }
     
     private bool generateRoom()
