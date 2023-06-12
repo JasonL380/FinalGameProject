@@ -34,8 +34,11 @@ public class InteractableObject : MonoBehaviour
         {
             playerNear = true;
             player = collision;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = true;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = true;
+            if(!beenRansacked)
+            {
+                GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = true;
+                GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = true;
+            }
         }
     }
 
@@ -88,6 +91,8 @@ public class InteractableObject : MonoBehaviour
             }
             beenRansacked = true;
             gameObject.GetComponent<SpriteRenderer>().sprite = open;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<Light2D>().enabled = false;
         }
     }
 
