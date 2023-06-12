@@ -36,6 +36,8 @@ public class spriteChange : MonoBehaviour
     {
         if (currentTime < 0 && currentSprite < sprites.Length - 1)
         {
+            GetComponent<Light2D>().enabled = true;
+            GetComponent<ParticleSystemRenderer>().enabled = true;
             ++currentSprite;
             sprite.sprite = sprites[currentSprite];
             currentTime = tick;
