@@ -59,10 +59,6 @@ namespace DefaultNamespace
 
         public Sprite[] closedDoors;
 
-        public Sprite[] endOpenDoors;
-
-        public Sprite[] endClosedDoors;
-
         public int ungeneneratedDoors = 0;
 
         public int ungeneratedOneTimeRooms = 0;

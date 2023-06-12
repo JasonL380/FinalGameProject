@@ -2404,13 +2404,9 @@ PrefabInstance:
     - target: {fileID: 242907170764615262, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -962517378, guid: ca64e3045839ad1459e2efba46366bde, type: 3}
+      objectReference: {fileID: -1668720773, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: facing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: endDoors
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
@@ -2503,14 +2499,10 @@ PrefabInstance:
     - target: {fileID: 242907170764615262, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1654238335, guid: ca64e3045839ad1459e2efba46366bde, type: 3}
+      objectReference: {fileID: -442418432, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: facing
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: endDoors
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_Enabled
@@ -2602,14 +2594,10 @@ PrefabInstance:
     - target: {fileID: 242907170764615262, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1725191640, guid: ca64e3045839ad1459e2efba46366bde, type: 3}
+      objectReference: {fileID: 10745653, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: facing
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: endDoors
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: roomTypes.Array.data[3]
@@ -2694,17 +2682,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7312965732056077878}
     m_Modifications:
-    - target: {fileID: 242907170764615262, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -506039407, guid: ca64e3045839ad1459e2efba46366bde, type: 3}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: facing
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
-      propertyPath: endDoors
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5000485462020596790, guid: d30934b6fefed4eb0bcaff8796ad77ca, type: 3}
       propertyPath: m_Enabled
