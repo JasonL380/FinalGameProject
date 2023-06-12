@@ -43,6 +43,8 @@ public class RoomGeneration : MonoBehaviour
     //has the room generated
     public bool roomGend;
 
+    public bool endDoors;
+
     private void Start()
     {
         //roomLayer = LayerMask.GetMask("room");
@@ -128,14 +130,14 @@ public class RoomGeneration : MonoBehaviour
     private void openDoor()
     {
         open = true;
-        _renderer.sprite = _list.openDoors[facing];
+        _renderer.sprite = endDoors ? _list.endOpenDoors[facing] : _list.openDoors[facing];
         _renderer.sortingOrder = 3;
     }
 
     private void closeDoor()
     {
         open = false;
-        _renderer.sprite = _list.closedDoors[facing];
+        _renderer.sprite = endDoors ? _list.endClosedDoors[facing] : _list.closedDoors[facing];
         
         _renderer.sortingOrder = 3;
 
