@@ -37,7 +37,8 @@ public class InteractableObject : MonoBehaviour
             player = collision;
             if(!beenRansacked)
             {
-                GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = true;
+                var button = GameObject.FindGameObjectWithTag("Button");
+                button.GetComponent<SpriteRenderer>().enabled = true;
             }
         }
     }
@@ -48,7 +49,7 @@ public class InteractableObject : MonoBehaviour
         {
             playerNear = false;
             player = collision;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
@@ -90,7 +91,7 @@ public class InteractableObject : MonoBehaviour
             }
             beenRansacked = true;
             gameObject.GetComponent<SpriteRenderer>().sprite = open;
-            GameObject.FindGameObjectWithTag("Button").GetComponent<Image>().enabled = false;
+            GameObject.FindGameObjectWithTag("Button").GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
