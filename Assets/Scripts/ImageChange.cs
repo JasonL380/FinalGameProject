@@ -1,6 +1,7 @@
 using DefaultNamespace;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -33,6 +34,9 @@ public class ImageChange : MonoBehaviour
 
     public GameObject player;
 
+    public Sprite[] candleImages;
+
+
     private void Start()
     {
         image = gameObject.GetComponent<Image>();
@@ -41,6 +45,7 @@ public class ImageChange : MonoBehaviour
         //initLightPos = pr.shape.position;
         battery = flashlight.GetComponent<Flashlight>().currentBattery;
         initBattery = flashlight.GetComponent<Flashlight>().totalBattery;
+
     }
     // Update is called once per frame
     void Update()
@@ -55,7 +60,7 @@ public class ImageChange : MonoBehaviour
         if (holdingItem == 1)
         {
             image.enabled = true;
-            image.sprite = candle.GetComponent<SpriteRenderer>().sprite;
+            image.sprite = candleImages[candle.GetComponent<spriteChange>().currentSprite];
         }
 
         else if (holdingItem == 2)
