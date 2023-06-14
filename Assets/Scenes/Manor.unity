@@ -13427,7 +13427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1333549330
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16190,7 +16190,7 @@ MonoBehaviour:
   - {fileID: -1668720773, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
   - {fileID: -442418432, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
   - {fileID: 10745653, guid: fe4343c904c4c53789d8f57f7af85d33, type: 3}
-  ungeneneratedDoors: 257
+  ungeneneratedDoors: 261
   ungeneratedOneTimeRooms: 0
   drawerRarity: 10
   leftObjects:

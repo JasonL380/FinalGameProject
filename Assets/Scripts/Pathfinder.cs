@@ -64,6 +64,9 @@ public class Pathfinder : MonoBehaviour
     private GameObject player;
 
     private bool chasing = false;
+
+    [SerializeField] private float followRange = 5;
+    
     
     private void Start()
     {
@@ -170,7 +173,7 @@ public class Pathfinder : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            if ((player.transform.position - transform.position).magnitude < 5)
+            if ((player.transform.position - transform.position).magnitude < followRange)
             {
                 chasing = true;
             }
