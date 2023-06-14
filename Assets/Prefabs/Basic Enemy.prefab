@@ -152,7 +152,7 @@ MonoBehaviour:
   boxSize: {x: 0, y: 0}
   nodeDensity: 0
   closeEnough: 1
-  followRange: 5
+  followRange: 100
 --- !u!114 &-2635907091636332863
 MonoBehaviour:
   m_ObjectHideFlags: 0
