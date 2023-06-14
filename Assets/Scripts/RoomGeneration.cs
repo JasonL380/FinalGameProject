@@ -147,6 +147,8 @@ public class RoomGeneration : MonoBehaviour
             tile.sprite = _list.doorFloors[facing];
         
             _list.doors.SetTile(grid.WorldToCell(transform.position), tile);
+            
+            _list.mapDataSet(grid.WorldToCell(transform.position).x, grid.WorldToCell(transform.position).y, 1);
         }
     }
     
@@ -252,6 +254,7 @@ public class RoomGeneration : MonoBehaviour
                                     tile.colliderType = Tile.ColliderType.Grid;
                                     tile.sprite = _list.doorFloors[facing];
                                     _list.doors.SetTile(grid.WorldToCell(r.transform.position + finalPos), tile);
+                                    _list.mapDataSet(grid.WorldToCell(r.transform.position + finalPos).x, grid.WorldToCell(r.transform.position + finalPos).y, 2);
                                 }
                             }
                             else if(p != null)
