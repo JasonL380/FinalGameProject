@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 7327876081064384077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.33, y: 2.33, z: 2.33}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5009505191474739502}
@@ -142,8 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc4ec360b697e34f8db195c2c168b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 0.5
   waypoints: []
+  pathfindingWaypoints: []
   wallLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -152,7 +153,10 @@ MonoBehaviour:
   boxSize: {x: 0, y: 0}
   nodeDensity: 0
   closeEnough: 1
-  followRange: 1000
+  chasing: 0
+  dir: {x: 0, y: 0, z: 0}
+  curWaypoint: {x: 0, y: 0, z: 0}
+  followRange: 15
 --- !u!114 &-2635907091636332863
 MonoBehaviour:
   m_ObjectHideFlags: 0

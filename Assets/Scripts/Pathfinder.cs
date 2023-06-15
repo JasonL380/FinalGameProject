@@ -20,7 +20,7 @@ public class Pathfinder : MonoBehaviour
 
     [Tooltip("list of points for the AI follow")]
     public Vector2[] waypoints;
-    private List<Vector3Int> pathfindingWaypoints = new List<Vector3Int>();
+    public List<Vector3Int> pathfindingWaypoints = new List<Vector3Int>();
 
     [Tooltip("select all layers that contain objects which should be treated as walls")]
     public LayerMask wallLayers;
@@ -63,8 +63,13 @@ public class Pathfinder : MonoBehaviour
 
     private GameObject player;
 
-    private bool chasing = false;
+    public bool chasing = false;
 
+    private Vector3 lastTargetPos;
+
+    public Vector3 dir;
+    public Vector3 curWaypoint;
+    
     [SerializeField] private float followRange = 5;
     
     
@@ -176,6 +181,9 @@ public class Pathfinder : MonoBehaviour
             if ((player.transform.position - transform.position).magnitude < followRange)
             {
                 chasing = true;
+                lastTargetPos = player.transform.position;
+                pathfindingWaypoints = a_star_search(actualToGrid(transform.position), actualToGrid(player.transform.position));
+                currentPathWaypoint = 0;
             }
             else if(chasing)
             {
@@ -184,17 +192,18 @@ public class Pathfinder : MonoBehaviour
                 currentWaypoint = 0;
             }
 
-            if (chasing)
+            if (chasing && (player.transform.position - lastTargetPos).sqrMagnitude > 5)
             {
+                lastTargetPos = player.transform.position;
                 pathfindingWaypoints = a_star_search(actualToGrid(transform.position), actualToGrid(player.transform.position));
-                currentWaypoint = 0;
+                currentPathWaypoint = 0;
             }
             
             pace();
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (!Application.isPlaying)
         {
@@ -355,29 +364,40 @@ public class Pathfinder : MonoBehaviour
 
     void pace()
     {
-        Vector3 direction = gridToActual(pathfindingWaypoints[currentWaypoint]) - (Vector2) transform.position;
-        Vector2 currentPos;
-        currentPos.x = transform.position.x;
-        currentPos.y = transform.position.y;
-        //check if close to target, if so go to next one if possible
-        if (direction.magnitude <= closeEnough)
-        {
-            ++currentWaypoint;
-            if (currentWaypoint >= pathfindingWaypoints.Count - 1)
+        //if (pathfindingWaypoints.Count > currentPathWaypoint)
+        //{
+            Vector3 direction = gridToActual(pathfindingWaypoints[currentWaypoint]) - (Vector2) transform.position;
+            //print(direction + " " + transform.position);
+            curWaypoint = gridToActual(pathfindingWaypoints[currentWaypoint]);
+            dir = direction;
+            Vector2 currentPos;
+            currentPos.x = transform.position.x;
+            currentPos.y = transform.position.y;
+            //check if close to target, if so go to next one if possible
+            if (direction.magnitude <= closeEnough)
             {
-                currentPathWaypoint++;
-                if (currentPathWaypoint >= waypoints.Length)
+                ++currentWaypoint;
+                if (currentWaypoint >= pathfindingWaypoints.Count - 1)
                 {
-                    currentPathWaypoint = 0;
+                    currentPathWaypoint++;
+                    if (currentPathWaypoint >= waypoints.Length)
+                    {
+                        currentPathWaypoint = 0;
+                    }
+                    pathfindingWaypoints = a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentPathWaypoint]));
+                    currentWaypoint = 0;
                 }
-                pathfindingWaypoints = a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentPathWaypoint]));
-                currentWaypoint = 0;
+                //currentTarget = pathfindingWaypoints[currentWaypoint];
+                //a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentWaypoint]));
             }
-            //currentTarget = pathfindingWaypoints[currentWaypoint];
-            //a_star_search(actualToGrid(currentPos), actualToGrid(waypoints[currentWaypoint]));
-        }
+
+            myRB2D.velocity = direction.normalized * speed;
+       // }
+      //  else
+       // {
+      //      myRB2D.velocity = Vector3.zero;
+       // }
         
-        myRB2D.velocity = direction.normalized * speed;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

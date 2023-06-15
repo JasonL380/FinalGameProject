@@ -471,44 +471,44 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 4645490968356792790}
     m_ColliderPaths:
-    - - X: 20000000
-        Y: -32500000
-      - X: 20000000
-        Y: 17500000
-      - X: 40000000
-        Y: 17500000
-      - X: 40000000
-        Y: 27500000
+    - - X: 25000000
+        Y: 25000000
       - X: 10000000
-        Y: 27500000
+        Y: 17500000
+      - X: 15000000
+        Y: 15000000
+      - X: 25000000
+        Y: 20000000
+      - X: 50000000
+        Y: 7500000
+      - X: 25000000
+        Y: -5000000
+      - X: 0
+        Y: 7500000
       - X: 10000000
-        Y: -42500000
-      - X: 80000000
-        Y: -42500000
-      - X: 80000000
-        Y: 27500000
-      - X: 50000000
-        Y: 27500000
-      - X: 50000000
-        Y: 17500000
-      - X: 70000000
-        Y: 17500000
-      - X: 70000000
-        Y: -32500000
+        Y: 12500000
+      - X: 5000000
+        Y: 15000000
+      - X: -10000000
+        Y: 7500000
+      - X: 25000000
+        Y: -10000000
+      - X: 60000000
+        Y: 7500000
   m_CompositePaths:
     m_Paths:
-    - - {x: 7.9999704, y: -4}
-      - {x: 7.9999704, y: 3}
-      - {x: 5, y: 2.999971}
-      - {x: 5.000029, y: 2}
-      - {x: 7, y: 1.9999707}
-      - {x: 6.9999704, y: -3}
-      - {x: 2, y: -2.9999707}
-      - {x: 2.0000293, y: 2}
-      - {x: 4, y: 2.000029}
-      - {x: 3.999971, y: 3}
-      - {x: 1, y: 2.999971}
-      - {x: 1.0000293, y: -4}
+    - - {x: 2.4999883, y: -0.7499942}
+      - {x: 5.9999385, y: 1.000031}
+      - {x: 2.4999883, y: 2.7499943}
+      - {x: 1.0000618, y: 1.9999692}
+      - {x: 1.5000118, y: 1.750006}
+      - {x: 2.500012, y: 2.249994}
+      - {x: 4.9999385, y: 0.9999691}
+      - {x: 2.4999883, y: -0.2499941}
+      - {x: 0.0000618, y: 1.000031}
+      - {x: 0.9999383, y: 1.5000309}
+      - {x: 0.4999882, y: 1.7499942}
+      - {x: -0.9999383, y: 0.9999691}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &4645490968356792788
@@ -1016,7 +1016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorPos: {x: -1, y: -4}
   facing: 0
-  pos: {x: 2, y: -0.75, z: 0}
+  pos: {x: -9, y: -0.75, z: 0}
   min: {x: 1, y: -4, z: 0}
   max: {x: 7, y: 2, z: 0}
   endRoom: 1
@@ -1035,11 +1035,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102620139819975830, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.35
+      value: 2.31
       objectReference: {fileID: 0}
     - target: {fileID: 102620139819975830, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.23
+      value: 1.727
       objectReference: {fileID: 0}
     - target: {fileID: 102620139819975830, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1072,6 +1072,26 @@ PrefabInstance:
     - target: {fileID: 102620139819975830, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059993536800252869, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
+      propertyPath: waypoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059993536800252869, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
+      propertyPath: waypoints.Array.data[0].x
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059993536800252869, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
+      propertyPath: waypoints.Array.data[0].y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059993536800252869, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
+      propertyPath: waypoints.Array.data[1].x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059993536800252869, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
+      propertyPath: waypoints.Array.data[1].y
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 7327876081064384077, guid: 696b4eb6dd2bd7e9788902ddb30cfd58, type: 3}
       propertyPath: m_Name

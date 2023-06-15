@@ -333,6 +333,12 @@ namespace DefaultNamespace
             Debug.DrawLine(_grid.CellToWorld(new Vector3Int(x, y, 0)), _grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0, 0.1f, 0), Color.magenta);
             
             //print( x+", "+y+"  " + ((x + 32768) % 256) + ", " + ((y + 32768)  % 256));*/
+            #if UNITY_EDITOR
+            if (val == 1)
+            {
+                Debug.DrawLine(_grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0, 0.25f, 0), _grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0, 0.35f, 0), Color.magenta);
+            }
+            #endif
             mapData[x + (arraySize / 2), y + (arraySize / 2)] = val;
             //mapData[bx, by].data[(x + 32768) % 256, (y + 32768) % 256] = val;
         }
